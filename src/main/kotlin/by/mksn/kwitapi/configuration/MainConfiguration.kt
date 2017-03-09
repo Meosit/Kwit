@@ -10,9 +10,7 @@ import org.springframework.context.annotation.Import
 @Import(ControllerConfiguration::class,
         ResourceServerConfiguration::class,
         AuthorizationServerConfiguration::class,
-        OAuth2SecurityConfiguration::class,
-        MethodSecurityConfiguration::class
-)
+        OAuth2SecurityConfiguration::class)
 @EnableAutoConfiguration
 open class MainConfiguration : SpringBootServletInitializer() {
 
