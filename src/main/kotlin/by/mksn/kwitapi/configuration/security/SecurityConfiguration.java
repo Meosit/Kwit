@@ -9,13 +9,17 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
-import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
 import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+
+    //private static final Logger LOG = LoggerFactory.getLogger("application");
 
     private final JdbcUserDetailsService userDetailsService;
     private final DataSource dataSource;
@@ -31,8 +35,29 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JdbcTokenStore tokenStore() {
-        return new JdbcTokenStore(dataSource);
+    public TokenStore tokenStore() {
+        return new InMemoryTokenStore();
+//        return new JdbcTokenStore(dataSource) {
+//
+//            @Override
+//            public OAuth2AccessToken readAccessToken(String tokenValue) {
+//                OAuth2AccessToken accessToken = null;
+//                try {
+//                    accessToken = new DefaultOAuth2AccessToken(tokenValue);
+//                }
+//                catch (EmptyResultDataAccessException e) {
+//                    if (LOG.isInfoEnabled()) {
+//                        LOG.info("Failed to find access token for token "+tokenValue);
+//                    }
+//                }
+//                catch (IllegalArgumentException e) {
+//                    LOG.warn("Failed to deserialize access token for " +tokenValue,e);
+//                    removeAccessToken(tokenValue);
+//                }
+//                return accessToken;
+//            }
+//
+//        };
     }
 
     @Bean
