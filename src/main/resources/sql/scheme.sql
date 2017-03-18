@@ -10,7 +10,6 @@ DROP SCHEMA IF EXISTS `kwit`;
 CREATE SCHEMA IF NOT EXISTS `kwit`
   CHARACTER SET utf8
   COLLATE utf8_general_ci;
-;
 
 USE `kwit`;
 -- -----------------------------------------------------
@@ -29,24 +28,6 @@ CREATE TABLE `user`
   PRIMARY KEY (`id` ASC)
 )
   ENGINE = InnoDB;
-
-
-CREATE UNIQUE INDEX `IXUQ_user_email`
-  ON `user` (`email` ASC);
-
--- -----------------------------------------------------
--- Table `kwit`.`user_role`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `user_role`;
-
-CREATE TABLE `user_role`
-(
-  `user_id` INT UNSIGNED                     NOT NULL,
-  `role`    ENUM ('ROLE_USER', 'ROLE_ADMIN') NOT NULL,
-  PRIMARY KEY (`user_id`, `role`)
-)
-  ENGINE = InnoDB;
-
 
 CREATE UNIQUE INDEX `IXUQ_user_email`
   ON `user` (`email` ASC);
@@ -235,6 +216,72 @@ CREATE TABLE `transaction`
 
 CREATE INDEX `IX_transaction_date`
   ON `transaction` (`date` ASC);
+
+-- -----------------------------------------------------
+-- OAuth2 required tables
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `oauth_access_token`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `oauth_access_token` (
+  `token_id`          VARCHAR(256) DEFAULT NULL,
+  `token`             BLOB,
+  `authentication_id` VARCHAR(256) DEFAULT NULL,
+  `user_name`         VARCHAR(256) DEFAULT NULL,
+  `client_id`         VARCHAR(256) DEFAULT NULL,
+  `authentication`    BLOB,
+  `refresh_token`     VARCHAR(256) DEFAULT NULL
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+DROP TABLE IF EXISTS `oauth_client_details`;
+CREATE TABLE `oauth_client_details` (
+  `client_id`               VARCHAR(256) NOT NULL,
+  `resource_ids`            VARCHAR(256)  DEFAULT NULL,
+  `client_secret`           VARCHAR(256)  DEFAULT NULL,
+  `scope`                   VARCHAR(256)  DEFAULT NULL,
+  `authorized_grant_types`  VARCHAR(256)  DEFAULT NULL,
+  `web_server_redirect_uri` VARCHAR(256)  DEFAULT NULL,
+  `authorities`             VARCHAR(256)  DEFAULT NULL,
+  `access_token_validity`   INT(11)       DEFAULT NULL,
+  `refresh_token_validity`  INT(11)       DEFAULT NULL,
+  `additional_information`  VARCHAR(4096) DEFAULT NULL,
+  `autoapprove`             VARCHAR(256)  DEFAULT NULL,
+  PRIMARY KEY (`client_id`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+DROP TABLE IF EXISTS `oauth_code`;
+CREATE TABLE `oauth_code` (
+  `code`           VARCHAR(256) DEFAULT NULL,
+  `authentication` BLOB
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+DROP TABLE IF EXISTS `oauth_refresh_token`;
+CREATE TABLE `oauth_refresh_token` (
+  `token_id`       VARCHAR(256) DEFAULT NULL,
+  `token`          BLOB,
+  `authentication` BLOB
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+INSERT INTO `oauth_client_details` VALUES
+  ('web_client',
+    NULL,
+    'kwit_web_client_secret',
+    'read,write,trust',
+    'password,authorization_code,refresh_token,implicit',
+    '',
+    'ROLE_USER',
+    NULL,
+    NULL,
+    NULL,
+    NULL);
 
 DELIMITER $$
 
