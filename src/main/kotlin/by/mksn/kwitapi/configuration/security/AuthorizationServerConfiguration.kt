@@ -21,7 +21,7 @@ import javax.sql.DataSource
 
 @Configuration
 @EnableAuthorizationServer
-open class AuthorizationServerConfiguration(
+class AuthorizationServerConfiguration(
         val dataSource: DataSource,
         val passwordEncoder: PasswordEncoder,
         @Qualifier("authenticationManagerBean")
@@ -33,7 +33,7 @@ open class AuthorizationServerConfiguration(
 
 
     @Bean
-    protected open fun authorizationCodeServices(): AuthorizationCodeServices
+    protected fun authorizationCodeServices(): AuthorizationCodeServices
             = JdbcAuthorizationCodeServices(dataSource)
 
     override fun configure(endpoints: AuthorizationServerEndpointsConfigurer) {
@@ -55,7 +55,7 @@ open class AuthorizationServerConfiguration(
 
     @Bean
     @Primary
-    open fun tokenServices(): DefaultTokenServices {
+    fun tokenServices(): DefaultTokenServices {
         val tokenServices = DefaultTokenServices()
         tokenServices.setSupportRefreshToken(true)
         tokenServices.setTokenStore(tokenStore)

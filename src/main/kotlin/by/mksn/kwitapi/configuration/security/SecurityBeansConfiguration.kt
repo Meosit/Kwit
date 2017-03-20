@@ -14,22 +14,22 @@ import javax.sql.DataSource
 
 
 @Configuration
-open class SecurityBeansConfiguration {
+class SecurityBeansConfiguration {
 
     @Bean
-    open fun tokenEnhancer(): TokenEnhancer
+    fun tokenEnhancer(): TokenEnhancer
             = CustomTokenEnhancer()
 
     @Bean
-    open fun passwordEncoder(): PasswordEncoder
+    fun passwordEncoder(): PasswordEncoder
             = BCryptPasswordEncoder(DEFAULT_BCRYPT_STRENGTH)
 
     @Bean
-    open fun userDetailsService(userService: UserService): UserDetailsService
+    fun userDetailsService(userService: UserService): UserDetailsService
             = JdbcUserDetailsService(userService)
 
     @Bean
-    open fun tokenStore(dataSource: DataSource): TokenStore {
-        return JdbcTokenStore(dataSource)
-    }
+    fun tokenStore(dataSource: DataSource): TokenStore
+            = JdbcTokenStore(dataSource)
+
 }

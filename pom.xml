@@ -22,7 +22,7 @@
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>1.5.1.RELEASE</version>
-    <relativePath/> <!-- lookup parent from repository -->
+    <relativePath/> <!-- lookup parent from model -->
   </parent>
 
   <dependencies>
@@ -99,7 +99,25 @@
         <artifactId>kotlin-maven-plugin</artifactId>
         <groupId>org.jetbrains.kotlin</groupId>
         <version>${kotlin.version}</version>
+        <configuration>
+          <compilerPlugins>
+            <plugin>jpa</plugin>
+            <plugin>spring</plugin>
+          </compilerPlugins>
+        </configuration>
 
+        <dependencies>
+          <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-maven-allopen</artifactId>
+            <version>${kotlin.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-maven-noarg</artifactId>
+            <version>${kotlin.version}</version>
+          </dependency>
+        </dependencies>
         <executions>
           <execution>
             <id>compile</id>

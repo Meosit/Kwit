@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore
 
 @Configuration
 @EnableResourceServer
-open class ResourceServerConfiguration(
+class ResourceServerConfiguration(
         val tokenStore: TokenStore
 ) : ResourceServerConfigurerAdapter() {
 

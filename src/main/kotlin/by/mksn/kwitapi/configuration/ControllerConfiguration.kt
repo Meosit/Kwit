@@ -6,10 +6,10 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-open class ControllerConfiguration {
+class ControllerConfiguration {
 
     @Bean
-    open fun userController(userService: UserService)
+    fun userController(userService: UserService): UserController
             = UserController(userService)
 
 }

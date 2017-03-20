@@ -1,12 +1,9 @@
-package by.mksn.kwitapi.repository
+package by.mksn.kwitapi.model
 
-import by.mksn.kwitapi.entity.User
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
 interface UserRepository : CrudRepository<User?, Long> {
-
     fun findByEmail(email: String): User?
-
 }

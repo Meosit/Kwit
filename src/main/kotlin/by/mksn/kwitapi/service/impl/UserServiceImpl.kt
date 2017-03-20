@@ -1,10 +1,10 @@
 package by.mksn.kwitapi.service.impl
 
-import by.mksn.kwitapi.entity.User
-import by.mksn.kwitapi.repository.UserRepository
+import by.mksn.kwitapi.model.User
+import by.mksn.kwitapi.model.UserRepository
 import by.mksn.kwitapi.service.UserService
 
-open class UserServiceImpl(val userRepository: UserRepository) : UserService {
+class UserServiceImpl(val userRepository: UserRepository) : UserService {
 
     override fun findByEmail(username: String): User?
             = userRepository.findByEmail(username)

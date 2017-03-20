@@ -18,7 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
         ResourceServerConfiguration::class,
         MethodSecurityConfiguration::class
 ))
-open class SecurityConfiguration(
+class SecurityConfiguration(
         val userDetailsService: UserDetailsService,
         val passwordEncoder: PasswordEncoder
 ) : WebSecurityConfigurerAdapter() {

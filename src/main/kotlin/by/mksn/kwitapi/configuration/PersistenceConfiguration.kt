@@ -10,13 +10,13 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import javax.sql.DataSource
 
 @Configuration
-@EnableJpaRepositories("by.mksn.kwitapi.repository")
-@EntityScan("by.mksn.kwitapi.entity")
-open class PersistenceConfiguration {
+@EnableJpaRepositories("by.mksn.kwitapi.model")
+@EntityScan("by.mksn.kwitapi.model")
+class PersistenceConfiguration {
 
     @Bean
     @Primary
     @ConfigurationProperties(prefix = "spring.datasource")
-    open fun dataSource(): DataSource = DataSourceBuilder.create().build()
+    fun dataSource(): DataSource = DataSourceBuilder.create().build()
 
 }

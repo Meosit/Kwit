@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Import
         org.springframework.boot.autoconfigure.security.SecurityFilterAutoConfiguration::class,
         org.springframework.boot.autoconfigure.security.FallbackWebSecurityAutoConfiguration::class,
         org.springframework.boot.autoconfigure.security.oauth2.OAuth2AutoConfiguration::class))
-open class MainConfiguration : SpringBootServletInitializer() {
+class MainConfiguration : SpringBootServletInitializer() {
 
     override fun configure(builder: SpringApplicationBuilder): SpringApplicationBuilder
             = builder.sources(MainConfiguration::class.java)
