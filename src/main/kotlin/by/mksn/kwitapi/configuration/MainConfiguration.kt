@@ -8,18 +8,15 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 
 @Configuration
-@Import(*arrayOf(
-        PersistenceConfiguration::class,
+@Import(PersistenceConfiguration::class,
         ServiceConfiguration::class,
         ControllerConfiguration::class,
-        SecurityConfiguration::class
-))
+        SecurityConfiguration::class)
 @EnableAutoConfiguration(exclude = arrayOf(
         org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration::class,
         org.springframework.boot.autoconfigure.security.SecurityFilterAutoConfiguration::class,
         org.springframework.boot.autoconfigure.security.FallbackWebSecurityAutoConfiguration::class,
-        org.springframework.boot.autoconfigure.security.oauth2.OAuth2AutoConfiguration::class
-))
+        org.springframework.boot.autoconfigure.security.oauth2.OAuth2AutoConfiguration::class))
 open class MainConfiguration : SpringBootServletInitializer() {
 
     override fun configure(builder: SpringApplicationBuilder): SpringApplicationBuilder
