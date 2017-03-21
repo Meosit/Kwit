@@ -12,9 +12,9 @@ data class User(
         @GeneratedValue(strategy = GenerationType.AUTO)
         @Column(columnDefinition = "INT")
         var id: Long,
-        @Column(columnDefinition = "VARCHAR(255)", unique = true, nullable = false)
+        @Column(length = 255, unique = true)
         var email: String,
-        @Column(columnDefinition = "CHAR(60)", nullable = false)
+        @Column(columnDefinition = "CHAR(60)")
         var passwordHash: String,
         @Column(columnDefinition = "TINYINT")
         var salaryDay: Int?,
@@ -29,12 +29,12 @@ data class Currency(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         @Column(columnDefinition = "INT")
-        var id: Long,
-        @Column(columnDefinition = "CHAR(3)", nullable = false)
-        var code: String,
-        @Column(columnDefinition = "VARCHAR(5)", nullable = false)
-        var symbol: String,
-        var isPrefix: Boolean
+        val id: Long,
+        @Column(columnDefinition = "CHAR(3)")
+        val code: String,
+        @Column(length = 5)
+        val symbol: String,
+        val isPrefix: Boolean
 )
 
 @Entity
@@ -49,5 +49,70 @@ data class Wallet(
         @ManyToOne
         @JoinColumn(name = "currency_id")
         var currency: Currency,
-        var name: String
+        @Column(length = 100)
+        var name: String,
+        @Column(columnDefinition = "INT(11)")
+        var balance: Long,
+        var isSaving: Boolean,
+        var isDeleted: Boolean
+)
+
+@Entity
+@Table(name = "category")
+data class Category(
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        @Column(columnDefinition = "INT")
+        var id: Long,
+        @Column(columnDefinition = "INT")
+        var userId: Long,
+        @Column(length = 100)
+        var name: String,
+        var isIncome: Boolean
+)
+
+@Entity
+@Table(name = "remittance")
+data class Remittance(
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        @Column(columnDefinition = "INT")
+        var id: Long,
+        @Column(columnDefinition = "INT")
+        var userId: Long,
+        @ManyToOne
+        @JoinColumn(name = "wallet_donor_id")
+        var walletDonor: Wallet,
+        @ManyToOne
+        @JoinColumn(name = "wallet_acceptor_id")
+        var walletAcceptor: Wallet,
+        @Column(columnDefinition = "INT(11)")
+        var donorSum: Long,
+        @Column(precision = 10, scale = 4)
+        var conversion: Double,
+        @Column(columnDefinition = "DATETIME")
+        var date: Timestamp?
+)
+
+@Entity
+@Table(name = "transaction")
+data class Transaction(
+        @Id
+        @GeneratedValue(strategy = GenerationType.AUTO)
+        @Column(columnDefinition = "INT")
+        var id: Long,
+        @Column(columnDefinition = "INT")
+        var userId: Long,
+        @ManyToOne
+        @JoinColumn(name = "wallet_id")
+        var wallet: Wallet,
+        @ManyToOne
+        @JoinColumn(name = "category_id")
+        var category: Category,
+        @Column(columnDefinition = "INT(11)")
+        var sum: Long,
+        @Column(columnDefinition = "DATETIME")
+        var date: Timestamp?,
+        @Column(length = 300)
+        var note: String
 )

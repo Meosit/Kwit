@@ -29,7 +29,9 @@ class JdbcUserDetailsService(
         return UserDetails(user)
     }
 
-    class UserDetails(val user: User) : org.springframework.security.core.userdetails.UserDetails {
+    class UserDetails(private val user: User) : org.springframework.security.core.userdetails.UserDetails {
+
+        fun getUserId() = user.id
 
         override fun getAuthorities(): MutableCollection<out GrantedAuthority>
                 = AuthorityUtils.createAuthorityList(DEFAULT_ROLE)
