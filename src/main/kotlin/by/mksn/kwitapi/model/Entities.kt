@@ -1,5 +1,6 @@
 package by.mksn.kwitapi.model
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import java.io.Serializable
 import java.sql.Timestamp
 import javax.persistence.*
@@ -14,6 +15,7 @@ data class User(
         var id: Long,
         @Column(length = 255, unique = true)
         var email: String,
+        @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
         @Column(columnDefinition = "CHAR(60)")
         var passwordHash: String,
         @Column(columnDefinition = "TINYINT")
