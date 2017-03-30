@@ -1,6 +1,6 @@
 package by.mksn.kwitapi.service
 
-import by.mksn.kwitapi.controller.UserRegistrationInfo
+import by.mksn.kwitapi.controller.RegistrationDetails
 import by.mksn.kwitapi.model.*
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 @Service
 interface UserService : CrudService<User, Long> {
     fun findByEmail(username: String): User?
-    fun register(registrationInfo: UserRegistrationInfo)
+    fun register(registrationDetails: RegistrationDetails)
 }
 
 @Service

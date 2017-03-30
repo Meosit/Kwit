@@ -1,5 +1,7 @@
 package by.mksn.kwitapi.configuration.security
 
+import by.mksn.kwitapi.ACCESS_TOKEN_VALIDITY_SECONDS
+import by.mksn.kwitapi.REFRESH_TOKEN_VALIDITY_SECONDS
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -47,6 +49,7 @@ class AuthorizationServerConfiguration(
 
     override fun configure(clients: ClientDetailsServiceConfigurer) {
         clients.jdbc(dataSource).passwordEncoder(passwordEncoder)
+
     }
 
     override fun configure(security: AuthorizationServerSecurityConfigurer) {
@@ -60,6 +63,8 @@ class AuthorizationServerConfiguration(
         tokenServices.setSupportRefreshToken(true)
         tokenServices.setTokenStore(tokenStore)
         tokenServices.setTokenEnhancer(tokenEnhancer)
+        tokenServices.setAccessTokenValiditySeconds(ACCESS_TOKEN_VALIDITY_SECONDS)
+        tokenServices.setRefreshTokenValiditySeconds(REFRESH_TOKEN_VALIDITY_SECONDS)
         return tokenServices
     }
 

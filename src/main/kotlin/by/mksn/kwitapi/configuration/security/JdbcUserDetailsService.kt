@@ -33,6 +33,8 @@ class JdbcUserDetailsService(
 
         fun getUserId() = user.id
 
+        fun getUserEmail() = user.email
+
         override fun getAuthorities(): MutableCollection<out GrantedAuthority>
                 = AuthorityUtils.createAuthorityList(DEFAULT_ROLE)
 

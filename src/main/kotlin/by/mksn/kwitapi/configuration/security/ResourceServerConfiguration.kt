@@ -21,7 +21,7 @@ class ResourceServerConfiguration(
     override fun configure(http: HttpSecurity) {
         http
                 .authorizeRequests()
-                // here can be provided access to some url's
+             
                 .anyRequest().authenticated()
     }
 
