@@ -1,46 +1,38 @@
 package by.mksn.kwitapi.controller
 
-import by.mksn.kwitapi.configuration.security.JdbcUserDetailsService
-import by.mksn.kwitapi.controller.exception.UserNotFoundException
-import by.mksn.kwitapi.model.User
-import by.mksn.kwitapi.service.UserService
-import org.slf4j.LoggerFactory
-import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
+import org.hibernate.validator.constraints.Email
+import org.hibernate.validator.constraints.NotEmpty
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import javax.validation.Valid
+import javax.validation.constraints.Max
+import javax.validation.constraints.Min
+import javax.validation.constraints.NotNull
+import javax.validation.constraints.Size
 
 @RestController
 @RequestMapping("/user")
-class UserController(
-        val userService: UserService
-) {
+interface UserController {
 
-    companion object {
-        val logger = LoggerFactory.getLogger(UserController::class.java)!!
-    }
+        @PutMapping("/register")
+        fun register(@Valid @RequestBody userRegistrationInfo: UserRegistrationInfo)
 
-    @GetMapping("/{id}")
-    @Throws(UserNotFoundException::class)
-    fun getById(@PathVariable("id") id: Long): User {
-        val user = userService.findById(id)
-        if (user == null) {
-            logger.debug("Cannot found user with id: $id")
-            throw UserNotFoundException()
-        }
-        return user
-    }
-
-    @GetMapping("/me")
-    @Throws(UserNotFoundException::class)
-    fun getMe(@AuthenticationPrincipal userDetails: JdbcUserDetailsService.UserDetails): User {
-        val user = userService.findById(userDetails.getUserId())
-        if (user == null) {
-            logger.debug("Cannot found user with id: ${userDetails.getUserId()}")
-            throw UserNotFoundException()
-        }
-        return user
-    }
 
 }
+
+data class UserRegistrationInfo(
+        @Email
+        @NotNull(message = "Email must be not null")
+        @NotEmpty(message = "Email must be not empty")
+        @Size(min = 5, max = 255, message = "Email must be between 5 and 255 characters")
+        val email: String,
+        @NotNull(message = "Password must be not null")
+        @NotEmpty(message = "Password must be not empty")
+        @Size(min = 6, max = 30, message = "password must be between 6 and 20 characters")
+        val password: String,
+        @Min(value = 1, message = "Salary Day must be between 1 and 31")
+        @Max(value = 31, message = "Salary Day must be between 1 and 31")
+        val salaryDat: Int?
+)

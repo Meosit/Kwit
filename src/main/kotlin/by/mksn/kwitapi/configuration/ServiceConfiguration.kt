@@ -11,8 +11,7 @@ import org.springframework.context.annotation.Configuration
 class ServiceConfiguration {
 
     @Bean
-    fun userService(userRepository: UserRepository): UserService {
-        return UserServiceImpl(userRepository)
-    }
+    fun userService(userRepository: UserRepository): UserService
+            = UserServiceImpl(userRepository)
 
 }
