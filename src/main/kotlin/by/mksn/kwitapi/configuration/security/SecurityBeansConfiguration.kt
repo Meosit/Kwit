@@ -1,7 +1,7 @@
 package by.mksn.kwitapi.configuration.security
 
 import by.mksn.kwitapi.DEFAULT_BCRYPT_STRENGTH
-import by.mksn.kwitapi.service.UserService
+import by.mksn.kwitapi.model.UserRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -25,8 +25,8 @@ class SecurityBeansConfiguration {
             = BCryptPasswordEncoder(DEFAULT_BCRYPT_STRENGTH)
 
     @Bean
-    fun userDetailsService(userService: UserService): UserDetailsService
-            = JdbcUserDetailsService(userService)
+    fun userDetailsService(userRepository: UserRepository): UserDetailsService
+            = JdbcUserDetailsService(userRepository)
 
     @Bean
     fun tokenStore(dataSource: DataSource): TokenStore

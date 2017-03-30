@@ -26,10 +26,10 @@ class JdbcUserDetailsService(
             logger.info("User with email $decodedEmail not found")
             throw UsernameNotFoundException("User with email $decodedEmail not found")
         }
-        return UserDetails(user)
+        return UserAuth(user)
     }
 
-    class UserDetails(private val user: User) : org.springframework.security.core.userdetails.UserDetails {
+    class UserAuth(private val user: User) : org.springframework.security.core.userdetails.UserDetails {
 
         fun getUserId() = user.id
 
