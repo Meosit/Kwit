@@ -1,7 +1,6 @@
 package by.mksn.kwitapi.configuration.security
 
 import by.mksn.kwitapi.DEFAULT_ENCODING
-import by.mksn.kwitapi.DEFAULT_ROLE
 import by.mksn.kwitapi.model.User
 import by.mksn.kwitapi.model.UserRepository
 import org.slf4j.LoggerFactory
@@ -36,7 +35,7 @@ class JdbcUserDetailsService(
         fun getUserEmail() = user.email
 
         override fun getAuthorities(): MutableCollection<out GrantedAuthority>
-                = AuthorityUtils.createAuthorityList(DEFAULT_ROLE)
+                = AuthorityUtils.createAuthorityList(user.role.name)
 
         override fun getUsername() = user.email
 
