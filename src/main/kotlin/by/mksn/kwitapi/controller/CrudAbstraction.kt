@@ -1,5 +1,6 @@
 package by.mksn.kwitapi.controller
 
+import by.mksn.kwitapi.exception.UserNotFoundException
 import by.mksn.kwitapi.model.EntityIdSetable
 import by.mksn.kwitapi.service.CrudService
 import org.slf4j.Logger
@@ -10,7 +11,7 @@ import javax.validation.Valid
 interface CrudController<E, in ID> {
 
     @PostMapping("")
-    fun insert(@Valid @RequestBody entity: E): E
+    fun create(@Valid @RequestBody entity: E): E
 
     @GetMapping("{id}")
     fun findById(@PathVariable("id") id: ID): E?
@@ -24,8 +25,8 @@ interface CrudController<E, in ID> {
 
 abstract class AbstractCrudController<E : EntityIdSetable, in ID>(val crudService: CrudService<E, ID>, val logger: Logger) : CrudController<E, ID> {
 
-    override fun insert(@Valid @RequestBody entity: E): E =
-            crudService.save(entity)
+    override fun create(@Valid @RequestBody entity: E): E =
+            crudService.create(entity)
 
     override fun findById(@PathVariable("id") id: ID): E {
         val entity = crudService.findById(id)
@@ -40,7 +41,7 @@ abstract class AbstractCrudController<E : EntityIdSetable, in ID>(val crudServic
 
     override fun update(@PathVariable("id") id: Long, @Valid @RequestBody entity: E): E {
         entity.setEntityId(id)
-        return crudService.save(entity)
+        return crudService.create(entity)
     }
 
     override fun delete(@PathVariable("id") id: ID) =

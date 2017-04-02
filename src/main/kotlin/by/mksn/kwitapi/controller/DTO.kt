@@ -19,7 +19,7 @@ data class RegistrationDetails(
         val password: String,
         @Min(value = 1, message = "Salary Day must be between 1 and 31")
         @Max(value = 31, message = "Salary Day must be between 1 and 31")
-        val salaryDat: Int?
+        val salaryDay: Int?
 )
 
 data class PasswordChangeDetails(

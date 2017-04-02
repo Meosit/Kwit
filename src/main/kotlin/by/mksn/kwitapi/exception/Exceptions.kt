@@ -1,4 +1,4 @@
-package by.mksn.kwitapi.controller
+package by.mksn.kwitapi.exception
 
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ResponseStatus
@@ -11,6 +11,12 @@ class ControllerException(
 
 @ResponseStatus(HttpStatus.NOT_FOUND, reason = "User with that id not found")
 class UserNotFoundException(
+        message: String? = null,
+        cause: Throwable? = null
+) : RuntimeException(message, cause)
+
+
+class UserAlreadyExistsException(
         message: String? = null,
         cause: Throwable? = null
 ) : RuntimeException(message, cause)

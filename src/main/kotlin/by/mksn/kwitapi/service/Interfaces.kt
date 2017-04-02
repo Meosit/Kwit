@@ -1,5 +1,6 @@
 package by.mksn.kwitapi.service
 
+import by.mksn.kwitapi.controller.PasswordChangeDetails
 import by.mksn.kwitapi.controller.RegistrationDetails
 import by.mksn.kwitapi.model.*
 import org.springframework.data.domain.Pageable
@@ -7,9 +8,9 @@ import org.springframework.stereotype.Service
 
 
 @Service
-interface UserService : CrudService<User, Long> {
-    fun findByEmail(username: String): User?
+interface OAuthService {
     fun register(registrationDetails: RegistrationDetails)
+    fun changePassword(changeDetails: PasswordChangeDetails)
 }
 
 @Service

@@ -16,20 +16,20 @@ data class User(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         @Column(columnDefinition = "INT")
-        var id: Long?,
+        var id: Long? = null,
         @Column(length = 255, unique = true)
         var email: String,
         @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
         @Column(columnDefinition = "CHAR(60)")
         var passwordHash: String,
         @Column(columnDefinition = "TINYINT")
-        var salaryDay: Int?,
+        var salaryDay: Int? = null,
         @Column(columnDefinition = "DATETIME")
-        val createdAt: Timestamp?,
+        val createdAt: Timestamp? = null,
         @Enumerated(EnumType.STRING)
         @Column(columnDefinition = "ENUM('USER', 'ADMIN')")
-        val role: Role,
-        var isDeleted: Boolean
+        val role: Role = User.Role.USER,
+        var isDeleted: Boolean = false
 ) : EntityIdSetable, Serializable {
     override fun setEntityId(id: Long?) {
         this.id = id
@@ -46,7 +46,7 @@ data class Currency(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         @Column(columnDefinition = "INT")
-        var id: Long?,
+        var id: Long? = null,
         @Column(columnDefinition = "CHAR(3)")
         val code: String,
         @Column(length = 5)
@@ -64,7 +64,7 @@ data class Wallet(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         @Column(columnDefinition = "INT")
-        var id: Long?,
+        var id: Long? = null,
         @Column(columnDefinition = "INT")
         var userId: Long,
         @ManyToOne
@@ -75,7 +75,7 @@ data class Wallet(
         @Column(columnDefinition = "INT(11)")
         var balance: Long,
         var isSaving: Boolean,
-        var isDeleted: Boolean
+        var isDeleted: Boolean = false
 ) : EntityIdSetable {
     override fun setEntityId(id: Long?) {
         this.id = id
@@ -89,7 +89,7 @@ data class Category(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         @Column(columnDefinition = "INT")
-        var id: Long?,
+        var id: Long? = null,
         @Column(columnDefinition = "INT")
         var userId: Long,
         @Column(length = 100)
@@ -108,7 +108,7 @@ data class Remittance(
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
         @Column(columnDefinition = "INT")
-        var id: Long?,
+        var id: Long? = null,
         @Column(columnDefinition = "INT")
         var userId: Long,
         @ManyToOne
@@ -122,7 +122,7 @@ data class Remittance(
         @Column(precision = 10, scale = 4)
         var conversion: Double,
         @Column(columnDefinition = "DATETIME")
-        var date: Timestamp?
+        var date: Timestamp? = null
 ) : EntityIdSetable {
     override fun setEntityId(id: Long?) {
         this.id = id
@@ -148,7 +148,7 @@ data class Transaction(
         @Column(columnDefinition = "INT(11)")
         var sum: Long,
         @Column(columnDefinition = "DATETIME")
-        var date: Timestamp?,
+        var date: Timestamp? = null,
         @Column(length = 300)
         var note: String?
 ) : EntityIdSetable {
