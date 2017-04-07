@@ -1,13 +1,14 @@
 package by.mksn.kwitapi.controller
 
-import by.mksn.kwitapi.model.Currency
+import by.mksn.kwitapi.controller.util.PasswordChangeDetails
+import by.mksn.kwitapi.controller.util.RegistrationDetails
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
 import javax.validation.Valid
 
 @RestController
 @RequestMapping("/oauth")
-interface OAuthController {
+interface AuthController {
 
         @PutMapping("/register")
         fun register(@Valid @RequestBody registrationDetails: RegistrationDetails)
@@ -17,17 +18,5 @@ interface OAuthController {
 
         @PostMapping("/change-password")
         fun changePassword(@Valid @RequestBody passwordChangeDetails: PasswordChangeDetails)
-
-}
-
-@RestController
-@RequestMapping("/currency")
-interface CurrencyController : CrudController<Currency, Long> {
-
-        @RequestMapping("/all")
-        fun findAll(): List<Currency>
-
-        @RequestMapping("/{code}")
-        fun findByCode(@PathVariable("code") code: String): Currency
 
 }

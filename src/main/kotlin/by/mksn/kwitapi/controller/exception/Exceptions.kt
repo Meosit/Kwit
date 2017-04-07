@@ -1,4 +1,4 @@
-package by.mksn.kwitapi.exception
+package by.mksn.kwitapi.controller.exception
 
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ResponseStatus

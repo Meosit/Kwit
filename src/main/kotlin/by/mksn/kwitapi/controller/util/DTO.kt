@@ -1,4 +1,4 @@
-package by.mksn.kwitapi.controller
+package by.mksn.kwitapi.controller.util
 
 import org.hibernate.validator.constraints.Email
 import org.hibernate.validator.constraints.NotEmpty

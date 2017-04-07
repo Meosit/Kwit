@@ -1,8 +1,8 @@
 package by.mksn.kwitapi.configuration.security
 
 import by.mksn.kwitapi.DEFAULT_ENCODING
-import by.mksn.kwitapi.model.User
-import by.mksn.kwitapi.model.UserRepository
+import by.mksn.kwitapi.entity.User
+import by.mksn.kwitapi.repository.UserRepository
 import org.slf4j.LoggerFactory
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.AuthorityUtils

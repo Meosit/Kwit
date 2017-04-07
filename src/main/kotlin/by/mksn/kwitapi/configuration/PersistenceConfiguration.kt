@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import javax.sql.DataSource
 
 @Configuration
-@EnableJpaRepositories("by.mksn.kwitapi.model")
+@EnableJpaRepositories("by.mksn.kwitapi.repository")
 @EntityScan("by.mksn.kwitapi.model")
 class PersistenceConfiguration {
 
