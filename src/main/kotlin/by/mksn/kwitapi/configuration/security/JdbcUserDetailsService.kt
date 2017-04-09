@@ -25,30 +25,29 @@ class JdbcUserDetailsService(
             logger.info("User with email $decodedEmail not found")
             throw UsernameNotFoundException("User with email $decodedEmail not found")
         }
-        return UserAuth(user)
+        return UserDetails(user)
     }
 
-    class UserAuth(private val user: User) : org.springframework.security.core.userdetails.UserDetails {
 
-        fun getUserId() = user.id
+}
 
-        fun getUserEmail() = user.email
+class UserDetails(private val user: User) : org.springframework.security.core.userdetails.UserDetails {
 
-        override fun getAuthorities(): MutableCollection<out GrantedAuthority>
-                = AuthorityUtils.createAuthorityList(user.role.name)
+    val userId = user.id!!
 
-        override fun getUsername() = user.email
+    override fun getAuthorities(): MutableCollection<out GrantedAuthority>
+            = AuthorityUtils.createAuthorityList(user.role.name)
 
-        override fun getPassword() = user.passwordHash
+    override fun getUsername() = user.email
 
-        override fun isEnabled() = !user.isDeleted
+    override fun getPassword() = user.passwordHash
 
-        override fun isCredentialsNonExpired() = true
+    override fun isEnabled() = !user.isDeleted
 
-        override fun isAccountNonExpired() = true
+    override fun isCredentialsNonExpired() = true
 
-        override fun isAccountNonLocked() = true
+    override fun isAccountNonExpired() = true
 
-    }
+    override fun isAccountNonLocked() = true
 
 }

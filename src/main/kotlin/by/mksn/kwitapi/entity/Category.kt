@@ -15,8 +15,13 @@ data class Category(
         var userId: Long,
         @Column(length = 100)
         var name: String,
-        var isIncome: Boolean
+        var type: Type
 ) : IdSetable<Long> {
+
+    enum class Type {
+        INCOME, OUTGO
+    }
+
     override fun setID(id: Long?) {
         this.id = id
     }

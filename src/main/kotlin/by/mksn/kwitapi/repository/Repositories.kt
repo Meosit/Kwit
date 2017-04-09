@@ -19,21 +19,25 @@ interface CurrencyRepository : CrudRepository<Currency?, Long> {
 
 @Repository
 interface WalletRepository : PagingAndSortingRepository<Wallet, Long> {
-    fun findByUserId(id: Long, pageable: Pageable): List<Wallet>
+    fun findByIdAndUserId(id: Long, userId: Long): Wallet?
+    fun findByUserIdOrderByIsSavingDesc(id: Long, pageable: Pageable): List<Wallet>
 }
 
 @Repository
 interface CategoryRepository : PagingAndSortingRepository<Category, Long> {
+    fun findByIdAndUserId(id: Long, userId: Long): Category?
     fun findByUserId(id: Long, pageable: Pageable): List<Category>
-    fun findByUserIdAndIsIncome(id: Long, isIncome: Boolean, pageable: Pageable): List<Category>
+    fun findByUserIdAndType(id: Long, type: Category.Type, pageable: Pageable): List<Category>
 }
 
 @Repository
 interface RemittanceRepository : PagingAndSortingRepository<Remittance, Long> {
+    fun findByIdAndUserId(id: Long, userId: Long): Remittance?
     fun findByUserIdOrderByDateDescAndIdDesc(id: Long, pageable: Pageable): List<Remittance>
 }
 
 @Repository
 interface TransactionRepository : PagingAndSortingRepository<Transaction, Long> {
+    fun findByIdAndUserId(id: Long, userId: Long): Transaction?
     fun findByUserIdOrderByDateDescAndIdDesc(id: Long, pageable: Pageable): List<Transaction>
 }
