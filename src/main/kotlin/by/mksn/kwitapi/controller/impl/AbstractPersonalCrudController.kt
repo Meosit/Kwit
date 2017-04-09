@@ -14,22 +14,22 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import javax.validation.Valid
 
-abstract class AbstractPersonalCrudController(
-        private val crudService: PersonalCrudService<IdSetable<Long>, Long>,
+abstract class AbstractPersonalCrudController<E : IdSetable<Long>>(
+        private val crudService: PersonalCrudService<E, Long>,
         private val logger: Logger
-) : PersonalCrudController<IdSetable<Long>, Long> {
+) : PersonalCrudController<E, Long> {
 
-    override fun create(@Valid @RequestBody entity: IdSetable<Long>, @UserAuth auth: UserDetails): IdSetable<Long> =
+    override fun create(@Valid @RequestBody entity: E, @UserAuth auth: UserDetails): E =
             wrapServiceCall(logger) {
                 crudService.create(auth.userId, entity) ?: throw BadRequestException()
             }
 
-    override fun findById(@PathVariable("id") id: Long, @UserAuth auth: UserDetails): IdSetable<Long> =
+    override fun findById(@PathVariable("id") id: Long, @UserAuth auth: UserDetails): E =
             wrapServiceCall(logger) {
                 crudService.findByIdAndUserId(id, auth.userId) ?: throw NotFoundException()
             }
 
-    override fun update(@PathVariable("id") id: Long, @Valid @RequestBody entity: IdSetable<Long>, @UserAuth auth: UserDetails): IdSetable<Long> =
+    override fun update(@PathVariable("id") id: Long, @Valid @RequestBody entity: E, @UserAuth auth: UserDetails): E =
             wrapServiceCall(logger) {
                 crudService.update(id, auth.userId, entity) ?: throw NotFoundException()
             }
@@ -37,6 +37,6 @@ abstract class AbstractPersonalCrudController(
     override fun delete(@PathVariable("id") id: Long, @UserAuth auth: UserDetails) =
             wrapServiceCall(logger) { crudService.delete(id, auth.userId) }
 
-    override fun findAll(@UserAuth auth: UserDetails, pageable: Pageable): List<IdSetable<Long>> =
+    override fun findAll(@UserAuth auth: UserDetails, pageable: Pageable): List<E> =
             wrapServiceCall(logger) { crudService.findAllByUserId(auth.userId, pageable) }
 }

@@ -1,11 +1,11 @@
 package by.mksn.kwitapi.service
 
 import by.mksn.kwitapi.entity.Category
-import java.awt.print.Pageable
+import org.springframework.data.domain.Pageable
 
 
 interface CategoryService : PersonalCrudService<Category, Long> {
 
-    fun findByUserIdAndType(id: Long, isIncome: Boolean, pageable: Pageable): List<Category>
+    fun findByUserIdAndType(id: Long, type: Category.Type, pageable: Pageable): List<Category>
 
 }

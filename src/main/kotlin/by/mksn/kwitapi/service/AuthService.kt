@@ -1,7 +1,7 @@
 package by.mksn.kwitapi.service
 
-import by.mksn.kwitapi.controller.util.PasswordChangeDetails
-import by.mksn.kwitapi.controller.util.RegistrationDetails
+import by.mksn.kwitapi.entity.PasswordChangeDetails
+import by.mksn.kwitapi.entity.RegistrationDetails
 
 interface AuthService {
     fun register(registrationDetails: RegistrationDetails)

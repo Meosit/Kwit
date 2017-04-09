@@ -19,12 +19,13 @@ DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE `user`
 (
-  `id`            INT UNSIGNED     NOT NULL AUTO_INCREMENT,
-  `email`         VARCHAR(255)     NOT NULL,
-  `password_hash` CHAR(60)         NOT NULL,
-  `salary_day`    TINYINT UNSIGNED NULL     DEFAULT NULL,
-  `created_at`    DATETIME         NULL     DEFAULT NULL,
-  `is_deleted`    BOOL             NOT NULL DEFAULT FALSE,
+  `id`            INT UNSIGNED           NOT NULL  AUTO_INCREMENT,
+  `email`         VARCHAR(255)           NOT NULL,
+  `password_hash` CHAR(60)               NOT NULL,
+  `salary_day`    TINYINT UNSIGNED       NULL      DEFAULT NULL,
+  `role`          ENUM ('USER', 'ADMIN') NOT NULL  DEFAULT 'ADMIN',
+  `created_at`    DATETIME               NULL      DEFAULT NULL,
+  `is_deleted`    BOOL                   NOT NULL  DEFAULT FALSE,
   PRIMARY KEY (`id` ASC)
 )
   ENGINE = InnoDB;
@@ -59,8 +60,8 @@ CREATE TABLE `wallet`
   `currency_id` INTEGER UNSIGNED NOT NULL,
   `name`        VARCHAR(100)     NOT NULL,
   `balance`     INTEGER          NOT NULL DEFAULT 0,
-  `is_saving`   BOOL             NOT NULL DEFAULT 0,
-  `is_deleted`  BOOL             NOT NULL DEFAULT 0,
+  `is_saving`   BOOL             NOT NULL DEFAULT FALSE,
+  `is_deleted`  BOOL             NOT NULL DEFAULT FALSE,
   PRIMARY KEY (`id` ASC),
   CONSTRAINT `FK_wallet_currency`
   FOREIGN KEY (`currency_id`)
@@ -322,14 +323,14 @@ FOR EACH ROW
 
     SET old_type = (SELECT `type`
                     FROM `category`
-                         WHERE `id` = OLD.`category_id`);
+                    WHERE `id` = OLD.`category_id`);
     UPDATE `wallet`
     SET `balance` = `balance` + IF(old_type = 'INCOME', -OLD.`sum`, OLD.`sum`)
     WHERE `id` = OLD.`wallet_id`;
 
     SET new_type = (SELECT `type`
                     FROM `category`
-                         WHERE `id` = NEW.`category_id`);
+                    WHERE `id` = NEW.`category_id`);
     UPDATE `wallet`
     SET `balance` = `balance` + IF(new_type = 'INCOME', NEW.`sum`, -NEW.`sum`)
     WHERE `id` = NEW.`wallet_id`;
@@ -343,8 +344,8 @@ FOR EACH ROW
   BEGIN
     DECLARE type ENUM ('INCOME', 'OUTGO');
     SET type = (SELECT `type`
-                     FROM `category`
-                     WHERE `id` = OLD.`category_id`);
+                FROM `category`
+                WHERE `id` = OLD.`category_id`);
     UPDATE `wallet`
     SET `balance` = `balance` + IF(type = 'INCOME', -OLD.`sum`, OLD.`sum`)
     WHERE `id` = OLD.`wallet_id`;
