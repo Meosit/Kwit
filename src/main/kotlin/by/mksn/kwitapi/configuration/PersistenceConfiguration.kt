@@ -11,7 +11,7 @@ import javax.sql.DataSource
 
 @Configuration
 @EnableJpaRepositories("by.mksn.kwitapi.repository")
-@EntityScan("by.mksn.kwitapi.model")
+@EntityScan("by.mksn.kwitapi.entity")
 class PersistenceConfiguration {
 
     @Bean

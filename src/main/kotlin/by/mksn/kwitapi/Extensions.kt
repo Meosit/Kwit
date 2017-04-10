@@ -7,12 +7,9 @@ import by.mksn.kwitapi.service.exception.ServiceException
 import org.slf4j.Logger
 import org.springframework.dao.DataAccessException
 import org.springframework.dao.DataIntegrityViolationException
-import org.springframework.dao.EmptyResultDataAccessException
 
-fun <T> wrapJPACall(block: () -> T?): T? = try {
+fun <T> wrapJPACall(block: () -> T): T = try {
     block()
-} catch (e: EmptyResultDataAccessException) {
-    null
 } catch (e: DataIntegrityViolationException) {
     throw ConstraintFailServiceException()
 } catch (e: DataAccessException) {

@@ -15,6 +15,8 @@ data class Category(
         var userId: Long,
         @Column(length = 100)
         var name: String,
+        @Enumerated(EnumType.STRING)
+        @Column(columnDefinition = "ENUM('INCOME', 'OUTGO')")
         var type: Type
 ) : IdSetable<Long> {
 

@@ -37,3 +37,10 @@ data class PasswordChangeDetails(
         @Size(min = 6, max = 30)
         val newPassword: String
 )
+
+data class CategoryStats(
+        val categoryId: Long,
+        val currencyId: Long,
+        val sumForCategory: Long,
+        val transactionCountForCategory: Int
+)

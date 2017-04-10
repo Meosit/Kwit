@@ -2,9 +2,11 @@ package by.mksn.kwitapi.repository
 
 import by.mksn.kwitapi.entity.*
 import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Repository
+import java.sql.Timestamp
 
 @Repository
 interface UserRepository : CrudRepository<User, Long> {
@@ -28,16 +30,24 @@ interface CategoryRepository : PagingAndSortingRepository<Category, Long> {
     fun findByIdAndUserId(id: Long, userId: Long): Category?
     fun findByUserId(id: Long, pageable: Pageable): List<Category>
     fun findByUserIdAndType(id: Long, type: Category.Type, pageable: Pageable): List<Category>
+
+    @Query("select new by.mksn.kwitapi.entity.CategoryStats(t.category.id, ?2, sum(t.sum), count(t)) " +
+            "from Transaction t " +
+            "where (t.category.type = ?1) and (t.date between ?3 and ?4) and (t.wallet.currency.id = ?2))")
+    fun calculateCategoryStats(
+            type: Category.Type, currencyId: Long,
+            startDate: Timestamp, endDate: Timestamp
+    ): List<CategoryStats>
 }
 
 @Repository
 interface RemittanceRepository : PagingAndSortingRepository<Remittance, Long> {
     fun findByIdAndUserId(id: Long, userId: Long): Remittance?
-    fun findByUserIdOrderByDateDescAndIdDesc(id: Long, pageable: Pageable): List<Remittance>
+    fun findByUserIdOrderByDateDescIdDesc(id: Long, pageable: Pageable): List<Remittance>
 }
 
 @Repository
 interface TransactionRepository : PagingAndSortingRepository<Transaction, Long> {
     fun findByIdAndUserId(id: Long, userId: Long): Transaction?
-    fun findByUserIdOrderByDateDescAndIdDesc(id: Long, pageable: Pageable): List<Transaction>
+    fun findByUserIdOrderByDateDescIdDesc(id: Long, pageable: Pageable): List<Transaction>
 }
