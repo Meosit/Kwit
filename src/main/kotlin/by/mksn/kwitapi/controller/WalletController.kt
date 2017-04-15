@@ -6,5 +6,5 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/wallet")
-interface WalletController : PersonalCrudController<Wallet, Long> {
+interface WalletController : CrudController<Wallet, Long> {
 }

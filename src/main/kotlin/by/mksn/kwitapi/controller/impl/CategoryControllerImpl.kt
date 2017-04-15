@@ -14,18 +14,15 @@ import java.sql.Timestamp
 
 open class CategoryControllerImpl(
         private val categoryService: CategoryService
-) : AbstractPersonalCrudController<Category>(categoryService, logger), CategoryController {
+) : AbstractCrudController<Category>(categoryService, logger), CategoryController {
 
     companion object {
-
         private val logger = LoggerFactory.getLogger(CategoryControllerImpl::class.java)!!
     }
 
-    override fun calculateCategoryStats(type: Category.Type, currencyId: Long, startDate: Timestamp, endDate: Timestamp): List<CategoryStats> =
-            wrapServiceCall(logger) { categoryService.calculateCategoryStats(type, currencyId, startDate, endDate) }
+    override fun calculateCategoryStats(type: Category.Type, currencyId: Long, startDate: Timestamp, endDate: Timestamp): List<CategoryStats>
+            = wrapServiceCall(logger) { categoryService.calculateCategoryStats(type, currencyId, startDate, endDate) }
 
-    override fun findAll(@UserAuth auth: UserDetails,
-                         @PathVariable("type") type: Category.Type,
-                         pageable: Pageable): List<Category> =
-            wrapServiceCall(logger) { categoryService.findByUserIdAndType(auth.userId, type, pageable) }
+    override fun findAll(@UserAuth auth: UserDetails, @PathVariable("type") type: Category.Type, pageable: Pageable): List<Category>
+            = wrapServiceCall(logger) { categoryService.findByUserIdAndType(auth.userId, type, pageable) }
 }

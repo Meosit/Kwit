@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory
 
 open class TransactionControllerImpl(
         transactionService: TransactionService
-) : AbstractPersonalCrudController<Transaction>(transactionService, logger), TransactionController {
+) : AbstractCrudController<Transaction>(transactionService, logger), TransactionController {
 
     companion object {
         private val logger = LoggerFactory.getLogger(TransactionControllerImpl::class.java)!!

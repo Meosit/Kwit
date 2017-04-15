@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory
 
 open class WalletControllerImpl(
         walletService: WalletService
-) : AbstractPersonalCrudController<Wallet>(walletService, logger), WalletController {
+) : AbstractCrudController<Wallet>(walletService, logger), WalletController {
 
     companion object {
         val logger = LoggerFactory.getLogger(WalletControllerImpl::class.java)!!

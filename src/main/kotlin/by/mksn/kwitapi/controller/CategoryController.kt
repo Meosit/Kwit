@@ -11,9 +11,9 @@ import java.sql.Timestamp
 
 @RestController
 @RequestMapping("/category")
-interface CategoryController : PersonalCrudController<Category, Long> {
+interface CategoryController : CrudController<Category, Long> {
 
-    @GetMapping("all/{type}")
+    @GetMapping("{type}")
     fun findAll(
             @UserAuth auth: UserDetails,
             @PathVariable("type") type: Category.Type,

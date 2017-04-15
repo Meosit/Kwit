@@ -8,7 +8,7 @@ import org.slf4j.Logger
 import org.springframework.dao.DataAccessException
 import org.springframework.dao.DataIntegrityViolationException
 
-fun <T> wrapJPACall(block: () -> T): T = try {
+inline fun <T> wrapJPACall(block: () -> T): T = try {
     block()
 } catch (e: DataIntegrityViolationException) {
     throw ConstraintFailServiceException()
@@ -16,7 +16,7 @@ fun <T> wrapJPACall(block: () -> T): T = try {
     throw ServiceException()
 }
 
-fun <T> wrapServiceCall(logger: Logger, block: () -> T): T = try {
+inline fun <T> wrapServiceCall(logger: Logger, block: () -> T): T = try {
     block()
 } catch (e: ConstraintFailServiceException) {
     throw BadRequestException(cause = e)

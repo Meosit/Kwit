@@ -2,7 +2,7 @@ package by.mksn.kwitapi.controller.impl
 
 import by.mksn.kwitapi.configuration.security.UserAuth
 import by.mksn.kwitapi.configuration.security.UserDetails
-import by.mksn.kwitapi.controller.PersonalCrudController
+import by.mksn.kwitapi.controller.CrudController
 import by.mksn.kwitapi.controller.exception.BadRequestException
 import by.mksn.kwitapi.controller.exception.NotFoundException
 import by.mksn.kwitapi.entity.IdSetable
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import javax.validation.Valid
 
-abstract class AbstractPersonalCrudController<E : IdSetable<Long>>(
+abstract class AbstractCrudController<E : IdSetable<Long>>(
         private val crudService: PersonalCrudService<E, Long>,
         private val logger: Logger
-) : PersonalCrudController<E, Long> {
+) : CrudController<E, Long> {
 
     override fun create(@Valid @RequestBody entity: E, @UserAuth auth: UserDetails): E =
             wrapServiceCall(logger) {

@@ -6,5 +6,5 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/remittance")
-interface RemittanceController : PersonalCrudController<Remittance, Long> {
+interface RemittanceController : CrudController<Remittance, Long> {
 }

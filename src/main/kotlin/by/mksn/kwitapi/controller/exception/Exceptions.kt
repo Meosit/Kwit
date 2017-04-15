@@ -26,3 +26,9 @@ class BadRequestException(
         message: String? = null,
         cause: Throwable? = null
 ) : ControllerException(message, cause)
+
+@ResponseStatus(HttpStatus.FORBIDDEN, reason = "Access denied")
+class AccessDeniedException(
+        message: String? = null,
+        cause: Throwable? = null
+) : ControllerException(message, cause)

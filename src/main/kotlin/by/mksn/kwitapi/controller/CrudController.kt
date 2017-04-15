@@ -9,7 +9,7 @@ import java.io.Serializable
 import javax.validation.Valid
 
 @RestController
-interface PersonalCrudController<E : IdSetable<ID>, in ID : Serializable> {
+interface CrudController<E : IdSetable<ID>, in ID : Serializable> {
 
     @PostMapping("")
     fun create(@Valid @RequestBody entity: E, @UserAuth auth: UserDetails): E
@@ -23,7 +23,7 @@ interface PersonalCrudController<E : IdSetable<ID>, in ID : Serializable> {
     @DeleteMapping("{id}")
     fun delete(@PathVariable("id") id: ID, @UserAuth auth: UserDetails)
 
-    @GetMapping("all")
+    @GetMapping("")
     fun findAll(@UserAuth auth: UserDetails, pageable: Pageable): List<E>
 
 }

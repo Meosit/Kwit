@@ -1,6 +1,7 @@
 package by.mksn.kwitapi.service
 
 import by.mksn.kwitapi.entity.Currency
+import org.springframework.data.domain.Pageable
 
 interface CurrencyService {
 
@@ -8,9 +9,9 @@ interface CurrencyService {
 
     fun findById(id: Long): Currency?
 
-    fun findAll(): List<Currency>
+    fun findAll(pageable: Pageable): List<Currency>
 
-    fun findByCode(code: String): Currency
+    fun findByCode(code: String): Currency?
 
     fun update(id: Long, currency: Currency): Currency
 
