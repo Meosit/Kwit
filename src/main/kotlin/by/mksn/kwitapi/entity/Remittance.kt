@@ -8,11 +8,11 @@ import javax.persistence.*
 @Table(name = "remittance")
 data class Remittance(
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(columnDefinition = "INT")
         var id: Long? = null,
         @JsonIgnore
-        @Column(columnDefinition = "INT")
+        @Column(name = "user_id", columnDefinition = "INT")
         var userId: Long,
         @ManyToOne
         @JoinColumn(name = "wallet_donor_id")
@@ -20,14 +20,18 @@ data class Remittance(
         @ManyToOne
         @JoinColumn(name = "wallet_acceptor_id")
         var walletAcceptor: Wallet,
-        @Column(columnDefinition = "INT(11)")
+        @Column(name = "donor_sum", columnDefinition = "INT(11)")
         var donorSum: Long,
         @Column(precision = 10, scale = 4)
         var conversion: Double,
         @Column(columnDefinition = "DATETIME")
         var date: Timestamp? = null
-) : IdSetable<Long> {
-    override fun setID(id: Long?) {
+) : IdAndUserIdAssignable<Long> {
+    override fun assignID(id: Long?) {
         this.id = id
+    }
+
+    override fun assignUserID(id: Long) {
+        this.userId = id
     }
 }

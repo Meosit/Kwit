@@ -7,24 +7,28 @@ import javax.persistence.*
 @Table(name = "category")
 data class Category(
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(columnDefinition = "INT")
         var id: Long? = null,
         @JsonIgnore
-        @Column(columnDefinition = "INT")
+        @Column(name = "user_id", columnDefinition = "INT")
         var userId: Long,
         @Column(length = 100)
         var name: String,
         @Enumerated(EnumType.STRING)
         @Column(columnDefinition = "ENUM('INCOME', 'OUTGO')")
         var type: Type
-) : IdSetable<Long> {
-
+) : IdAndUserIdAssignable<Long> {
     enum class Type {
+
         INCOME, OUTGO
     }
 
-    override fun setID(id: Long?) {
+    override fun assignID(id: Long?) {
         this.id = id
+    }
+
+    override fun assignUserID(id: Long) {
+        this.userId = id
     }
 }

@@ -1,6 +1,6 @@
 package by.mksn.kwitapi.controller
 
-import by.mksn.kwitapi.configuration.security.UserAuth
+import by.mksn.kwitapi.configuration.security.Auth
 import by.mksn.kwitapi.configuration.security.UserDetails
 import by.mksn.kwitapi.entity.Category
 import by.mksn.kwitapi.entity.CategoryStats
@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.*
 import java.sql.Timestamp
 
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/categories")
 interface CategoryController : CrudController<Category, Long> {
 
     @GetMapping("{type}")
     fun findAll(
-            @UserAuth auth: UserDetails,
+            @Auth auth: UserDetails,
             @PathVariable("type") type: Category.Type,
             pageable: Pageable
     ): List<Category>

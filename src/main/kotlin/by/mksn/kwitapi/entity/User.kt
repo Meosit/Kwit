@@ -14,24 +14,25 @@ enum class UserRole {
 arrayOf(UniqueConstraint(columnNames = arrayOf("email"))))
 data class User(
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(columnDefinition = "INT")
         var id: Long? = null,
         @Column(length = 255, unique = true)
         var email: String,
         @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-        @Column(columnDefinition = "CHAR(60)")
+        @Column(name = "password_hash", columnDefinition = "CHAR(60)")
         var passwordHash: String,
-        @Column(columnDefinition = "TINYINT")
+        @Column(name = "salary_day", columnDefinition = "TINYINT")
         var salaryDay: Int? = null,
-        @Column(columnDefinition = "DATETIME")
-        val createdAt: Timestamp? = null,
         @Enumerated(EnumType.STRING)
         @Column(columnDefinition = "ENUM('USER', 'ADMIN')")
         val role: UserRole = UserRole.USER,
+        @Column(name = "created_at", columnDefinition = "DATETIME")
+        val createdAt: Timestamp? = null,
+        @Column(name = "is_deleted")
         var isDeleted: Boolean = false
-) : IdSetable<Long>, Serializable {
-    override fun setID(id: Long?) {
+) : IdAssignable<Long>, Serializable {
+    override fun assignID(id: Long?) {
         this.id = id
     }
 }

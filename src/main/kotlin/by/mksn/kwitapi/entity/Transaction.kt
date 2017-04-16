@@ -8,11 +8,11 @@ import javax.persistence.*
 @Table(name = "transaction")
 data class Transaction(
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(columnDefinition = "INT")
         var id: Long? = null,
         @JsonIgnore
-        @Column(columnDefinition = "INT")
+        @Column(name = "user_id", columnDefinition = "INT")
         var userId: Long,
         @ManyToOne
         @JoinColumn(name = "wallet_id")
@@ -26,8 +26,12 @@ data class Transaction(
         var date: Timestamp? = null,
         @Column(length = 300)
         var note: String?
-) : IdSetable<Long> {
-    override fun setID(id: Long?) {
+) : IdAndUserIdAssignable<Long> {
+    override fun assignID(id: Long?) {
         this.id = id
+    }
+
+    override fun assignUserID(id: Long) {
+        this.userId = id
     }
 }

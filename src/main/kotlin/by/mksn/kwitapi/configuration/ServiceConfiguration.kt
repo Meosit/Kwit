@@ -1,8 +1,8 @@
 package by.mksn.kwitapi.configuration
 
-import by.mksn.kwitapi.repository.CategoryRepository
-import by.mksn.kwitapi.service.CategoryService
-import by.mksn.kwitapi.service.impl.CategoryServiceImpl
+import by.mksn.kwitapi.repository.*
+import by.mksn.kwitapi.service.*
+import by.mksn.kwitapi.service.impl.*
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -10,7 +10,30 @@ import org.springframework.context.annotation.Configuration
 class ServiceConfiguration {
 
     @Bean
-    fun categoryService(categoryRepository: CategoryRepository): CategoryService
-            = CategoryServiceImpl(categoryRepository)
+    fun currencyService(currencyRepository: CurrencyRepository): CurrencyService
+            = CurrencyServiceImpl(currencyRepository)
+
+    @Bean
+    fun walletService(
+            walletRepository: WalletRepository,
+            transactionRepository: TransactionRepository
+    ): WalletService = WalletServiceImpl(walletRepository, transactionRepository)
+
+    @Bean
+    fun categoryService(
+            categoryRepository: CategoryRepository,
+            transactionRepository: TransactionRepository
+    ): CategoryService = CategoryServiceImpl(categoryRepository, transactionRepository)
+
+    @Bean
+    fun transactionService(transactionRepository: TransactionRepository): TransactionService
+            = TransactionServiceImpl(transactionRepository)
+
+    @Bean
+    fun remittanceService(
+            remittanceRepository: RemittanceRepository,
+            walletRepository: WalletRepository
+    ): RemittanceService
+            = RemittanceServiceImpl(remittanceRepository, walletRepository)
 
 }

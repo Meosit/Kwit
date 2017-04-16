@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Import
 
 @Configuration
 @Import(PersistenceConfiguration::class,
+        TransactionManagerConfiguration::class,
         ServiceConfiguration::class,
         ControllerConfiguration::class,
         SecurityConfiguration::class,

@@ -23,7 +23,7 @@ CREATE TABLE `user`
   `email`         VARCHAR(255)           NOT NULL,
   `password_hash` CHAR(60)               NOT NULL,
   `salary_day`    TINYINT UNSIGNED       NULL      DEFAULT NULL,
-  `role`          ENUM ('USER', 'ADMIN') NOT NULL  DEFAULT 'ADMIN',
+  `role`          ENUM ('USER', 'ADMIN') NOT NULL  DEFAULT 'USER',
   `created_at`    DATETIME               NULL      DEFAULT NULL,
   `is_deleted`    BOOL                   NOT NULL  DEFAULT FALSE,
   PRIMARY KEY (`id` ASC)

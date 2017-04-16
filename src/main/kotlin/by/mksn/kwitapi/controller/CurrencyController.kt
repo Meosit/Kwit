@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/currency")
+@RequestMapping("/currencies")
 interface CurrencyController : CrudController<Currency, Long> {
 
-    @GetMapping("{code}")
+    @GetMapping("code/{code}")
     fun findByCode(@PathVariable("code") code: String): Currency
 
 }

@@ -11,9 +11,9 @@ import org.springframework.dao.DataIntegrityViolationException
 inline fun <T> wrapJPACall(block: () -> T): T = try {
     block()
 } catch (e: DataIntegrityViolationException) {
-    throw ConstraintFailServiceException()
+    throw ConstraintFailServiceException(cause = e)
 } catch (e: DataAccessException) {
-    throw ServiceException()
+    throw ServiceException(cause = e)
 }
 
 inline fun <T> wrapServiceCall(logger: Logger, block: () -> T): T = try {

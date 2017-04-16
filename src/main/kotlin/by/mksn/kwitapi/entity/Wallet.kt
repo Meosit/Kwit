@@ -7,11 +7,11 @@ import javax.persistence.*
 @Table(name = "wallet")
 data class Wallet(
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(columnDefinition = "INT")
         var id: Long? = null,
         @JsonIgnore
-        @Column(columnDefinition = "INT")
+        @Column(name = "user_id", columnDefinition = "INT")
         var userId: Long,
         @ManyToOne
         @JoinColumn(name = "currency_id")
@@ -20,10 +20,16 @@ data class Wallet(
         var name: String,
         @Column(columnDefinition = "INT(11)")
         var balance: Long,
+        @Column(name = "is_saving")
         var isSaving: Boolean,
+        @Column(name = "is_deleted")
         var isDeleted: Boolean = false
-) : IdSetable<Long> {
-    override fun setID(id: Long?) {
+) : IdAndUserIdAssignable<Long> {
+    override fun assignID(id: Long?) {
         this.id = id
+    }
+
+    override fun assignUserID(id: Long) {
+        this.userId = id
     }
 }
