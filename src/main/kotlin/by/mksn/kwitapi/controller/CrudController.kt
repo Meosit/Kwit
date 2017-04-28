@@ -2,7 +2,7 @@ package by.mksn.kwitapi.controller
 
 import by.mksn.kwitapi.configuration.security.Auth
 import by.mksn.kwitapi.configuration.security.UserDetails
-import by.mksn.kwitapi.entity.IdAssignable
+import by.mksn.kwitapi.entity.support.IdAssignable
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*
 import java.io.Serializable

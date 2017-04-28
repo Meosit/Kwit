@@ -5,7 +5,7 @@ import by.mksn.kwitapi.configuration.security.UserDetails
 import by.mksn.kwitapi.controller.CrudController
 import by.mksn.kwitapi.controller.exception.BadRequestException
 import by.mksn.kwitapi.controller.exception.NotFoundException
-import by.mksn.kwitapi.entity.IdAssignable
+import by.mksn.kwitapi.entity.support.IdAssignable
 import by.mksn.kwitapi.service.PersonalCrudService
 import by.mksn.kwitapi.wrapServiceCall
 import org.slf4j.Logger

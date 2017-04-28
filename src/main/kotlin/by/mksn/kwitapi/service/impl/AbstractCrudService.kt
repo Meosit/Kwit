@@ -1,6 +1,6 @@
 package by.mksn.kwitapi.service.impl
 
-import by.mksn.kwitapi.entity.IdAndUserIdAssignable
+import by.mksn.kwitapi.entity.support.IdAndUserIdAssignable
 import by.mksn.kwitapi.repository.PersonalCrudRepository
 import by.mksn.kwitapi.service.PersonalCrudService
 import by.mksn.kwitapi.wrapJPACall

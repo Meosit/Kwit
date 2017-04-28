@@ -1,5 +1,7 @@
 package by.mksn.kwitapi.entity
 
+import by.mksn.kwitapi.entity.support.CategoryType
+import by.mksn.kwitapi.entity.support.IdAndUserIdAssignable
 import com.fasterxml.jackson.annotation.JsonIgnore
 import javax.persistence.*
 
@@ -17,12 +19,8 @@ data class Category(
         var name: String,
         @Enumerated(EnumType.STRING)
         @Column(columnDefinition = "ENUM('INCOME', 'OUTGO')")
-        var type: Type
+        var type: CategoryType
 ) : IdAndUserIdAssignable<Long> {
-    enum class Type {
-
-        INCOME, OUTGO
-    }
 
     override fun assignID(id: Long?) {
         this.id = id

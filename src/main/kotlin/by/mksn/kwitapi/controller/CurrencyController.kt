@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/currencies")
+@RequestMapping("/api/currencies")
 interface CurrencyController : CrudController<Currency, Long> {
 
     @GetMapping("code/{code}")

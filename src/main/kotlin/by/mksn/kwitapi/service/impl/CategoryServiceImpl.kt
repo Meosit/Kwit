@@ -1,7 +1,8 @@
 package by.mksn.kwitapi.service.impl
 
 import by.mksn.kwitapi.entity.Category
-import by.mksn.kwitapi.entity.CategoryStats
+import by.mksn.kwitapi.entity.support.CategoryStats
+import by.mksn.kwitapi.entity.support.CategoryType
 import by.mksn.kwitapi.repository.CategoryRepository
 import by.mksn.kwitapi.repository.TransactionRepository
 import by.mksn.kwitapi.service.CategoryService
@@ -17,11 +18,14 @@ open class CategoryServiceImpl(
     override fun findAllByUserId(userId: Long, pageable: Pageable): List<Category> =
             wrapJPACall { categoryRepository.findByUserId(userId, pageable) }
 
-    override fun findByUserIdAndType(id: Long, type: Category.Type, pageable: Pageable): List<Category> =
+    override fun findByUserIdAndType(id: Long, type: CategoryType, pageable: Pageable): List<Category> =
             wrapJPACall { categoryRepository.findByUserIdAndType(id, type, pageable) }
 
-    override fun calculateCategoryStats(type: Category.Type,
-                                        currencyId: Long, startDate: Timestamp,
-                                        endDate: Timestamp): List<CategoryStats> =
-            emptyList()//wrapJPACall { categoryRepository.calculateCategoryStats(type, currencyId, startDate, endDate) }
+    override fun calculateCategoryStats(type: CategoryType,
+                                        currencyCode: String,
+                                        startDate: Timestamp,
+                                        endDate: Timestamp): List<CategoryStats> {
+        return emptyList()//wrapJPACall { categoryRepository.calculateCategoryStats(type, currencyId, startDate, endDate) }
+    }
+
 }

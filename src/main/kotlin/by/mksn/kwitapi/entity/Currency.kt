@@ -1,5 +1,6 @@
 package by.mksn.kwitapi.entity
 
+import by.mksn.kwitapi.entity.support.IdAssignable
 import javax.persistence.*
 
 @Entity

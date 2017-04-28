@@ -1,4 +1,4 @@
-package by.mksn.kwitapi.entity
+package by.mksn.kwitapi.entity.support
 
 interface IdAssignable<in ID> {
     fun assignID(id: ID?)

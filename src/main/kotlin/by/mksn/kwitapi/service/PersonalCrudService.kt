@@ -1,6 +1,6 @@
 package by.mksn.kwitapi.service
 
-import by.mksn.kwitapi.entity.IdAssignable
+import by.mksn.kwitapi.entity.support.IdAssignable
 import org.springframework.data.domain.Pageable
 import java.io.Serializable
 

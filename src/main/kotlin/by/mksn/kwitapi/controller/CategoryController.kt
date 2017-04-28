@@ -3,29 +3,30 @@ package by.mksn.kwitapi.controller
 import by.mksn.kwitapi.configuration.security.Auth
 import by.mksn.kwitapi.configuration.security.UserDetails
 import by.mksn.kwitapi.entity.Category
-import by.mksn.kwitapi.entity.CategoryStats
+import by.mksn.kwitapi.entity.support.CategoryStats
+import by.mksn.kwitapi.entity.support.CategoryType
 import org.springframework.data.domain.Pageable
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.web.bind.annotation.*
-import java.sql.Timestamp
+import java.util.*
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/api/categories")
 interface CategoryController : CrudController<Category, Long> {
 
     @GetMapping("{type}")
     fun findAll(
             @Auth auth: UserDetails,
-            @PathVariable("type") type: Category.Type,
+            @PathVariable("type") type: CategoryType,
             pageable: Pageable
     ): List<Category>
 
-    @GetMapping("stats/{type}/{currencyId}")
+    @GetMapping("stats/{type}/{currencyCode}", params = arrayOf("from", "to"))
     fun calculateCategoryStats(
-            @PathVariable("type") type: Category.Type,
-            @PathVariable("currencyId") currencyId: Long,
-            @RequestParam("start") @DateTimeFormat(pattern = "dd.MM.yyyy") startDate: Timestamp,
-            @RequestParam("end") @DateTimeFormat(pattern = "dd.MM.yyyy") endDate: Timestamp
+            @PathVariable("type") type: CategoryType,
+            @PathVariable("currencyCode") currencyCode: String,
+            @RequestParam(name = "from", required = false) @DateTimeFormat(pattern = "dd.MM.yyyy") from: Date,
+            @RequestParam(name = "to", required = false) @DateTimeFormat(pattern = "dd.MM.yyyy") to: Date
     ): List<CategoryStats>
 
 }

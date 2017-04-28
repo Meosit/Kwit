@@ -1,12 +1,8 @@
 package by.mksn.kwitapi.configuration.security
 
 import by.mksn.kwitapi.DEFAULT_ENCODING
-import by.mksn.kwitapi.entity.User
-import by.mksn.kwitapi.entity.UserRole
 import by.mksn.kwitapi.repository.UserRepository
 import org.slf4j.LoggerFactory
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.AuthorityUtils
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import java.net.URLDecoder
@@ -28,29 +24,5 @@ class JdbcUserDetailsService(
         }
         return UserDetails(user)
     }
-
-
 }
 
-class UserDetails(private val user: User) : org.springframework.security.core.userdetails.UserDetails {
-
-    val userId = user.id!!
-
-    val isAdmin = user.role == UserRole.ADMIN
-
-    override fun getAuthorities(): MutableCollection<out GrantedAuthority>
-            = AuthorityUtils.createAuthorityList(user.role.name)
-
-    override fun getUsername() = user.email
-
-    override fun getPassword() = user.passwordHash
-
-    override fun isEnabled() = !user.isDeleted
-
-    override fun isCredentialsNonExpired() = true
-
-    override fun isAccountNonExpired() = true
-
-    override fun isAccountNonLocked() = true
-
-}

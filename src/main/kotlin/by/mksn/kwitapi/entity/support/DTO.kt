@@ -1,4 +1,4 @@
-package by.mksn.kwitapi.entity
+package by.mksn.kwitapi.entity.support
 
 import org.hibernate.validator.constraints.Email
 import javax.validation.constraints.Max

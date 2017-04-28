@@ -1,6 +1,8 @@
 package by.mksn.kwitapi.configuration.security
 
+import by.mksn.kwitapi.entity.support.UserRole
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter
@@ -21,8 +23,13 @@ class ResourceServerConfiguration(
     override fun configure(http: HttpSecurity) {
         http
                 .authorizeRequests()
-             
-                .anyRequest().authenticated()
+                .antMatchers("/api/oauth/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/currencies/**").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/api/currencies/**").hasAnyAuthority(UserRole.ADMIN.name)
+                .antMatchers(HttpMethod.POST, "/api/currencies/**").hasAnyAuthority(UserRole.ADMIN.name)
+                .antMatchers(HttpMethod.PUT, "/api/currencies/**").hasAnyAuthority(UserRole.ADMIN.name)
+                .antMatchers("/api/**").authenticated()
+                .anyRequest().permitAll()
     }
 
 }

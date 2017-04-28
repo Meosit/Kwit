@@ -1,13 +1,11 @@
 package by.mksn.kwitapi.entity
 
+import by.mksn.kwitapi.entity.support.IdAssignable
+import by.mksn.kwitapi.entity.support.UserRole
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.io.Serializable
 import java.sql.Timestamp
 import javax.persistence.*
-
-enum class UserRole {
-    USER, ADMIN
-}
 
 @Entity
 @Table(name = "user", uniqueConstraints =
