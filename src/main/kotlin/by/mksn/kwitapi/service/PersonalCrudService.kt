@@ -10,9 +10,9 @@ interface PersonalCrudService<E : IdAssignable<ID>, in ID : Serializable> {
 
     fun findAllByUserId(userId: ID, pageable: Pageable): List<E>
 
-    fun create(userId: Long, entity: E): E?
+    fun create(entity: E): E?
 
-    fun update(userId: Long, id: ID, entity: E): E?
+    fun update(entity: E): E?
 
     fun delete(id: ID)
 }

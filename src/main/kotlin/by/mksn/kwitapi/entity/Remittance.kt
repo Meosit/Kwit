@@ -2,8 +2,12 @@ package by.mksn.kwitapi.entity
 
 import by.mksn.kwitapi.entity.support.IdAndUserIdAssignable
 import com.fasterxml.jackson.annotation.JsonIgnore
+import java.math.BigDecimal
 import java.sql.Timestamp
 import javax.persistence.*
+import javax.validation.constraints.DecimalMin
+import javax.validation.constraints.Digits
+import javax.validation.constraints.NotNull
 
 @Entity
 @Table(name = "remittance")
@@ -14,17 +18,25 @@ data class Remittance(
         var id: Long? = null,
         @JsonIgnore
         @Column(name = "user_id", columnDefinition = "INT")
-        var userId: Long,
-        @ManyToOne
+        var userId: Long? = null,
+        @NotNull(message = "Donor wallet is not specified")
+        @ManyToOne(targetEntity = Wallet::class)
         @JoinColumn(name = "wallet_donor_id")
         var walletDonor: Wallet,
-        @ManyToOne
+        @NotNull(message = "Acceptor wallet is not specified")
+        @ManyToOne(targetEntity = Wallet::class)
         @JoinColumn(name = "wallet_acceptor_id")
         var walletAcceptor: Wallet,
+        @NotNull(message = "Donor sum is not specified")
+        @DecimalMin("0.0000", message = "Donor sum must be positive")
+        @Digits(integer = 19, fraction = 4, message = "Donor sum value is invalid")
         @Column(name = "donor_sum", columnDefinition = "INT(11)")
-        var donorSum: Long,
+        var donorSum: BigDecimal? = null,
+        @NotNull(message = "Conversion value is not specified")
+        @Digits(integer = 10, fraction = 4, message = "Conversion value is invalid")
         @Column(precision = 10, scale = 4)
-        var conversion: Double,
+        var conversion: BigDecimal? = null,
+        @NotNull(message = "Date is not specified")
         @Column(columnDefinition = "DATETIME")
         var date: Timestamp? = null
 ) : IdAndUserIdAssignable<Long> {
@@ -32,7 +44,7 @@ data class Remittance(
         this.id = id
     }
 
-    override fun assignUserID(id: Long) {
+    override fun assignUserID(id: Long?) {
         this.userId = id
     }
 }

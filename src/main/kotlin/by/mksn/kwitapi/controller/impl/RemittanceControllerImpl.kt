@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory
 
 open class RemittanceControllerImpl(
         remittanceService: RemittanceService
-) : AbstractCrudController<Remittance>(remittanceService, logger), RemittanceController {
+) : AbstractPersonalCrudController<Remittance>(remittanceService, logger), RemittanceController {
     companion object {
         private val logger = LoggerFactory.getLogger(RemittanceControllerImpl::class.java)!!
     }

@@ -22,7 +22,7 @@ import java.util.*
 
 open class CategoryControllerImpl(
         private val categoryService: CategoryService
-) : AbstractCrudController<Category>(categoryService, logger), CategoryController {
+) : AbstractPersonalCrudController<Category>(categoryService, logger), CategoryController {
 
     companion object {
         private val logger = LoggerFactory.getLogger(CategoryControllerImpl::class.java)!!

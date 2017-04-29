@@ -31,22 +31,22 @@ INSERT INTO currency (code, symbol, is_prefix) VALUES
 TRUNCATE TABLE wallet;
 ALTER TABLE wallet
   AUTO_INCREMENT = 1;
-INSERT INTO wallet (user_id, currency_id, name, balance, is_saving) VALUES
-  (5, 4, 'Hangover Relief', 173, FALSE),
-  (4, 4, 'Ibuprofen', 817, FALSE),
-  (3, 2, 'Softlips Berry', 696, FALSE),
-  (7, 5, 'Shopko Antibacterial Foaming Hand Sanitizer', 901, TRUE),
-  (5, 1, 'GFA First Aid', 871, TRUE),
-  (8, 2, 'Carbon Dioxide-Oxygen-Nitrogen Mixture', 236, FALSE),
-  (1, 4, 'Piroxicam', 465, TRUE),
-  (2, 1, 'Orajel for Cold Sores', 42, FALSE),
-  (8, 3, 'Moisturizing Antibacterial', 369, FALSE),
-  (8, 3, 'Degree', 856, TRUE),
-  (7, 5, 'Acarbose', 784, TRUE),
-  (5, 5, 'TEMAZEPAM', 596, FALSE),
-  (1, 1, 'Prochieve', 351, FALSE),
-  (9, 3, 'Oxymorphone hydrochloride', 874, TRUE),
-  (8, 5, 'Piperacillin and Tazobactam', 787, FALSE);
+INSERT INTO wallet (user_id, currency_id, name, balance, type) VALUES
+  (5, 4, 'Hangover Relief', 173, 'NORMAL'),
+  (4, 4, 'Ibuprofen', 817, 'NORMAL'),
+  (3, 2, 'Softlips Berry', 696, 'NORMAL'),
+  (7, 5, 'Shopko Antibacterial Foaming Hand Sanitizer', 901, 'SAVING'),
+  (5, 1, 'GFA First Aid', 871, 'SAVING'),
+  (8, 2, 'Carbon Dioxide-Oxygen-Nitrogen Mixture', 236, 'NORMAL'),
+  (1, 4, 'Piroxicam', 465, 'SAVING'),
+  (2, 1, 'Orajel for Cold Sores', 42, 'NORMAL'),
+  (8, 3, 'Moisturizing Antibacterial', 369, 'NORMAL'),
+  (8, 3, 'Degree', 856, 'SAVING'),
+  (7, 5, 'Acarbose', 784, 'SAVING'),
+  (5, 5, 'TEMAZEPAM', 596, 'NORMAL'),
+  (1, 1, 'Prochieve', 351, 'NORMAL'),
+  (9, 3, 'Oxymorphone hydrochloride', 874, 'SAVING'),
+  (8, 5, 'Piperacillin and Tazobactam', 787, 'NORMAL');
 
 
 TRUNCATE TABLE category;

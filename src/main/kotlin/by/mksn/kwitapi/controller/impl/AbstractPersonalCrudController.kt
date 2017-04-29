@@ -5,7 +5,7 @@ import by.mksn.kwitapi.configuration.security.UserDetails
 import by.mksn.kwitapi.controller.CrudController
 import by.mksn.kwitapi.controller.exception.BadRequestException
 import by.mksn.kwitapi.controller.exception.NotFoundException
-import by.mksn.kwitapi.entity.support.IdAssignable
+import by.mksn.kwitapi.entity.support.IdAndUserIdAssignable
 import by.mksn.kwitapi.service.PersonalCrudService
 import by.mksn.kwitapi.wrapServiceCall
 import org.slf4j.Logger
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import javax.validation.Valid
 
-abstract class AbstractCrudController<E : IdAssignable<Long>>(
+abstract class AbstractPersonalCrudController<E : IdAndUserIdAssignable<Long>>(
         private val crudService: PersonalCrudService<E, Long>,
         private val logger: Logger
 ) : CrudController<E, Long> {
@@ -23,7 +23,9 @@ abstract class AbstractCrudController<E : IdAssignable<Long>>(
             crudService.findByIdAndUserId(entityId, auth.userId) == null
 
     override fun create(@Valid @RequestBody entity: E, @Auth auth: UserDetails): E = wrapServiceCall(logger) {
-        crudService.create(auth.userId, entity) ?: throw BadRequestException()
+        entity.assignID(null)
+        entity.assignUserID(auth.userId)
+        crudService.create(entity) ?: throw BadRequestException()
     }
 
     override fun findById(@PathVariable("id") id: Long, @Auth auth: UserDetails): E = wrapServiceCall(logger) {
@@ -32,7 +34,9 @@ abstract class AbstractCrudController<E : IdAssignable<Long>>(
 
     override fun update(@PathVariable("id") id: Long, @Valid @RequestBody entity: E, @Auth auth: UserDetails): E {
         if (isAccessDenied(auth, id)) throw NotFoundException()
-        return wrapServiceCall(logger) { crudService.update(auth.userId, id, entity) ?: throw NotFoundException() }
+        entity.assignID(id)
+        entity.assignUserID(auth.userId)
+        return wrapServiceCall(logger) { crudService.update(entity) ?: throw BadRequestException() }
     }
 
 

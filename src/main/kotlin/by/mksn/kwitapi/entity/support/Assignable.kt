@@ -5,5 +5,5 @@ interface IdAssignable<in ID> {
 }
 
 interface IdAndUserIdAssignable<in ID> : IdAssignable<ID> {
-    fun assignUserID(id: ID)
+    fun assignUserID(id: ID?)
 }

@@ -10,6 +10,10 @@ enum class CategoryType {
     INCOME, OUTGO
 }
 
+enum class WalletType {
+    NORMAL, SAVING
+}
+
 class UserRoleBinder : PropertyEditorSupport() {
 
     override fun setAsText(text: String?) {
@@ -27,6 +31,18 @@ class CategoryTypeBinder : PropertyEditorSupport() {
     override fun setAsText(text: String?) {
         if (text != null) {
             value = CategoryType.valueOf(text.toUpperCase())
+        } else {
+            throw IllegalArgumentException()
+        }
+    }
+
+}
+
+class WalletTypeBinder : PropertyEditorSupport() {
+
+    override fun setAsText(text: String?) {
+        if (text != null) {
+            value = WalletType.valueOf(text.toUpperCase())
         } else {
             throw IllegalArgumentException()
         }

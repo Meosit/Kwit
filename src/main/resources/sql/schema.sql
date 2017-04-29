@@ -48,6 +48,9 @@ CREATE TABLE `currency`
 )
   ENGINE = InnoDB;
 
+CREATE UNIQUE INDEX `IXUQ_currency_code`
+  ON `currency` (`code` ASC);
+
 -- -----------------------------------------------------
 -- Table `kwit`.`wallet`
 -- -----------------------------------------------------
@@ -55,13 +58,13 @@ DROP TABLE IF EXISTS `wallet`;
 
 CREATE TABLE `wallet`
 (
-  `id`          INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  `user_id`     INTEGER UNSIGNED NOT NULL,
-  `currency_id` INTEGER UNSIGNED NOT NULL,
-  `name`        VARCHAR(100)     NOT NULL,
-  `balance`     INTEGER          NOT NULL DEFAULT 0,
-  `is_saving`   BOOL             NOT NULL DEFAULT FALSE,
-  `is_deleted`  BOOL             NOT NULL DEFAULT FALSE,
+  `id`          INTEGER UNSIGNED          NOT NULL AUTO_INCREMENT,
+  `user_id`     INTEGER UNSIGNED          NOT NULL,
+  `currency_id` INTEGER UNSIGNED          NOT NULL,
+  `name`        VARCHAR(100)              NOT NULL,
+  `balance`     DECIMAL(19, 4)            NOT NULL,
+  `type`        ENUM ('NORMAL', 'SAVING') NOT NULL,
+  `is_deleted`  BOOL                      NOT NULL DEFAULT FALSE,
   PRIMARY KEY (`id` ASC),
   CONSTRAINT `FK_wallet_currency`
   FOREIGN KEY (`currency_id`)
@@ -103,13 +106,13 @@ DROP TABLE IF EXISTS `remittance`;
 
 CREATE TABLE `remittance`
 (
-  `id`                 INTEGER UNSIGNED        NOT NULL AUTO_INCREMENT,
-  `user_id`            INTEGER UNSIGNED        NOT NULL,
-  `wallet_donor_id`    INTEGER UNSIGNED        NOT NULL,
-  `wallet_acceptor_id` INTEGER UNSIGNED        NOT NULL,
-  `donor_sum`          INTEGER                 NOT NULL,
-  `conversion`         DOUBLE PRECISION(10, 4) NOT NULL DEFAULT 1.0000,
-  `date`               DATETIME                NOT NULL,
+  `id`                 INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id`            INTEGER UNSIGNED NOT NULL,
+  `wallet_donor_id`    INTEGER UNSIGNED NOT NULL,
+  `wallet_acceptor_id` INTEGER UNSIGNED NOT NULL,
+  `donor_sum`          DECIMAL(19, 4)   NOT NULL,
+  `conversion`         DECIMAL(10, 4)   NOT NULL DEFAULT 1.0000,
+  `date`               DATETIME         NOT NULL,
   PRIMARY KEY (`id` ASC),
   CONSTRAINT `FK_remittance_user`
   FOREIGN KEY (`user_id`)
@@ -196,7 +199,7 @@ CREATE TABLE `transaction`
   `user_id`     INTEGER UNSIGNED NOT NULL,
   `wallet_id`   INTEGER UNSIGNED NOT NULL,
   `category_id` INTEGER UNSIGNED NOT NULL,
-  `sum`         INTEGER          NOT NULL,
+  `sum`         DECIMAL(19, 4)   NOT NULL,
   `date`        DATETIME         NOT NULL,
   `note`        VARCHAR(300)     NULL     DEFAULT NULL,
   PRIMARY KEY (`id` ASC),
@@ -358,7 +361,7 @@ CREATE PROCEDURE createRemittance(
   IN _user_id            INTEGER UNSIGNED,
   IN _wallet_donor_id    INTEGER UNSIGNED,
   IN _wallet_acceptor_id INTEGER UNSIGNED,
-  IN _donor_sum          INTEGER,
+  IN _donor_sum          DECIMAL(19, 4),
   IN _conversion         DECIMAL(10, 4),
   IN _date               DATETIME
 )
@@ -376,7 +379,7 @@ CREATE PROCEDURE createRemittance(
     WHERE `id` = _wallet_donor_id;
 
     UPDATE `wallet`
-    SET `balance` = `balance` + ROUND(_donor_sum * _conversion)
+    SET `balance` = `balance` + (_donor_sum * _conversion)
     WHERE `id` = _wallet_donor_id;
 
     COMMIT;
