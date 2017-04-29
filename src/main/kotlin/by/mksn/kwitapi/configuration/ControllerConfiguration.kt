@@ -6,13 +6,12 @@ import by.mksn.kwitapi.controller.impl.*
 import by.mksn.kwitapi.service.*
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 
 @Configuration
 class ControllerConfiguration {
 
     @Bean
-    fun responseEntityExceptionHandler() : ResponseEntityExceptionHandler
+    fun responseEntityExceptionHandler(): ValidationExceptionHandler
             = ValidationExceptionHandler()
 
 //    @Bean

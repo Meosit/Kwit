@@ -16,27 +16,27 @@ data class Remittance(
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(columnDefinition = "INT")
         var id: Long? = null,
-        @JsonIgnore
+        @get:JsonIgnore
         @Column(name = "user_id", columnDefinition = "INT")
         var userId: Long? = null,
-        @NotNull(message = "Donor wallet is not specified")
+        @field:NotNull(message = "Donor wallet is not specified")
         @ManyToOne(targetEntity = Wallet::class)
         @JoinColumn(name = "wallet_donor_id")
         var walletDonor: Wallet,
-        @NotNull(message = "Acceptor wallet is not specified")
+        @field:NotNull(message = "Acceptor wallet is not specified")
         @ManyToOne(targetEntity = Wallet::class)
         @JoinColumn(name = "wallet_acceptor_id")
         var walletAcceptor: Wallet,
-        @NotNull(message = "Donor sum is not specified")
-        @DecimalMin("0.0000", message = "Donor sum must be positive")
-        @Digits(integer = 19, fraction = 4, message = "Donor sum value is invalid")
+        @field:NotNull(message = "Donor sum is not specified")
+        @field:DecimalMin("0.0000", message = "Donor sum must be positive")
+        @field:Digits(integer = 19, fraction = 4, message = "Donor sum value is invalid")
         @Column(name = "donor_sum", columnDefinition = "INT(11)")
         var donorSum: BigDecimal? = null,
-        @NotNull(message = "Conversion value is not specified")
-        @Digits(integer = 10, fraction = 4, message = "Conversion value is invalid")
+        @field:NotNull(message = "Conversion value is not specified")
+        @field:Digits(integer = 10, fraction = 4, message = "Conversion value is invalid")
         @Column(precision = 10, scale = 4)
         var conversion: BigDecimal? = null,
-        @NotNull(message = "Date is not specified")
+        @field:NotNull(message = "Date is not specified")
         @Column(columnDefinition = "DATETIME")
         var date: Timestamp? = null
 ) : IdAndUserIdAssignable<Long> {

@@ -12,13 +12,15 @@ data class Currency(
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(columnDefinition = "INT")
         var id: Long? = null,
-        @Size(min = 3, max = 3, message = "Currency code must have only 3 chars")
+        @field:NotNull(message = "Currency code is not specified")
+        @field:Size(min = 3, max = 3, message = "Currency code must have only 3 chars")
         @Column(columnDefinition = "CHAR(3)")
         val code: String,
-        @Size(min = 1, max = 5, message = "Currency symbol length must be in range 1-5 chars")
+        @field:NotNull(message = "Currency symbol is not specified")
+        @field:Size(min = 1, max = 5, message = "Currency symbol length must be in range 1-5 chars")
         @Column(length = 5)
         val symbol: String,
-        @NotNull
+        @field:NotNull(message = "Prefix flag is not specified")
         @Column(name = "is_prefix")
         val isPrefix: Boolean
 ) : IdAssignable<Long> {

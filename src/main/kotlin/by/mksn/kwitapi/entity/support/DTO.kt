@@ -1,40 +1,42 @@
 package by.mksn.kwitapi.entity.support
 
-import org.hibernate.validator.constraints.Email
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
+import org.hibernate.validator.constraints.Range
+import java.math.BigDecimal
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
 data class RegistrationDetails(
-        @Email
-        @NotNull
-        @Size(min = 5, max = 255)
+        @field:ValidEmail(message = "Invalid email format")
+        @field:NotNull(message = "Email is not specified")
+        @field:Size(min = 5, max = 50, message = "Email must be in range 5-255 symbols")
         val email: String,
-        @NotNull
-        @Size(min = 6, max = 30)
+        @field:NotNull(message = "Password is not specified")
+        @field:Size(min = 5, max = 50, message = "Password must be in range 5-50 symbols")
         val password: String,
-        @Min(1)
-        @Max(31)
+        @field:Range(min = 1, max = 31, message = "Salary day must be in range 1-31")
         val salaryDay: Int?
 )
 
 data class PasswordChangeDetails(
-        @Email
-        @NotNull
-        @Size(min = 5, max = 255)
+        @field:ValidEmail(message = "Invalid email format")
+        @field:NotNull(message = "Email is not specified")
+        @field:Size(min = 5, max = 50, message = "Email must be in range 5-255 symbols")
         val email: String,
-        @NotNull
-        @Size(min = 6, max = 30)
+        @field:NotNull(message = "Password is not specified")
+        @field:Size(min = 5, max = 50, message = "Password must be in range 5-50 symbols")
         val password: String,
-        @NotNull
-        @Size(min = 6, max = 30)
+        @field:NotNull(message = "New Password is not specified")
+        @field:Size(min = 5, max = 50, message = "New Password must be in range 5-50 symbols")
         val newPassword: String
 )
 
 data class CategoryStats(
         val categoryId: Long,
-        val currencyId: Long,
-        val sumForCategory: Long,
+        val categoryName: String,
+        val currencyCode: String,
+        val currencySymbol: String,
+        val currencyIsPrefix: Boolean,
+        val sumForCategory: BigDecimal,
+        val percentOfAll: BigDecimal,
         val transactionCountForCategory: Int
 )

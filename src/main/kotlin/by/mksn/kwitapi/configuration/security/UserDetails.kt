@@ -13,13 +13,15 @@ class UserDetails(private val user: User) : org.springframework.security.core.us
     val isAdmin = user.role == UserRole.ADMIN
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority>
-            = AuthorityUtils.createAuthorityList(user.role.name)
+            = if (user.role != null) {
+        AuthorityUtils.createAuthorityList(user.role.name)
+    } else mutableListOf<GrantedAuthority>()
 
     override fun getUsername() = user.email
 
     override fun getPassword() = user.passwordHash
 
-    override fun isEnabled() = !user.isDeleted
+    override fun isEnabled() = !(user.isDeleted)
 
     override fun isCredentialsNonExpired() = true
 

@@ -3,7 +3,6 @@ package by.mksn.kwitapi.configuration
 import by.mksn.kwitapi.configuration.security.SecurityConfiguration
 import by.mksn.kwitapi.controller.exception.ValidationExceptionHandler
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
-import org.springframework.boot.autoconfigure.web.DefaultErrorAttributes
 import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.boot.web.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Bean
@@ -24,10 +23,10 @@ import org.springframework.context.annotation.Import
         org.springframework.boot.autoconfigure.security.oauth2.OAuth2AutoConfiguration::class))
 class MainConfiguration : SpringBootServletInitializer() {
 
-    @Bean
+    /*@Bean
     fun defaultErrorAttributes(): DefaultErrorAttributes
             = ErrorAttributesWithoutExceptionName()
-
+*/
     @Bean
     fun restExceptionHandler(): ValidationExceptionHandler
             = ValidationExceptionHandler()

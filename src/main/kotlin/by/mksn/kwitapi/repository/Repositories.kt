@@ -1,12 +1,18 @@
 package by.mksn.kwitapi.repository
 
 import by.mksn.kwitapi.entity.*
+import by.mksn.kwitapi.entity.support.CategoryStats
 import by.mksn.kwitapi.entity.support.CategoryType
 import by.mksn.kwitapi.entity.support.IdAssignable
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Repository
 import java.io.Serializable
+import java.math.BigDecimal
+import javax.persistence.ColumnResult
+import javax.persistence.ConstructorResult
+import javax.persistence.NamedNativeQuery
+import javax.persistence.SqlResultSetMapping
 
 interface PersonalCrudRepository<E : IdAssignable<ID>, in ID : Serializable> {
     fun findByIdAndUserId(id: ID, userId: ID): E?
@@ -28,10 +34,25 @@ interface CurrencyRepository : PagingAndSortingRepository<Currency, Long> {
 interface WalletRepository :
         PagingAndSortingRepository<Wallet, Long>,
         PersonalCrudRepository<Wallet, Long> {
-    fun findByUserIdOrderByIsSavingAsc(id: Long, pageable: Pageable): List<Wallet>
+    fun findByUserIdOrderByTypeAsc(id: Long, pageable: Pageable): List<Wallet>
 }
 
 @Repository
+@SqlResultSetMapping(name = "categoryStats", classes = arrayOf(
+        ConstructorResult(targetClass = CategoryStats::class, columns = arrayOf(
+                ColumnResult(name = "out_category_id", type = Long::class),
+                ColumnResult(name = "out_category_name", type = String::class),
+                ColumnResult(name = "out_currency_code", type = String::class),
+                ColumnResult(name = "out_currency_symbol", type = String::class),
+                ColumnResult(name = "out_currency_is_prefix", type = String::class),
+                ColumnResult(name = "out_sum_for_category", type = BigDecimal::class),
+                ColumnResult(name = "out_percent_of_all", type = BigDecimal::class),
+                ColumnResult(name = "out_count_for_category", type = Int::class)
+        ))
+))
+@NamedNativeQuery(name = "Category.findCategoryStats",
+        query = "",
+        resultSetMapping = "categoryStats")
 interface CategoryRepository :
         PagingAndSortingRepository<Category, Long>,
         PersonalCrudRepository<Category, Long> {

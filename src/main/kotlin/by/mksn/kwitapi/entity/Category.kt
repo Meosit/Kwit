@@ -14,14 +14,14 @@ data class Category(
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(columnDefinition = "INT")
         var id: Long? = null,
-        @JsonIgnore
+        @get:JsonIgnore
         @Column(name = "user_id", columnDefinition = "INT")
         var userId: Long? = null,
-        @NotNull(message = "Name is not specified")
-        @Size(min = 1, max = 100, message = "Name must be in range 1-100 symbols")
+        @field:NotNull(message = "Name is not specified")
+        @field:Size(min = 1, max = 100, message = "Name must be in range 1-100 symbols")
         @Column(length = 100)
         var name: String? = null,
-        @NotNull(message = "Category type is not specified")
+        @field:NotNull(message = "Category type is not specified")
         @Enumerated(EnumType.STRING)
         @Column(columnDefinition = "ENUM('INCOME', 'OUTGO')")
         var type: CategoryType? = null

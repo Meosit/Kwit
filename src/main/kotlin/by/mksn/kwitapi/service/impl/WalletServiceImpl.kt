@@ -12,6 +12,6 @@ open class WalletServiceImpl(
 ) : AbstractCrudService<Wallet>(walletRepository), WalletService {
 
     override fun findAllByUserId(userId: Long, pageable: Pageable): List<Wallet> = wrapJPACall {
-        walletRepository.findByUserIdOrderByIsSavingAsc(userId, pageable)
+        walletRepository.findByUserIdOrderByTypeAsc(userId, pageable)
     }
 }

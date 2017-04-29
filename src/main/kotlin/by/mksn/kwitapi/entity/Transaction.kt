@@ -16,25 +16,25 @@ data class Transaction(
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(columnDefinition = "INT")
         var id: Long? = null,
-        @JsonIgnore
+        @get:JsonIgnore
         @Column(name = "user_id", columnDefinition = "INT")
         var userId: Long? = null,
-        @NotNull(message = "Wallet is not specified")
+        @field:NotNull(message = "Wallet is not specified")
         @ManyToOne
         @JoinColumn(name = "wallet_id")
         var wallet: Wallet,
-        @NotNull(message = "Category is not specified")
+        @field:NotNull(message = "Category is not specified")
         @ManyToOne
         @JoinColumn(name = "category_id")
         var category: Category,
-        @NotNull(message = "Sum is not specified")
-        @Digits(integer = 19, fraction = 4, message = "Invalid sum value")
+        @field:NotNull(message = "Sum is not specified")
+        @field:Digits(integer = 19, fraction = 4, message = "Invalid sum value")
         @Column(columnDefinition = "INT(11)")
         var sum: BigDecimal? = null,
-        @NotNull(message = "Date is not specified")
+        @field:NotNull(message = "Date is not specified")
         @Column(columnDefinition = "DATETIME")
         var date: Timestamp? = null,
-        @Size(min = 1, max = 300, message = "Name must be in range 1-300 symbols")
+        @field:Size(min = 1, max = 300, message = "Name must be in range 1-300 symbols")
         @Column(length = 300)
         var note: String?
 ) : IdAndUserIdAssignable<Long> {

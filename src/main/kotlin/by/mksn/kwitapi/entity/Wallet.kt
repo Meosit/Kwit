@@ -16,27 +16,28 @@ data class Wallet(
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(columnDefinition = "INT")
         var id: Long? = null,
-        @JsonIgnore
+        @get:JsonIgnore
         @Column(name = "user_id", columnDefinition = "INT")
         var userId: Long?,
-        @NotNull(message = "Currency is not specified")
+        @field:NotNull(message = "Currency is not specified")
         @ManyToOne
         @JoinColumn(name = "currency_id")
         var currency: Currency?,
-        @NotNull(message = "Name is not specified")
-        @Size(min = 1, max = 100, message = "Name must be in range 1-100 symbols")
+        @field:NotNull(message = "Name is not specified")
+        @field:Size(min = 1, max = 100, message = "Name must be in range 1-100 symbols")
         @Column(length = 100)
-        var name: String,
-        @NotNull(message = "Balance is not specified")
-        @Digits(integer = 19, fraction = 4, message = "Balance value is invalid")
+        var name: String?,
+        @field:NotNull(message = "Balance is not specified")
+        @field:Digits(integer = 19, fraction = 4, message = "Balance value is invalid")
         @Column(columnDefinition = "INT(11)")
-        var balance: BigDecimal,
-        @NotNull(message = "Type is not specified")
-        @Column(name = "type")
+        var balance: BigDecimal?,
+        @field:NotNull(message = "Type is not specified")
+        @Enumerated(EnumType.STRING)
+        @Column(columnDefinition = "ENUM('NORMAL', 'SAVING')")
         var type: WalletType?,
-        @JsonIgnore
+        @get:JsonIgnore
         @Column(name = "is_deleted")
-        var isDeleted: Boolean? = false
+        var isDeleted: Boolean = false
 ) : IdAndUserIdAssignable<Long> {
     override fun assignID(id: Long?) {
         this.id = id
