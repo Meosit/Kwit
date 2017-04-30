@@ -12,7 +12,7 @@ import org.springframework.dao.DataIntegrityViolationException
 inline fun <T> wrapJPACall(block: () -> T): T = try {
     block()
 } catch (e: DataIntegrityViolationException) {
-    throw ServiceConstraintFailException("Entity" to "Cannot  entity")
+    throw ServiceConstraintFailException("Invalid entity" to "Invalid entity references")
 } catch (e: DataAccessException) {
     throw ServiceException(cause = e)
 }

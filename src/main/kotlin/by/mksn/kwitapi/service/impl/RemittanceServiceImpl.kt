@@ -10,8 +10,12 @@ import by.mksn.kwitapi.service.RemittanceService
 import by.mksn.kwitapi.service.exception.ServiceBadRequestException
 import by.mksn.kwitapi.wrapJPACall
 import org.springframework.data.domain.Pageable
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
-open class RemittanceServiceImpl(
+@Service
+@Transactional
+class RemittanceServiceImpl(
         private val remittanceRepository: RemittanceRepository,
         private val walletRepository: WalletRepository
 ) : AbstractCrudService<Remittance>(remittanceRepository), RemittanceService {

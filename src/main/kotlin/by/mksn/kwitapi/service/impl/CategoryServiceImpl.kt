@@ -8,9 +8,13 @@ import by.mksn.kwitapi.repository.TransactionRepository
 import by.mksn.kwitapi.service.CategoryService
 import by.mksn.kwitapi.wrapJPACall
 import org.springframework.data.domain.Pageable
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.sql.Timestamp
 
-open class CategoryServiceImpl(
+@Service
+@Transactional
+class CategoryServiceImpl(
         private val categoryRepository: CategoryRepository,
         private val transactionRepository: TransactionRepository
 ) : AbstractCrudService<Category>(categoryRepository), CategoryService {

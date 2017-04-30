@@ -20,7 +20,12 @@ class TransactionManagerConfiguration(
     fun entityManagerFactory(): LocalContainerEntityManagerFactoryBean {
         val bean = LocalContainerEntityManagerFactoryBean()
         bean.dataSource = dataSource
-        bean.setPackagesToScan("by.mksn.kwitapi.service", "by.mksn.kwitapi.repository", "by.mksn.kwitapi.entity")
+        bean.setPackagesToScan(
+                "by.mksn.kwitapi.service",
+                "by.mksn.kwitapi.repository",
+                "by.mksn.kwitapi.entity",
+                "by.mksn.kwitapi.controller"
+        )
         bean.jpaVendorAdapter = HibernateJpaVendorAdapter()
         return bean
     }

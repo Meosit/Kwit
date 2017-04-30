@@ -9,7 +9,11 @@ import by.mksn.kwitapi.service.TransactionService
 import by.mksn.kwitapi.service.exception.ServiceBadRequestException
 import by.mksn.kwitapi.wrapJPACall
 import org.springframework.data.domain.Pageable
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
+@Service
+@Transactional
 open class TransactionServiceImpl(
         private val transactionRepository: TransactionRepository
 ) : AbstractCrudService<Transaction>(transactionRepository), TransactionService {

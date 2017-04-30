@@ -19,6 +19,10 @@ abstract class AbstractPersonalCrudController<E : IdAndUserIdAssignable<Long>>(
         private val logger: Logger
 ) : CrudController<E, Long> {
 
+    init {
+        logger.info("Service class: ${crudService::class}")
+    }
+
     private fun isAccessDenied(auth: UserDetails, entityId: Long) =
             crudService.findByIdAndUserId(entityId, auth.userId) == null
 

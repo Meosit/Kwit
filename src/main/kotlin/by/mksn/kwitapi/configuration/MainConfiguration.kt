@@ -7,13 +7,14 @@ import org.springframework.boot.autoconfigure.web.ErrorAttributes
 import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.boot.web.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 
 @Configuration
 @Import(PersistenceConfiguration::class,
         TransactionManagerConfiguration::class,
-        ServiceConfiguration::class,
+        //ServiceConfiguration::class,
         ControllerConfiguration::class,
         SecurityConfiguration::class,
         PageRequestConfiguration::class)
@@ -22,7 +23,12 @@ import org.springframework.context.annotation.Import
         org.springframework.boot.autoconfigure.security.SecurityFilterAutoConfiguration::class,
         org.springframework.boot.autoconfigure.security.FallbackWebSecurityAutoConfiguration::class,
         org.springframework.boot.autoconfigure.security.oauth2.OAuth2AutoConfiguration::class))
+@ComponentScan("by.mksn.kwitapi.service.*")
 class MainConfiguration : SpringBootServletInitializer() {
+
+    @Bean
+    fun responseEntityExceptionHandler(): RestExceptionHandler
+            = RestExceptionHandler()
 
     @Bean
     fun errorAttributes(): ErrorAttributes

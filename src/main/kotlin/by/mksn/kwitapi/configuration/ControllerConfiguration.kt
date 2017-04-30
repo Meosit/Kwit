@@ -1,7 +1,8 @@
+@file:Suppress("SpringKotlinAutowiring")
+
 package by.mksn.kwitapi.configuration
 
 import by.mksn.kwitapi.controller.*
-import by.mksn.kwitapi.controller.exception.RestExceptionHandler
 import by.mksn.kwitapi.controller.impl.*
 import by.mksn.kwitapi.service.*
 import org.springframework.context.annotation.Bean
@@ -9,14 +10,6 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class ControllerConfiguration {
-
-    @Bean
-    fun responseEntityExceptionHandler(): RestExceptionHandler
-            = RestExceptionHandler()
-
-//    @Bean
-//    fun whiteLabelErrorController(): WhiteLabelErrorController
-//        = WhiteLabelErrorController()
 
     @Bean
     fun currencyController(currencyService: CurrencyService): CurrencyController
