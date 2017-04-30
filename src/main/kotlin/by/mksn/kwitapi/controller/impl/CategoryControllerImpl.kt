@@ -8,7 +8,8 @@ import by.mksn.kwitapi.entity.support.CategoryStats
 import by.mksn.kwitapi.entity.support.CategoryType
 import by.mksn.kwitapi.entity.support.CategoryTypeBinder
 import by.mksn.kwitapi.service.CategoryService
-import by.mksn.kwitapi.wrapServiceCall
+import by.mksn.kwitapi.support.till
+import by.mksn.kwitapi.support.wrapServiceCall
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.format.annotation.DateTimeFormat
@@ -16,7 +17,6 @@ import org.springframework.web.bind.WebDataBinder
 import org.springframework.web.bind.annotation.InitBinder
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
-import java.sql.Timestamp
 import java.util.*
 
 
@@ -38,10 +38,17 @@ open class CategoryControllerImpl(
             @PathVariable("currencyCode") currencyCode: String,
             @RequestParam(name = "from", required = false) @DateTimeFormat(pattern = "dd.MM.yyyy") from: Date,
             @RequestParam(name = "to", required = false) @DateTimeFormat(pattern = "dd.MM.yyyy") to: Date
-    ): List<CategoryStats> {
-        val startDate = Timestamp.from(from.toInstant())
-        val endDate = Timestamp.from(to.toInstant())
-        return wrapServiceCall(logger) { categoryService.calculateCategoryStats(type, currencyCode, startDate, endDate) }
+    ): List<CategoryStats> =
+            wrapServiceCall(logger) { categoryService.calculateCategoryStats(type, currencyCode, from till to) }
+
+    override fun calculateCategoryStatsAllTime(
+            @PathVariable("type") type: CategoryType,
+            @PathVariable("currencyCode") currencyCode: String
+    ): List<CategoryStats> =
+            wrapServiceCall(logger) { categoryService.calculateCategoryStats(type, currencyCode, null) }
+
+    override fun softDelete(@PathVariable("id") id: Long, @RequestParam("newCategory") newId: Long, @Auth auth: UserDetails) {
+        logger.info("Mapping worked id: $id, newId: $newId")
     }
 
     override fun findAll(@Auth auth: UserDetails, @PathVariable("type") type: CategoryType, pageable: Pageable): List<Category>

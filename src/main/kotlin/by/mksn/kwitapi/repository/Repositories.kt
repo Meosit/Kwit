@@ -5,8 +5,11 @@ import by.mksn.kwitapi.entity.support.CategoryStats
 import by.mksn.kwitapi.entity.support.CategoryType
 import by.mksn.kwitapi.entity.support.IdAssignable
 import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.repository.Modifying
+import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Repository
+import org.springframework.transaction.annotation.Transactional
 import java.io.Serializable
 import java.math.BigDecimal
 import javax.persistence.ColumnResult
@@ -14,9 +17,9 @@ import javax.persistence.ConstructorResult
 import javax.persistence.NamedNativeQuery
 import javax.persistence.SqlResultSetMapping
 
-interface PersonalCrudRepository<E : IdAssignable<ID>, in ID : Serializable> {
+interface PersonalCrudRepository<E : IdAssignable<ID>, ID : Serializable> {
     fun findByIdAndUserId(id: ID, userId: ID): E?
-    fun <S : E?> save(entity: E): S
+    fun <S : E> save(entity: S): S
     fun delete(id: ID)
 }
 
@@ -58,7 +61,6 @@ interface CategoryRepository :
         PersonalCrudRepository<Category, Long> {
     fun findByUserId(id: Long, pageable: Pageable): List<Category>
     fun findByUserIdAndType(id: Long, type: CategoryType, pageable: Pageable): List<Category>
-
     /*@Query("select new by.mksn.kwitapi.entity.support.CategoryStats(t.category.id, ?2, sum(t.sum), count(t)) " +
             "from Transaction t " +
             "where (t.category.type = ?1) and (t.date between ?3 and ?4) and (t.wallet.currency.id = ?2))")
@@ -79,5 +81,16 @@ interface RemittanceRepository :
 interface TransactionRepository :
         PagingAndSortingRepository<Transaction, Long>,
         PersonalCrudRepository<Transaction, Long> {
+
     fun findByUserIdOrderByDateDescIdDesc(id: Long, pageable: Pageable): List<Transaction>
+
+    @Modifying
+    @Transactional
+    fun deleteByCategoryId(categoryId: Long): Long
+
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE transaction SET category_id = ?1 WHERE category_id = ?2",
+            nativeQuery = true)
+    fun shiftToNewCategory(newCategoryId: Long, oldCategoryId: Long): Long
 }

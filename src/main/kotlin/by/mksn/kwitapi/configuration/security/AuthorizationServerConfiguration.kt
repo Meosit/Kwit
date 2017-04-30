@@ -1,7 +1,7 @@
 package by.mksn.kwitapi.configuration.security
 
-import by.mksn.kwitapi.ACCESS_TOKEN_VALIDITY_SECONDS
-import by.mksn.kwitapi.REFRESH_TOKEN_VALIDITY_SECONDS
+import by.mksn.kwitapi.support.ACCESS_TOKEN_VALIDITY_SECONDS
+import by.mksn.kwitapi.support.REFRESH_TOKEN_VALIDITY_SECONDS
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

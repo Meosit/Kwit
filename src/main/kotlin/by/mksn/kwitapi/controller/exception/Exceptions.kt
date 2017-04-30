@@ -1,5 +1,6 @@
 package by.mksn.kwitapi.controller.exception
 
+import by.mksn.kwitapi.support.RestErrorMessage
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ResponseStatus
 
@@ -9,26 +10,12 @@ open class ControllerException(
         cause: Throwable? = null
 ) : RuntimeException(message, cause)
 
-@ResponseStatus(HttpStatus.NOT_FOUND, reason = "Entity not found")
-class NotFoundException(
-        message: String? = null,
-        cause: Throwable? = null
-) : ControllerException(message, cause)
-
-
-class UserAlreadyExistsException(
-        message: String? = null,
-        cause: Throwable? = null
-) : ControllerException(message, cause)
-
-@ResponseStatus(HttpStatus.BAD_REQUEST, reason = "Wrong input")
-class BadRequestException(
-        message: String? = null,
-        cause: Throwable? = null
-) : ControllerException(message, cause)
-
-@ResponseStatus(HttpStatus.FORBIDDEN, reason = "Cannot perform this operation")
-class AccessDeniedException(
-        message: String? = null,
-        cause: Throwable? = null
-) : ControllerException(message, cause)
+class RequestException(
+        val status: HttpStatus,
+        val errors: List<RestErrorMessage>
+) : RuntimeException() {
+    constructor(status: HttpStatus, vararg errors: Pair<String, String>) : this(
+            status,
+            errors.map { RestErrorMessage(it.first, it.second) }
+    )
+}

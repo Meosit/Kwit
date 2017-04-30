@@ -18,7 +18,7 @@ data class User(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(columnDefinition = "INT")
-        var id: Long? = null,
+        override var id: Long? = null,
         @field:NotNull(message = "Email is not specified")
         @field:Size(min = 1, max = 100, message = "Email must be in range 1-255 symbols")
         @Column(length = 255, unique = true)

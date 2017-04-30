@@ -25,8 +25,17 @@ interface CategoryController : CrudController<Category, Long> {
     fun calculateCategoryStats(
             @PathVariable("type") type: CategoryType,
             @PathVariable("currencyCode") currencyCode: String,
-            @RequestParam(name = "from", required = false) @DateTimeFormat(pattern = "dd.MM.yyyy") from: Date,
-            @RequestParam(name = "to", required = false) @DateTimeFormat(pattern = "dd.MM.yyyy") to: Date
+            @RequestParam(name = "from") @DateTimeFormat(pattern = "dd.MM.yyyy") from: Date,
+            @RequestParam(name = "to") @DateTimeFormat(pattern = "dd.MM.yyyy") to: Date
     ): List<CategoryStats>
+
+    @GetMapping("stats/{type}/{currencyCode}")
+    fun calculateCategoryStatsAllTime(
+            @PathVariable("type") type: CategoryType,
+            @PathVariable("currencyCode") currencyCode: String
+    ): List<CategoryStats>
+
+    @DeleteMapping("{id}", params = arrayOf("newCategory"))
+    fun softDelete(@PathVariable("id") id: Long, @RequestParam("newCategory") newId: Long, @Auth auth: UserDetails)
 
 }

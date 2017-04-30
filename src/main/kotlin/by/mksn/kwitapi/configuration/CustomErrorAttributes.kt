@@ -1,6 +1,6 @@
 package by.mksn.kwitapi.configuration
 
-import by.mksn.kwitapi.controller.exception.RestErrorMessage
+import by.mksn.kwitapi.support.RestErrorMessage
 import org.springframework.boot.autoconfigure.web.DefaultErrorAttributes
 import org.springframework.web.context.request.RequestAttributes
 

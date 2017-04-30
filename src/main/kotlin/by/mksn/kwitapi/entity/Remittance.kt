@@ -15,10 +15,10 @@ data class Remittance(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(columnDefinition = "INT")
-        var id: Long? = null,
+        override var id: Long? = null,
         @get:JsonIgnore
         @Column(name = "user_id", columnDefinition = "INT")
-        var userId: Long? = null,
+        override var userId: Long? = null,
         @field:NotNull(message = "Donor wallet is not specified")
         @ManyToOne(targetEntity = Wallet::class)
         @JoinColumn(name = "wallet_donor_id")

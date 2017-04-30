@@ -1,7 +1,7 @@
 package by.mksn.kwitapi.configuration.security
 
-import by.mksn.kwitapi.DEFAULT_BCRYPT_STRENGTH
 import by.mksn.kwitapi.repository.UserRepository
+import by.mksn.kwitapi.support.DEFAULT_BCRYPT_STRENGTH
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.core.userdetails.UserDetailsService

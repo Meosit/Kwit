@@ -1,9 +1,11 @@
 package by.mksn.kwitapi.entity.support
 
-interface IdAssignable<in ID> {
+interface IdAssignable<ID> {
+    val id: ID?
     fun assignID(id: ID?)
 }
 
-interface IdAndUserIdAssignable<in ID> : IdAssignable<ID> {
+interface IdAndUserIdAssignable<ID> : IdAssignable<ID> {
+    val userId: ID?
     fun assignUserID(id: ID?)
 }

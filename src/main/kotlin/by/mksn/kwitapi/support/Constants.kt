@@ -1,4 +1,4 @@
-package by.mksn.kwitapi
+package by.mksn.kwitapi.support
 
 const val DEFAULT_ENCODING = "UTF-8"
 const val DEFAULT_BCRYPT_STRENGTH = 12

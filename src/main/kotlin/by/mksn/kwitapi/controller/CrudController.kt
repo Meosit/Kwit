@@ -9,7 +9,7 @@ import java.io.Serializable
 import javax.validation.Valid
 
 @RestController
-interface CrudController<E : IdAssignable<ID>, in ID : Serializable> {
+interface CrudController<E : IdAssignable<ID>, ID : Serializable> {
 
     @PostMapping("")
     fun create(@Valid @RequestBody entity: E, @Auth auth: UserDetails): E

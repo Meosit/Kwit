@@ -12,12 +12,10 @@ import org.springframework.security.crypto.password.PasswordEncoder
 
 @Configuration
 @EnableWebSecurity
-@Import(*arrayOf(
-        SecurityBeansConfiguration::class,
+@Import(SecurityBeansConfiguration::class,
         AuthorizationServerConfiguration::class,
         ResourceServerConfiguration::class,
-        MethodSecurityConfiguration::class
-))
+        MethodSecurityConfiguration::class)
 class SecurityConfiguration(
         val userDetailsService: UserDetailsService,
         val passwordEncoder: PasswordEncoder

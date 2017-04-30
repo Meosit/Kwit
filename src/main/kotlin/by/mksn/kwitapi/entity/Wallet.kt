@@ -15,10 +15,10 @@ data class Wallet(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(columnDefinition = "INT")
-        var id: Long? = null,
+        override var id: Long? = null,
         @get:JsonIgnore
         @Column(name = "user_id", columnDefinition = "INT")
-        var userId: Long?,
+        override var userId: Long?,
         @field:NotNull(message = "Currency is not specified")
         @ManyToOne
         @JoinColumn(name = "currency_id")

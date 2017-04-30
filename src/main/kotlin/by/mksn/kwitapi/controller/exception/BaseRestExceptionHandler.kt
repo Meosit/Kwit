@@ -1,5 +1,7 @@
 package by.mksn.kwitapi.controller.exception
 
+import by.mksn.kwitapi.support.RestError
+import by.mksn.kwitapi.support.RestErrorMessage
 import org.springframework.beans.ConversionNotSupportedException
 import org.springframework.beans.TypeMismatchException
 import org.springframework.http.HttpHeaders
@@ -97,25 +99,3 @@ open class BaseRestExceptionHandler : ResponseEntityExceptionHandler() {
 
 
 }
-
-data class RestError(
-        val status: Int,
-        val error: String,
-        val errors: List<RestErrorMessage>
-) {
-    constructor(status: HttpStatus, vararg errors: RestErrorMessage) : this(
-            status.value(),
-            status.reasonPhrase,
-            errors.asList())
-
-    constructor(status: HttpStatus, errors: List<RestErrorMessage>) : this(
-            status.value(),
-            status.reasonPhrase,
-            errors)
-
-}
-
-data class RestErrorMessage(
-        val title: String,
-        val message: String
-)

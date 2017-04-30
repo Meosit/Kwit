@@ -13,10 +13,10 @@ data class Category(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(columnDefinition = "INT")
-        var id: Long? = null,
+        override var id: Long? = null,
         @get:JsonIgnore
         @Column(name = "user_id", columnDefinition = "INT")
-        var userId: Long? = null,
+        override var userId: Long? = null,
         @field:NotNull(message = "Name is not specified")
         @field:Size(min = 1, max = 100, message = "Name must be in range 1-100 symbols")
         @Column(length = 100)

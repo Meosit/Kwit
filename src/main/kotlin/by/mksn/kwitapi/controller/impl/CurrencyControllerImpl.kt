@@ -3,10 +3,11 @@ package by.mksn.kwitapi.controller.impl
 import by.mksn.kwitapi.configuration.security.Auth
 import by.mksn.kwitapi.configuration.security.UserDetails
 import by.mksn.kwitapi.controller.CurrencyController
-import by.mksn.kwitapi.controller.exception.NotFoundException
 import by.mksn.kwitapi.entity.Currency
 import by.mksn.kwitapi.service.CurrencyService
-import by.mksn.kwitapi.wrapServiceCall
+import by.mksn.kwitapi.support.ifNullNotFound
+import by.mksn.kwitapi.support.notFoundException
+import by.mksn.kwitapi.support.wrapServiceCall
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.PathVariable
@@ -25,10 +26,13 @@ open class CurrencyControllerImpl(
             = wrapServiceCall(logger) { currencyService.create(entity) }
 
     override fun findByCode(@PathVariable("code") code: String): Currency
-            = wrapServiceCall(logger) { currencyService.findByCode(code) ?: throw NotFoundException() }
+            = wrapServiceCall(logger) {
+        currencyService.findByCode(code) ?:
+                notFoundException("Error", "Entity with code '$code' not found")
+    }
 
     override fun findById(@PathVariable("id") id: Long, @Auth auth: UserDetails): Currency
-            = wrapServiceCall(logger) { currencyService.findById(id) ?: throw NotFoundException() }
+            = wrapServiceCall(logger) { currencyService.findById(id).ifNullNotFound(id) }
 
     override fun update(@PathVariable("id") id: Long, @Valid @RequestBody entity: Currency, @Auth auth: UserDetails): Currency
             = wrapServiceCall(logger) { currencyService.update(id, entity) }

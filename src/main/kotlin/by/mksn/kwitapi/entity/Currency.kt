@@ -11,7 +11,7 @@ data class Currency(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(columnDefinition = "INT")
-        var id: Long? = null,
+        override var id: Long? = null,
         @field:NotNull(message = "Currency code is not specified")
         @field:Size(min = 3, max = 3, message = "Currency code must have only 3 chars")
         @Column(columnDefinition = "CHAR(3)")

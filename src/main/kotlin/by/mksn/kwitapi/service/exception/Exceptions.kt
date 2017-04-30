@@ -1,6 +1,6 @@
 package by.mksn.kwitapi.service.exception
 
-import by.mksn.kwitapi.controller.exception.RestErrorMessage
+import by.mksn.kwitapi.support.RestErrorMessage
 import org.springframework.http.HttpStatus
 
 open class ServiceException(

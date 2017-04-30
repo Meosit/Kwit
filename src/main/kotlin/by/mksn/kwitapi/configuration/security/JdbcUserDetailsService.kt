@@ -1,7 +1,7 @@
 package by.mksn.kwitapi.configuration.security
 
-import by.mksn.kwitapi.DEFAULT_ENCODING
 import by.mksn.kwitapi.repository.UserRepository
+import by.mksn.kwitapi.support.DEFAULT_ENCODING
 import org.slf4j.LoggerFactory
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException

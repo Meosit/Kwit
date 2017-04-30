@@ -3,7 +3,7 @@ package by.mksn.kwitapi.service.impl
 import by.mksn.kwitapi.entity.Currency
 import by.mksn.kwitapi.repository.CurrencyRepository
 import by.mksn.kwitapi.service.CurrencyService
-import by.mksn.kwitapi.wrapJPACall
+import by.mksn.kwitapi.support.wrapJPACall
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

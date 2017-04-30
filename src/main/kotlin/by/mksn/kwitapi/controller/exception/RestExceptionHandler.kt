@@ -1,6 +1,7 @@
 package by.mksn.kwitapi.controller.exception
 
-import by.mksn.kwitapi.service.exception.ServiceRequestException
+import by.mksn.kwitapi.support.RestError
+import by.mksn.kwitapi.support.RestErrorMessage
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.core.io.JsonEOFException
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
@@ -84,8 +85,8 @@ class RestExceptionHandler : BaseRestExceptionHandler() {
         return handleExceptionInternal(ex, apiError, headers, status, request)
     }
 
-    @ExceptionHandler(ServiceRequestException::class)
-    fun handleServiceBadRequest(ex: ServiceRequestException): ResponseEntity<Any> {
+    @ExceptionHandler(RequestException::class)
+    fun handleServiceBadRequest(ex: RequestException): ResponseEntity<Any> {
         val apiError = RestError(ex.status, ex.errors)
         return ResponseEntity(apiError, ex.status)
     }
