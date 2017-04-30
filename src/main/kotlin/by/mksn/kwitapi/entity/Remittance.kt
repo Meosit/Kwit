@@ -22,11 +22,11 @@ data class Remittance(
         @field:NotNull(message = "Donor wallet is not specified")
         @ManyToOne(targetEntity = Wallet::class)
         @JoinColumn(name = "wallet_donor_id")
-        var walletDonor: Wallet,
+        var walletDonor: Wallet?,
         @field:NotNull(message = "Acceptor wallet is not specified")
         @ManyToOne(targetEntity = Wallet::class)
         @JoinColumn(name = "wallet_acceptor_id")
-        var walletAcceptor: Wallet,
+        var walletAcceptor: Wallet?,
         @field:NotNull(message = "Donor sum is not specified")
         @field:DecimalMin("0.0000", message = "Donor sum must be positive")
         @field:Digits(integer = 19, fraction = 4, message = "Donor sum value is invalid")

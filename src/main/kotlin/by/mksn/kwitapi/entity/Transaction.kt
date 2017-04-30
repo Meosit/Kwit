@@ -22,11 +22,11 @@ data class Transaction(
         @field:NotNull(message = "Wallet is not specified")
         @ManyToOne
         @JoinColumn(name = "wallet_id")
-        var wallet: Wallet,
+        var wallet: Wallet?,
         @field:NotNull(message = "Category is not specified")
         @ManyToOne
         @JoinColumn(name = "category_id")
-        var category: Category,
+        var category: Category?,
         @field:NotNull(message = "Sum is not specified")
         @field:Digits(integer = 19, fraction = 4, message = "Invalid sum value")
         @Column(columnDefinition = "INT(11)")

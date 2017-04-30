@@ -14,7 +14,7 @@ import java.util.*
 @RequestMapping("/api/categories")
 interface CategoryController : CrudController<Category, Long> {
 
-    @GetMapping("{type}")
+    @GetMapping("type/{type}")
     fun findAll(
             @Auth auth: UserDetails,
             @PathVariable("type") type: CategoryType,

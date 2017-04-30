@@ -9,14 +9,20 @@ abstract class AbstractCrudService<E : IdAndUserIdAssignable<Long>>(
         private val crudRepository: PersonalCrudRepository<E, Long>
 ) : PersonalCrudService<E, Long> {
 
+    protected open fun checkValidNestedEntitiesIfNeed(entity: E) {}
+
     override fun findByIdAndUserId(id: Long, userId: Long): E? =
             wrapJPACall { crudRepository.findByIdAndUserId(id, userId) }
 
-    override fun create(entity: E): E? =
-            wrapJPACall { crudRepository.save(entity) }
+    override fun create(entity: E): E? = wrapJPACall {
+        checkValidNestedEntitiesIfNeed(entity)
+        crudRepository.save(entity)
+    }
 
-    override fun update(entity: E): E? =
-            wrapJPACall { crudRepository.save(entity) }
+    override fun update(entity: E): E? = wrapJPACall {
+        checkValidNestedEntitiesIfNeed(entity)
+        crudRepository.save(entity)
+    }
 
     override fun delete(id: Long) =
             wrapJPACall { crudRepository.delete(id) }

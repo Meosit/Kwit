@@ -1,8 +1,9 @@
 package by.mksn.kwitapi.configuration
 
 import by.mksn.kwitapi.configuration.security.SecurityConfiguration
-import by.mksn.kwitapi.controller.exception.ValidationExceptionHandler
+import by.mksn.kwitapi.controller.exception.RestExceptionHandler
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
+import org.springframework.boot.autoconfigure.web.ErrorAttributes
 import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.boot.web.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Bean
@@ -23,13 +24,13 @@ import org.springframework.context.annotation.Import
         org.springframework.boot.autoconfigure.security.oauth2.OAuth2AutoConfiguration::class))
 class MainConfiguration : SpringBootServletInitializer() {
 
-    /*@Bean
-    fun defaultErrorAttributes(): DefaultErrorAttributes
-            = ErrorAttributesWithoutExceptionName()
-*/
     @Bean
-    fun restExceptionHandler(): ValidationExceptionHandler
-            = ValidationExceptionHandler()
+    fun errorAttributes(): ErrorAttributes
+            = CustomErrorAttributes()
+
+    @Bean
+    fun restExceptionHandler(): RestExceptionHandler
+            = RestExceptionHandler()
 
     override fun configure(builder: SpringApplicationBuilder): SpringApplicationBuilder
             = builder.sources(MainConfiguration::class.java)
