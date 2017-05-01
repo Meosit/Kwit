@@ -3,7 +3,7 @@ package by.mksn.kwitapi.controller.exception
 import by.mksn.kwitapi.support.RestError
 import by.mksn.kwitapi.support.RestErrorMessage
 import com.fasterxml.jackson.core.JsonParseException
-import com.fasterxml.jackson.core.io.JsonEOFException
+import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import org.springframework.beans.TypeMismatchException
 import org.springframework.http.HttpHeaders
@@ -14,7 +14,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.context.request.WebRequest
-import org.springframework.web.servlet.NoHandlerFoundException
 
 @ControllerAdvice
 class RestExceptionHandler : BaseRestExceptionHandler() {
@@ -30,47 +29,35 @@ class RestExceptionHandler : BaseRestExceptionHandler() {
         return handleExceptionInternal(ex, apiError, headers, HttpStatus.BAD_REQUEST, request)
     }
 
-    override fun handleNoHandlerFoundException(
-            ex: NoHandlerFoundException,
-            headers: HttpHeaders,
-            status: HttpStatus,
-            request: WebRequest
-    ): ResponseEntity<Any> {
-        val apiError = RestError(status, RestErrorMessage(
-                title = "Invalid path",
-                message = "'${ex.requestURL}'"
-        ))
-        return handleExceptionInternal(ex, apiError, headers, status, request)
-    }
-
     override fun handleHttpMessageNotReadable(
             ex: HttpMessageNotReadableException,
             headers: HttpHeaders,
             status: HttpStatus,
             request: WebRequest): ResponseEntity<Any> {
         val cause = ex.cause
-        val newStatus: HttpStatus
         val message: RestErrorMessage
         when (cause) {
+            null -> {
+                message = RestErrorMessage("Error", "Required request body is missing")
+            }
             is InvalidFormatException -> {
-                newStatus = HttpStatus.BAD_REQUEST
                 message = RestErrorMessage("Invalid entity", "Invalid value '${cause.value}' of type ${cause.targetType.simpleName}")
             }
             is JsonParseException -> {
-                newStatus = HttpStatus.BAD_REQUEST
                 message = RestErrorMessage("Invalid JSON", "Invalid JSON format")
             }
-            is JsonEOFException -> {
-                newStatus = HttpStatus.BAD_REQUEST
-                message = RestErrorMessage("Invalid JSON", "Invalid JSON format")
+            is JsonMappingException -> {
+                val references = cause.path
+                val messageBuilder = StringBuilder("Invalid values in fields")
+                references.forEach { messageBuilder.append(" '").append(it.fieldName).append("'") }
+                message = RestErrorMessage("Invalid JSON", messageBuilder.toString())
             }
             else -> {
-                newStatus = status
-                message = RestErrorMessage("Message not readable", cause?.message ?: "Unknown error")
+                message = RestErrorMessage("Message not readable", cause.message ?: "Unknown error")
             }
         }
         val apiError = RestError(status, message)
-        return handleExceptionInternal(ex, apiError, headers, newStatus, request)
+        return handleExceptionInternal(ex, apiError, headers, status, request)
     }
 
     override fun handleTypeMismatch(

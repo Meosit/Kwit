@@ -9,13 +9,13 @@ import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Repository
-import org.springframework.transaction.annotation.Transactional
 import java.io.Serializable
 import java.math.BigDecimal
 import javax.persistence.ColumnResult
 import javax.persistence.ConstructorResult
 import javax.persistence.NamedNativeQuery
 import javax.persistence.SqlResultSetMapping
+import javax.transaction.Transactional
 
 interface PersonalCrudRepository<E : IdAssignable<ID>, ID : Serializable> {
     fun findByIdAndUserId(id: ID, userId: ID): E?

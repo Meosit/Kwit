@@ -6,10 +6,10 @@ import javax.validation.constraints.Pattern
 import kotlin.reflect.KClass
 
 private const val ATOM = "[a-z0-9!#$%&'*+/=?^_`{|}~-]"
-private const val DOMAIN = "($ATOM+(\\.$ATOM+)+"
+private const val DOMAIN = "($ATOM+(\\.$ATOM+)+)"
 private const val IP_DOMAIN = "\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\]"
 
-private const val PATTERN = "^$ATOM+(\\.$ATOM+)*@$DOMAIN|$IP_DOMAIN)$"
+private const val PATTERN = "^$ATOM+(\\.$ATOM+)*@($DOMAIN|$IP_DOMAIN)$"
 
 @Target(AnnotationTarget.FIELD, AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
