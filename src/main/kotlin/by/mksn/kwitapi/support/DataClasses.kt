@@ -1,12 +1,16 @@
 package by.mksn.kwitapi.support
 
 import org.springframework.http.HttpStatus
-import java.sql.Timestamp
+import java.util.*
 
-data class TimestampRange(
-        val start: Timestamp,
-        val end: Timestamp
-)
+data class DateRange(
+        val start: Date,
+        val end: Date
+) {
+    companion object {
+        val NONE = DateRange(MIN_SQL_DATETIME, MAX_SQL_DATETIME)
+    }
+}
 
 data class RestError(
         val status: Int,

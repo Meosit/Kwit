@@ -68,11 +68,13 @@ interface TransactionRepository :
 
     @Modifying
     @Transactional
-    fun deleteByCategoryId(categoryId: Long): Long
+    fun deleteByCategoryId(categoryId: Long): Int
 
     @Transactional
     @Modifying(clearAutomatically = true)
-    @Query("UPDATE transaction SET category_id = ?1 WHERE category_id = ?2",
+    @Query("UPDATE transaction SET category_id = :newCategoryId WHERE category_id = :oldCategoryId",
             nativeQuery = true)
-    fun shiftToNewCategory(newCategoryId: Long, oldCategoryId: Long): Long
+    fun shiftToNewCategory(
+            @Param("newCategoryId") newCategoryId: Long,
+            @Param("oldCategoryId") oldCategoryId: Long): Int
 }

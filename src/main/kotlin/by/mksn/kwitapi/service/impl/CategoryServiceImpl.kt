@@ -1,17 +1,15 @@
 package by.mksn.kwitapi.service.impl
 
 import by.mksn.kwitapi.entity.Category
-import by.mksn.kwitapi.entity.support.CategoryStats
+import by.mksn.kwitapi.entity.support.CategoriesStats
 import by.mksn.kwitapi.entity.support.CategoryType
 import by.mksn.kwitapi.repository.CategoryRepository
+import by.mksn.kwitapi.repository.CurrencyRepository
 import by.mksn.kwitapi.repository.TransactionRepository
 import by.mksn.kwitapi.service.CategoryService
 import by.mksn.kwitapi.service.exception.ServiceException
 import by.mksn.kwitapi.service.exception.ServiceNotFoundException
-import by.mksn.kwitapi.support.TimestampRange
-import by.mksn.kwitapi.support.ifNull
-import by.mksn.kwitapi.support.ifNullServiceNotFound
-import by.mksn.kwitapi.support.wrapJPACall
+import by.mksn.kwitapi.support.*
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -22,7 +20,8 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = arrayOf(ServiceException::class))
 class CategoryServiceImpl(
         private val categoryRepository: CategoryRepository,
-        private val transactionRepository: TransactionRepository
+        private val transactionRepository: TransactionRepository,
+        private val currencyRepository: CurrencyRepository
 ) : AbstractCrudService<Category>(categoryRepository), CategoryService {
 
     companion object {
@@ -57,10 +56,15 @@ class CategoryServiceImpl(
     override fun findByUserIdAndType(id: Long, type: CategoryType, pageable: Pageable): List<Category> =
             wrapJPACall { categoryRepository.findByUserIdAndType(id, type, pageable) }
 
-    override fun calculateCategoryStats(type: CategoryType,
-                                        currencyCode: String,
-                                        range: TimestampRange?): List<CategoryStats> {
-        return emptyList()//wrapJPACall { categoryRepository.calculateCategoryStats(type, currencyId, startDate, endDate) }
+    override fun calculateCategoryStats(userId: Long, type: CategoryType, currencyCode: String, range: DateRange?): CategoriesStats {
+        val (from, to) = range ?: DateRange.NONE
+        val currency = wrapJPACall { currencyRepository.findByCode(currencyCode) }
+                ?: throw ServiceNotFoundException("Error" to "Currency with code '$currencyCode' not found")
+        val categories = wrapJPACall { categoryRepository.findCategoryStats(userId, currency.id!!, type, from.ts(), to.ts()) }
+        val categoriesStats = CategoriesStats(currency, range, categories)
+        logger.debug("Fetched ${categories.size} categories stats for currency '" +
+                "$currencyCode' ${if (range == null) "during all time" else "during ${range.start} to ${range.end}"}")
+        return categoriesStats
     }
 
 }

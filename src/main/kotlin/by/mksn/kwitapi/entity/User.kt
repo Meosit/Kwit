@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.constraints.Range
 import java.io.Serializable
-import java.sql.Timestamp
+import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
@@ -37,7 +37,7 @@ data class User(
         val role: UserRole? = UserRole.USER,
         @get:JsonIgnore
         @Column(name = "created_at", columnDefinition = "DATETIME")
-        val createdAt: Timestamp? = null,
+        val createdAt: Date? = null,
         @get:JsonIgnore
         @Column(name = "is_deleted")
         var isDeleted: Boolean = false

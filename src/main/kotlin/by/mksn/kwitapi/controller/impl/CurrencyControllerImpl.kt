@@ -4,6 +4,7 @@ import by.mksn.kwitapi.configuration.security.Auth
 import by.mksn.kwitapi.configuration.security.UserDetails
 import by.mksn.kwitapi.controller.CurrencyController
 import by.mksn.kwitapi.entity.Currency
+import by.mksn.kwitapi.entity.support.CurrencyCode
 import by.mksn.kwitapi.service.CurrencyService
 import by.mksn.kwitapi.support.ifNullNotFound
 import by.mksn.kwitapi.support.notFoundException
@@ -25,7 +26,7 @@ open class CurrencyControllerImpl(
     override fun create(@Valid @RequestBody entity: Currency, @Auth auth: UserDetails): Currency
             = wrapServiceCall(logger) { currencyService.create(entity) }
 
-    override fun findByCode(@PathVariable("code") code: String): Currency
+    override fun findByCode(@PathVariable("code") @CurrencyCode code: String): Currency
             = wrapServiceCall(logger) {
         currencyService.findByCode(code) ?:
                 notFoundException("Error", "Entity with code '$code' not found")

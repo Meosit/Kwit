@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
 import java.math.BigDecimal
-import java.sql.Timestamp
+import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.DecimalMin
 import javax.validation.constraints.Digits
@@ -42,7 +42,7 @@ data class Remittance(
         var conversion: BigDecimal? = null,
         @field:NotNull(message = "Date is not specified")
         @Column(columnDefinition = "DATETIME")
-        var date: Timestamp? = null
+        var date: Date? = null
 ) : IdAndUserIdAssignable<Long> {
     override fun assignID(id: Long?) {
         this.id = id

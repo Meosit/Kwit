@@ -4,9 +4,10 @@ import by.mksn.kwitapi.configuration.security.Auth
 import by.mksn.kwitapi.configuration.security.UserDetails
 import by.mksn.kwitapi.controller.CategoryController
 import by.mksn.kwitapi.entity.Category
-import by.mksn.kwitapi.entity.support.CategoryStats
+import by.mksn.kwitapi.entity.support.CategoriesStats
 import by.mksn.kwitapi.entity.support.CategoryType
 import by.mksn.kwitapi.entity.support.CategoryTypeBinder
+import by.mksn.kwitapi.entity.support.CurrencyCode
 import by.mksn.kwitapi.service.CategoryService
 import by.mksn.kwitapi.support.till
 import by.mksn.kwitapi.support.wrapServiceCall
@@ -35,17 +36,19 @@ open class CategoryControllerImpl(
 
     override fun calculateCategoryStats(
             @PathVariable("type") type: CategoryType,
-            @PathVariable("currencyCode") currencyCode: String,
-            @RequestParam(name = "from", required = false) @DateTimeFormat(pattern = "dd.MM.yyyy") from: Date,
-            @RequestParam(name = "to", required = false) @DateTimeFormat(pattern = "dd.MM.yyyy") to: Date
-    ): List<CategoryStats> =
-            wrapServiceCall(logger) { categoryService.calculateCategoryStats(type, currencyCode, from till to) }
+            @PathVariable("currencyCode") @CurrencyCode currencyCode: String,
+            @RequestParam(name = "from") @DateTimeFormat(pattern = "dd.MM.yyyy") from: Date,
+            @RequestParam(name = "to") @DateTimeFormat(pattern = "dd.MM.yyyy") to: Date,
+            @Auth auth: UserDetails
+    ): CategoriesStats =
+            wrapServiceCall(logger) { categoryService.calculateCategoryStats(auth.userId, type, currencyCode, from till to) }
 
     override fun calculateCategoryStatsAllTime(
             @PathVariable("type") type: CategoryType,
-            @PathVariable("currencyCode") currencyCode: String
-    ): List<CategoryStats> =
-            wrapServiceCall(logger) { categoryService.calculateCategoryStats(type, currencyCode, null) }
+            @PathVariable("currencyCode") @CurrencyCode currencyCode: String,
+            @Auth auth: UserDetails
+    ): CategoriesStats =
+            wrapServiceCall(logger) { categoryService.calculateCategoryStats(auth.userId, type, currencyCode, null) }
 
     override fun softDelete(@PathVariable("id") id: Long, @RequestParam("newCategory") newId: Long, @Auth auth: UserDetails) {
         logger.info("Mapping worked id: $id, newId: $newId")

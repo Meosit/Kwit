@@ -32,40 +32,40 @@ TRUNCATE TABLE wallet;
 ALTER TABLE wallet
   AUTO_INCREMENT = 1;
 INSERT INTO wallet (user_id, currency_id, name, balance, type) VALUES
-  (5, 4, 'Hangover Relief', 173, 'NORMAL'),
-  (4, 4, 'Ibuprofen', 817, 'NORMAL'),
-  (3, 2, 'Softlips Berry', 696, 'NORMAL'),
-  (7, 5, 'Shopko Antibacterial Foaming Hand Sanitizer', 901, 'SAVING'),
-  (5, 1, 'GFA First Aid', 871, 'SAVING'),
-  (8, 2, 'Carbon Dioxide-Oxygen-Nitrogen Mixture', 236, 'NORMAL'),
+  (1, 4, 'Hangover Relief', 173, 'NORMAL'),
+  (1, 4, 'Ibuprofen', 817, 'NORMAL'),
+  (1, 2, 'Softlips Berry', 696, 'NORMAL'),
+  (1, 5, 'Shopko Antibacterial Foaming Hand Sanitizer', 901, 'SAVING'),
+  (1, 1, 'GFA First Aid', 871, 'SAVING'),
+  (1, 2, 'Carbon Dioxide-Oxygen-Nitrogen Mixture', 236, 'NORMAL'),
   (1, 4, 'Piroxicam', 465, 'SAVING'),
-  (2, 1, 'Orajel for Cold Sores', 42, 'NORMAL'),
-  (8, 3, 'Moisturizing Antibacterial', 369, 'NORMAL'),
-  (8, 3, 'Degree', 856, 'SAVING'),
-  (7, 5, 'Acarbose', 784, 'SAVING'),
-  (5, 5, 'TEMAZEPAM', 596, 'NORMAL'),
+  (1, 1, 'Orajel for Cold Sores', 42, 'NORMAL'),
+  (1, 3, 'Moisturizing Antibacterial', 369, 'NORMAL'),
+  (1, 3, 'Degree', 856, 'SAVING'),
+  (1, 5, 'Acarbose', 784, 'SAVING'),
+  (1, 5, 'TEMAZEPAM', 596, 'NORMAL'),
   (1, 1, 'Prochieve', 351, 'NORMAL'),
-  (9, 3, 'Oxymorphone hydrochloride', 874, 'SAVING'),
-  (8, 5, 'Piperacillin and Tazobactam', 787, 'NORMAL');
+  (1, 3, 'Oxymorphone hydrochloride', 874, 'SAVING'),
+  (1, 5, 'Piperacillin and Tazobactam', 787, 'NORMAL');
 
 
 TRUNCATE TABLE category;
 ALTER TABLE category
   AUTO_INCREMENT = 1;
 INSERT INTO category (user_id, name, type) VALUES
-  (8, 'Babblestorm', 'OUTGO'),
-  (5, 'Avavee', 'INCOME'),
-  (4, 'Agivu', 'OUTGO'),
-  (3, 'Fivechat', 'OUTGO'),
-  (5, 'Rhynoodle', 'INCOME'),
-  (2, 'Jaloo', 'OUTGO'),
-  (4, 'Innojam', 'OUTGO'),
-  (6, 'Realblab', 'INCOME'),
-  (5, 'Voonyx', 'INCOME'),
-  (6, 'Yombu', 'OUTGO'),
-  (3, 'Aimbo', 'OUTGO'),
-  (7, 'Tavu', 'OUTGO'),
-  (8, 'Omba', 'INCOME'),
+  (1, 'Babblestorm', 'OUTGO'),
+  (1, 'Avavee', 'INCOME'),
+  (1, 'Agivu', 'OUTGO'),
+  (1, 'Fivechat', 'OUTGO'),
+  (1, 'Rhynoodle', 'INCOME'),
+  (1, 'Jaloo', 'OUTGO'),
+  (1, 'Innojam', 'OUTGO'),
+  (1, 'Realblab', 'INCOME'),
+  (1, 'Voonyx', 'INCOME'),
+  (1, 'Yombu', 'OUTGO'),
+  (1, 'Aimbo', 'OUTGO'),
+  (1, 'Tavu', 'OUTGO'),
+  (1, 'Omba', 'INCOME'),
   (1, 'Mycat', 'INCOME'),
   (1, 'Tanoodle', 'INCOME');
 
@@ -73,20 +73,20 @@ TRUNCATE TABLE transaction;
 ALTER TABLE transaction
   AUTO_INCREMENT = 1;
 INSERT INTO transaction (user_id, wallet_id, category_id, sum, date) VALUES
-  (7, 6, 13, 20, '2017-02-08 07:56:41'),
-  (8, 14, 2, 93, '2017-02-21 11:00:51'),
-  (9, 7, 2, 35, '2017-02-27 14:57:23'),
-  (5, 10, 6, 89, '2017-02-10 21:40:56'),
-  (8, 13, 6, 47, '2017-03-27 07:34:50'),
-  (7, 5, 14, 72, '2017-03-26 07:03:15'),
-  (5, 11, 2, 74, '2017-02-20 14:24:46'),
-  (10, 2, 7, 24, '2017-02-09 01:48:34'),
-  (3, 2, 14, 74, '2017-03-21 11:48:39'),
-  (3, 3, 9, 72, '2017-01-21 20:03:38'),
-  (5, 11, 5, 91, '2017-03-09 16:19:13'),
-  (6, 6, 10, 38, '2017-01-10 14:29:56'),
-  (8, 5, 2, 21, '2017-02-06 07:45:59'),
+  (1, 6, 13, 20, '2017-02-08 07:56:41'),
+  (1, 14, 2, 93, '2017-02-21 11:00:51'),
+  (1, 7, 2, 35, '2017-02-27 14:57:23'),
+  (1, 10, 6, 89, '2017-02-10 21:40:56'),
+  (1, 13, 6, 47, '2017-03-27 07:34:50'),
+  (1, 5, 14, 72, '2017-03-26 07:03:15'),
+  (1, 11, 2, 74, '2017-02-20 14:24:46'),
+  (1, 2, 7, 24, '2017-02-09 01:48:34'),
+  (1, 2, 14, 74, '2017-03-21 11:48:39'),
+  (1, 3, 9, 72, '2017-01-21 20:03:38'),
+  (1, 11, 5, 91, '2017-03-09 16:19:13'),
+  (1, 6, 10, 38, '2017-01-10 14:29:56'),
+  (1, 5, 2, 21, '2017-02-06 07:45:59'),
   (1, 5, 2, 61, '2017-01-14 23:57:04'),
-  (3, 15, 15, 4, '2017-04-07 05:13:55');
+  (1, 15, 15, 4, '2017-04-07 05:13:55');
 
 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;

@@ -42,12 +42,7 @@ fun MutableList<RestErrorMessage>.add(errorMessage: Pair<String, String>) {
     this.add(RestErrorMessage(errorMessage.first, errorMessage.second))
 }
 
-infix fun Timestamp.till(end: Timestamp) = TimestampRange(this, end)
-
-infix fun Date.till(end: Date) = TimestampRange(
-        Timestamp.from(this.toInstant()),
-        Timestamp.from(end.toInstant())
-)
+infix fun Date.till(end: Date) = DateRange(this, end)
 
 fun notFoundException(title: String, message: String): Nothing =
         throw RequestException(HttpStatus.NOT_FOUND, title to message)
@@ -58,11 +53,8 @@ fun badRequestException(title: String, message: String): Nothing =
 fun accessDeniedException(title: String, message: String): Nothing =
         throw RequestException(HttpStatus.FORBIDDEN, title to message)
 
-inline fun Any?.ifNull(block: (Any?) -> Nothing): Nothing? {
-    if (this == null) {
-        block(this)
-    }
-    return null
+inline fun <T> T?.ifNull(block: T.() -> T): T {
+    return if (this == null) block() else this
 }
 
 fun <ID, T : IdAssignable<ID>> T?.ifNullServiceNotFound(id: ID? = null): T {
@@ -79,3 +71,9 @@ fun <ID, T : IdAssignable<ID>> T?.ifNullNotFound(id: ID? = null): T {
     }
     return this
 }
+
+inline fun <T> Boolean.then(block: () -> T?): T?
+        = if (this) block() else null
+
+fun Date.ts(): Timestamp = Timestamp.from(this.toInstant())
+

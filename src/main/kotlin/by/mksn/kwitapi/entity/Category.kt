@@ -14,30 +14,18 @@ import javax.validation.constraints.Size
         ConstructorResult(targetClass = CategoryStats::class, columns = arrayOf(
                 ColumnResult(name = "categoryId", type = Long::class),
                 ColumnResult(name = "categoryName", type = String::class),
-                ColumnResult(name = "currencyId", type = Int::class),
-                ColumnResult(name = "currencyCode", type = String::class),
-                ColumnResult(name = "currencySymbol", type = String::class),
-                ColumnResult(name = "currencyIsPrefix", type = Boolean::class),
                 ColumnResult(name = "sumForCategory", type = BigDecimal::class),
                 ColumnResult(name = "percentOfAll", type = BigDecimal::class),
-                ColumnResult(name = "countForCategory", type = Int::class),
-                ColumnResult(name = "startDate", type = String::class),
-                ColumnResult(name = "endDate", type = String::class)
+                ColumnResult(name = "countForCategory", type = Int::class)
         ))
 ))
 @NamedNativeQuery(name = "Category.findCategoryStats", query = """
 SELECT
   categoryId,
   categoryName,
-  currencyId,
-  currencyCode,
-  currencySymbol,
-  currencyIsPrefix,
   IF(nullableSumForCategory IS NULL, 0, nullableSumForCategory)                  AS sumForCategory,
   (IF(nullableSumForCategory IS NULL, 0, nullableSumForCategory) / allSum) * 100 AS percentOfAll,
-  IF(nullableCountForCategory IS NULL, 0, nullableCountForCategory)              AS countForCategory,
-  :startDate AS startDate,
-  :endDate AS endDate
+  IF(nullableCountForCategory IS NULL, 0, nullableCountForCategory)              AS countForCategory
 FROM
   (SELECT
      category.id        AS categoryId,
@@ -87,6 +75,7 @@ FROM
      wallet.currency_id = :currencyId AND
      category.type = :categoryType
   ) AS third
+ORDER BY categoryId
 """, resultSetMapping = "CategoryStatsMapping")
 @Table(name = "category")
 data class Category(

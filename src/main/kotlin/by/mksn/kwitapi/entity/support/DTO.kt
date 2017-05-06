@@ -1,10 +1,9 @@
 package by.mksn.kwitapi.entity.support
 
 import by.mksn.kwitapi.entity.Currency
-import by.mksn.kwitapi.support.TimestampRange
+import by.mksn.kwitapi.support.DateRange
 import org.hibernate.validator.constraints.Range
 import java.math.BigDecimal
-import java.sql.Timestamp
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
@@ -37,36 +36,12 @@ data class CategoryStats(
         val categoryId: Long,
         val categoryName: String,
         val sumForCategory: BigDecimal,
-        val percentOfAll: BigDecimal,
-        val countForCategory: Int,
+        val percentOfAll: BigDecimal?,
+        val countForCategory: Int
+)
+
+data class CategoriesStats(
         val currency: Currency,
-        val period: TimestampRange
-) {
-    constructor(
-            categoryId: Long,
-            categoryName: String,
-            currencyId: Long,
-            currencyCode: String,
-            currencySymbol: String,
-            currencyIsPrefix: Boolean,
-            sumForCategory: BigDecimal,
-            percentOfAll: BigDecimal,
-            countForCategory: Int,
-            startDate: String,
-            endDate: String
-    ) : this(
-            categoryId,
-            categoryName,
-            sumForCategory,
-            percentOfAll,
-            countForCategory,
-            Currency(
-                    currencyId,
-                    currencyCode,
-                    currencySymbol,
-                    currencyIsPrefix),
-            TimestampRange(
-                    Timestamp.valueOf(startDate),
-                    Timestamp.valueOf(endDate))
-    )
-}
+        val period: DateRange?,
+        val categories: List<CategoryStats>
+)

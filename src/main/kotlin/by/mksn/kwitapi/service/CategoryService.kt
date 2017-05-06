@@ -1,9 +1,9 @@
 package by.mksn.kwitapi.service
 
 import by.mksn.kwitapi.entity.Category
-import by.mksn.kwitapi.entity.support.CategoryStats
+import by.mksn.kwitapi.entity.support.CategoriesStats
 import by.mksn.kwitapi.entity.support.CategoryType
-import by.mksn.kwitapi.support.TimestampRange
+import by.mksn.kwitapi.support.DateRange
 import org.springframework.data.domain.Pageable
 
 interface CategoryService : PersonalCrudService<Category, Long> {
@@ -13,8 +13,9 @@ interface CategoryService : PersonalCrudService<Category, Long> {
     fun softDelete(id: Long, newId: Long, userId: Long)
 
     fun calculateCategoryStats(
+            userId: Long,
             type: CategoryType,
             currencyCode: String,
-            range: TimestampRange?
-    ): List<CategoryStats>
+            range: DateRange?
+    ): CategoriesStats
 }
