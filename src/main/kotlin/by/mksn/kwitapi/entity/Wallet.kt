@@ -3,6 +3,8 @@ package by.mksn.kwitapi.entity
 import by.mksn.kwitapi.entity.support.IdAndUserIdAssignable
 import by.mksn.kwitapi.entity.support.WalletType
 import com.fasterxml.jackson.annotation.JsonIgnore
+import org.hibernate.annotations.Fetch
+import org.hibernate.annotations.FetchMode
 import java.math.BigDecimal
 import javax.persistence.*
 import javax.validation.constraints.Digits
@@ -21,6 +23,7 @@ data class Wallet(
         override var userId: Long?,
         @field:NotNull(message = "Currency is not specified")
         @ManyToOne
+        @Fetch(FetchMode.JOIN)
         @JoinColumn(name = "currency_id")
         var currency: Currency?,
         @field:NotNull(message = "Name is not specified")

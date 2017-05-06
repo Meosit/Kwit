@@ -8,13 +8,10 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.PagingAndSortingRepository
+import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 import java.io.Serializable
-import java.math.BigDecimal
-import javax.persistence.ColumnResult
-import javax.persistence.ConstructorResult
-import javax.persistence.NamedNativeQuery
-import javax.persistence.SqlResultSetMapping
+import java.sql.Timestamp
 import javax.transaction.Transactional
 
 interface PersonalCrudRepository<E : IdAssignable<ID>, ID : Serializable> {
@@ -41,33 +38,18 @@ interface WalletRepository :
 }
 
 @Repository
-@SqlResultSetMapping(name = "categoryStats", classes = arrayOf(
-        ConstructorResult(targetClass = CategoryStats::class, columns = arrayOf(
-                ColumnResult(name = "out_category_id", type = Long::class),
-                ColumnResult(name = "out_category_name", type = String::class),
-                ColumnResult(name = "out_currency_code", type = String::class),
-                ColumnResult(name = "out_currency_symbol", type = String::class),
-                ColumnResult(name = "out_currency_is_prefix", type = String::class),
-                ColumnResult(name = "out_sum_for_category", type = BigDecimal::class),
-                ColumnResult(name = "out_percent_of_all", type = BigDecimal::class),
-                ColumnResult(name = "out_count_for_category", type = Int::class)
-        ))
-))
-@NamedNativeQuery(name = "Category.findCategoryStats",
-        query = "",
-        resultSetMapping = "categoryStats")
 interface CategoryRepository :
         PagingAndSortingRepository<Category, Long>,
         PersonalCrudRepository<Category, Long> {
     fun findByUserId(id: Long, pageable: Pageable): List<Category>
     fun findByUserIdAndType(id: Long, type: CategoryType, pageable: Pageable): List<Category>
-    /*@Query("select new by.mksn.kwitapi.entity.support.CategoryStats(t.category.id, ?2, sum(t.sum), count(t)) " +
-            "from Transaction t " +
-            "where (t.category.type = ?1) and (t.date between ?3 and ?4) and (t.wallet.currency.id = ?2))")
-    fun calculateCategoryStats(
-            type: Category.CategoryType, currencyId: Long,
-            startDate: Timestamp, endDate: Timestamp
-    ): List<CategoryStats>*/
+    fun findCategoryStats(
+            @Param("userId") userId: Long,
+            @Param("currencyId") currencyId: Long,
+            @Param("categoryType") categoryType: CategoryType,
+            @Param("startDate") startDate: Timestamp,
+            @Param("endDate") endDate: Timestamp
+    ): List<CategoryStats>
 }
 
 @Repository

@@ -2,6 +2,8 @@ package by.mksn.kwitapi.entity
 
 import by.mksn.kwitapi.entity.support.IdAndUserIdAssignable
 import com.fasterxml.jackson.annotation.JsonIgnore
+import org.hibernate.annotations.Fetch
+import org.hibernate.annotations.FetchMode
 import java.math.BigDecimal
 import java.sql.Timestamp
 import javax.persistence.*
@@ -21,10 +23,12 @@ data class Transaction(
         override var userId: Long? = null,
         @field:NotNull(message = "Wallet is not specified")
         @ManyToOne
+        @Fetch(FetchMode.JOIN)
         @JoinColumn(name = "wallet_id")
         var wallet: Wallet?,
         @field:NotNull(message = "Category is not specified")
         @ManyToOne
+        @Fetch(FetchMode.JOIN)
         @JoinColumn(name = "category_id")
         var category: Category?,
         @field:NotNull(message = "Sum is not specified")

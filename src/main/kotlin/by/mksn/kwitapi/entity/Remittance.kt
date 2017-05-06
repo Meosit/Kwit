@@ -2,6 +2,8 @@ package by.mksn.kwitapi.entity
 
 import by.mksn.kwitapi.entity.support.IdAndUserIdAssignable
 import com.fasterxml.jackson.annotation.JsonIgnore
+import org.hibernate.annotations.Fetch
+import org.hibernate.annotations.FetchMode
 import java.math.BigDecimal
 import java.sql.Timestamp
 import javax.persistence.*
@@ -16,15 +18,17 @@ data class Remittance(
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(columnDefinition = "INT")
         override var id: Long? = null,
+        @field:NotNull(message = "Donor wallet is not specified")
+        @ManyToOne(targetEntity = Wallet::class)
+        @Fetch(FetchMode.JOIN)
+        @JoinColumn(name = "wallet_donor_id")
+        var walletDonor: Wallet?,
         @get:JsonIgnore
         @Column(name = "user_id", columnDefinition = "INT")
         override var userId: Long? = null,
-        @field:NotNull(message = "Donor wallet is not specified")
-        @ManyToOne(targetEntity = Wallet::class)
-        @JoinColumn(name = "wallet_donor_id")
-        var walletDonor: Wallet?,
         @field:NotNull(message = "Acceptor wallet is not specified")
         @ManyToOne(targetEntity = Wallet::class)
+        @Fetch(FetchMode.JOIN)
         @JoinColumn(name = "wallet_acceptor_id")
         var walletAcceptor: Wallet?,
         @field:NotNull(message = "Donor sum is not specified")

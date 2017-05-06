@@ -1,7 +1,10 @@
 package by.mksn.kwitapi.entity.support
 
+import by.mksn.kwitapi.entity.Currency
+import by.mksn.kwitapi.support.TimestampRange
 import org.hibernate.validator.constraints.Range
 import java.math.BigDecimal
+import java.sql.Timestamp
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
@@ -33,10 +36,37 @@ data class PasswordChangeDetails(
 data class CategoryStats(
         val categoryId: Long,
         val categoryName: String,
-        val currencyCode: String,
-        val currencySymbol: String,
-        val currencyIsPrefix: Boolean,
         val sumForCategory: BigDecimal,
         val percentOfAll: BigDecimal,
-        val transactionCountForCategory: Int
-)
+        val countForCategory: Int,
+        val currency: Currency,
+        val period: TimestampRange
+) {
+    constructor(
+            categoryId: Long,
+            categoryName: String,
+            currencyId: Long,
+            currencyCode: String,
+            currencySymbol: String,
+            currencyIsPrefix: Boolean,
+            sumForCategory: BigDecimal,
+            percentOfAll: BigDecimal,
+            countForCategory: Int,
+            startDate: String,
+            endDate: String
+    ) : this(
+            categoryId,
+            categoryName,
+            sumForCategory,
+            percentOfAll,
+            countForCategory,
+            Currency(
+                    currencyId,
+                    currencyCode,
+                    currencySymbol,
+                    currencyIsPrefix),
+            TimestampRange(
+                    Timestamp.valueOf(startDate),
+                    Timestamp.valueOf(endDate))
+    )
+}
