@@ -23,7 +23,6 @@ class ResourceServerConfiguration(
     override fun configure(http: HttpSecurity) {
         http
                 .authorizeRequests()
-                .antMatchers("/api/oauth/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/currencies/**").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/api/currencies/**").hasAnyAuthority(UserRole.ADMIN.name)
                 .antMatchers(HttpMethod.POST, "/api/currencies/**").hasAnyAuthority(UserRole.ADMIN.name)

@@ -11,25 +11,25 @@ data class RegistrationDetails(
         @field:ValidEmail(message = "Invalid email format")
         @field:NotNull(message = "Email is not specified")
         @field:Size(min = 5, max = 50, message = "Email must be in range 5-255 symbols")
-        val email: String,
+        val email: String? = null,
         @field:NotNull(message = "Password is not specified")
         @field:Size(min = 5, max = 50, message = "Password must be in range 5-50 symbols")
-        val password: String,
+        val password: String? = null,
         @field:Range(min = 1, max = 31, message = "Salary day must be in range 1-31")
-        val salaryDay: Int?
+        val salaryDay: Int? = null
 )
 
 data class PasswordChangeDetails(
         @field:ValidEmail(message = "Invalid email format")
         @field:NotNull(message = "Email is not specified")
         @field:Size(min = 5, max = 50, message = "Email must be in range 5-255 symbols")
-        val email: String,
+        val email: String?,
         @field:NotNull(message = "Password is not specified")
         @field:Size(min = 5, max = 50, message = "Password must be in range 5-50 symbols")
-        val password: String,
+        val password: String?,
         @field:NotNull(message = "New Password is not specified")
         @field:Size(min = 5, max = 50, message = "New Password must be in range 5-50 symbols")
-        val newPassword: String
+        val newPassword: String?
 )
 
 data class CategoryStats(

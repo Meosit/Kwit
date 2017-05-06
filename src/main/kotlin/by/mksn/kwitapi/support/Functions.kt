@@ -10,6 +10,7 @@ import by.mksn.kwitapi.service.exception.ServiceRequestException
 import org.slf4j.Logger
 import org.springframework.dao.DataAccessException
 import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.http.HttpStatus
 import java.sql.Timestamp
 import java.util.*
@@ -21,6 +22,18 @@ inline fun <T> wrapJPACall(block: () -> T): T = try {
 } catch (e: DataAccessException) {
     throw ServiceException(cause = e)
 }
+
+inline fun <T> wrapJPASaveCall(block: () -> T): T? = try {
+    block()
+} catch (e: EmptyResultDataAccessException) {
+    null
+} catch (e: DataIntegrityViolationException) {
+    throw ServiceConstraintFailException("Invalid entity" to "Invalid entity references")
+} catch (e: DataAccessException) {
+    throw ServiceException(cause = e)
+}
+
+
 
 inline fun <T> wrapServiceCall(logger: Logger, block: () -> T): T = try {
     block()
