@@ -22,7 +22,7 @@ data class Wallet(
         @Column(name = "user_id", columnDefinition = "INT")
         override var userId: Long?,
         @field:NotNull(message = "Currency is not specified")
-        @ManyToOne
+        @ManyToOne(fetch = FetchType.EAGER)
         @Fetch(FetchMode.JOIN)
         @JoinColumn(name = "currency_id")
         var currency: Currency?,
@@ -37,11 +37,9 @@ data class Wallet(
         @field:NotNull(message = "Type is not specified")
         @Enumerated(EnumType.STRING)
         @Column(columnDefinition = "ENUM('NORMAL', 'SAVING')")
-        var type: WalletType?,
-        @get:JsonIgnore
-        @Column(name = "is_deleted")
-        var isDeleted: Boolean = false
+        var type: WalletType?
 ) : IdAndUserIdAssignable<Long> {
+
     override fun assignID(id: Long?) {
         this.id = id
     }

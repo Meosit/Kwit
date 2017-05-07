@@ -22,13 +22,13 @@ data class Transaction(
         @Column(name = "user_id", columnDefinition = "INT")
         override var userId: Long? = null,
         @field:NotNull(message = "Wallet is not specified")
-        @ManyToOne
         @Fetch(FetchMode.JOIN)
+        @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "wallet_id")
         var wallet: Wallet?,
         @field:NotNull(message = "Category is not specified")
-        @ManyToOne
         @Fetch(FetchMode.JOIN)
+        @ManyToOne(fetch = FetchType.EAGER)
         @JoinColumn(name = "category_id")
         var category: Category?,
         @field:NotNull(message = "Sum is not specified")

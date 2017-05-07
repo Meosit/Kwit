@@ -23,7 +23,7 @@ inline fun <T> wrapJPACall(block: () -> T): T = try {
     throw ServiceException(cause = e)
 }
 
-inline fun <T> wrapJPASaveCall(block: () -> T): T? = try {
+inline fun <T> wrapJPAModifyingCall(block: () -> T): T? = try {
     block()
 } catch (e: EmptyResultDataAccessException) {
     null

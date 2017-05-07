@@ -64,7 +64,6 @@ CREATE TABLE `wallet`
   `name`        VARCHAR(100)              NOT NULL,
   `balance`     DECIMAL(19, 4)            NOT NULL,
   `type`        ENUM ('NORMAL', 'SAVING') NOT NULL,
-  `is_deleted`  BOOL                      NOT NULL DEFAULT FALSE,
   PRIMARY KEY (`id` ASC),
   CONSTRAINT `FK_wallet_currency`
   FOREIGN KEY (`currency_id`)

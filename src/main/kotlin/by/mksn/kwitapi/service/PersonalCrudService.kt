@@ -14,5 +14,5 @@ interface PersonalCrudService<E : IdAssignable<ID>, ID : Serializable> {
 
     fun update(entity: E): E?
 
-    fun delete(id: ID, userId: ID)
+    fun delete(id: ID, userId: ID): Unit?
 }

@@ -5,20 +5,25 @@ import by.mksn.kwitapi.repository.TransactionRepository
 import by.mksn.kwitapi.repository.WalletRepository
 import by.mksn.kwitapi.service.WalletService
 import by.mksn.kwitapi.service.exception.ServiceBadRequestException
-import by.mksn.kwitapi.support.RestErrorMessage
-import by.mksn.kwitapi.support.add
-import by.mksn.kwitapi.support.isAny
-import by.mksn.kwitapi.support.wrapJPACall
+import by.mksn.kwitapi.service.exception.ServiceException
+import by.mksn.kwitapi.service.exception.ServiceNotFoundException
+import by.mksn.kwitapi.support.*
+import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-@Transactional
+@Transactional(propagation = Propagation.REQUIRED, rollbackFor = arrayOf(ServiceException::class))
 class WalletServiceImpl(
         private val walletRepository: WalletRepository,
         private val transactionRepository: TransactionRepository
 ) : AbstractCrudService<Wallet>(walletRepository), WalletService {
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(WalletServiceImpl::class.java)!!
+    }
 
     override fun checkValidNestedEntitiesIfNeed(entity: Wallet) {
         val errors = mutableListOf<RestErrorMessage>()
@@ -28,7 +33,30 @@ class WalletServiceImpl(
         errors.isAny { throw ServiceBadRequestException(this) }
     }
 
-    override fun findAllByUserId(userId: Long, pageable: Pageable): List<Wallet> = wrapJPACall {
-        walletRepository.findByUserIdOrderByTypeAsc(userId, pageable)
+    override fun findByIdAndUserId(id: Long, userId: Long): Wallet?
+            = wrapJPACall { walletRepository.findByIdAndUserId(id, userId) }
+
+    override fun findAllByUserId(userId: Long, pageable: Pageable): List<Wallet>
+            = wrapJPACall { walletRepository.findByUserIdOrderByTypeAsc(userId, pageable) }
+
+    override fun delete(id: Long, userId: Long): Unit? {
+        checkPersonalVisibility(userId, id)
+        val affected = wrapJPACall { transactionRepository.deleteByWalletId(id) }
+        logger.info("$affected transactions deleted from wallet[$id]")
+        val isSuccess: Unit? = wrapJPAModifyingCall { walletRepository.delete(id) }
+        if (isSuccess != null) logger.info("Wallet[$id] deleted")
+        return isSuccess
     }
+
+    override fun softDelete(id: Long, newId: Long, userId: Long): Unit? {
+        checkPersonalVisibility(userId, id)
+        val newWallet = wrapJPACall { walletRepository.findByIdAndUserId(newId, userId) }
+        newWallet ?: throw ServiceNotFoundException("New wallet" to "Wallet with id '$newId' not found.")
+        val affected = wrapJPACall { transactionRepository.shiftToNewWallet(newId, id) }
+        logger.info("$affected transactions shifted from wallet[$id] to wallet[$newId, ${newWallet.name}]")
+        val isSuccess: Unit? = wrapJPAModifyingCall { walletRepository.delete(id) }
+        if (isSuccess != null) logger.info("Wallet[$id] deleted")
+        return isSuccess
+    }
+
 }

@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-@Transactional(propagation = Propagation.SUPPORTS, rollbackFor = arrayOf(ServiceException::class))
+@Transactional(propagation = Propagation.REQUIRED, rollbackFor = arrayOf(ServiceException::class))
 class CategoryServiceImpl(
         private val categoryRepository: CategoryRepository,
         private val transactionRepository: TransactionRepository,
@@ -32,26 +32,31 @@ class CategoryServiceImpl(
         val databaseCategory = findByIdAndUserId(entity.id!!, entity.userId!!)
         databaseCategory.ifNullServiceNotFound(entity.id)
         databaseCategory!!.name = entity.name
-        return wrapJPACall { categoryRepository.save(entity) }
+        return wrapJPAModifyingCall { categoryRepository.save(entity) }
     }
 
-    override fun delete(id: Long, userId: Long) {
+    override fun delete(id: Long, userId: Long): Unit? {
         checkPersonalVisibility(userId, id)
         val affected = wrapJPACall { transactionRepository.deleteByCategoryId(id) }
         logger.info("$affected transactions deleted from category[$id]")
-        wrapJPACall { categoryRepository.delete(id) }
+        val isSuccess = wrapJPAModifyingCall { categoryRepository.delete(id) }
+        if (isSuccess != null) logger.info("Category[$id] deleted.")
+        return isSuccess
     }
 
-    override fun softDelete(id: Long, newId: Long, userId: Long) {
+    override fun softDelete(id: Long, newId: Long, userId: Long): Unit? {
+        checkPersonalVisibility(userId, id)
         val newCategory = wrapJPACall { categoryRepository.findByIdAndUserId(newId, userId) }
-        newCategory.ifNull { throw ServiceNotFoundException("New category" to "Category with id '$newId' not found.") }
+        newCategory ?: throw ServiceNotFoundException("New category" to "Category with id '$newId' not found.")
         val affected = wrapJPACall { transactionRepository.shiftToNewCategory(newId, id) }
-        logger.info("$affected transactions shifted from category[$id] to category[$newId, ${newCategory?.name}]")
-        wrapJPACall { categoryRepository.delete(id) }
+        logger.info("$affected transactions shifted from category[$id] to category[$newId, ${newCategory.name}]")
+        val isSuccess = wrapJPAModifyingCall { categoryRepository.delete(id) }
+        if (isSuccess != null) logger.info("Category[$id] deleted.")
+        return isSuccess
     }
 
     override fun findAllByUserId(userId: Long, pageable: Pageable): List<Category> =
-            wrapJPACall { categoryRepository.findByUserId(userId, pageable) }
+            wrapJPACall { categoryRepository.findByUserIdOrderByIdAsc(userId, pageable) }
 
     override fun findByUserIdAndType(id: Long, type: CategoryType, pageable: Pageable): List<Category> =
             wrapJPACall { categoryRepository.findByUserIdAndType(id, type, pageable) }

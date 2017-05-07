@@ -6,16 +6,19 @@ import by.mksn.kwitapi.service.PersonalCrudService
 import by.mksn.kwitapi.service.exception.ServiceException
 import by.mksn.kwitapi.support.ifNullServiceNotFound
 import by.mksn.kwitapi.support.wrapJPACall
+import by.mksn.kwitapi.support.wrapJPAModifyingCall
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 
-@Transactional(propagation = Propagation.SUPPORTS, rollbackFor = arrayOf(ServiceException::class))
+@Transactional(propagation = Propagation.REQUIRED, rollbackFor = arrayOf(ServiceException::class))
 abstract class AbstractCrudService<E : IdAndUserIdAssignable<Long>>(
         private val crudRepository: PersonalCrudRepository<E, Long>
 ) : PersonalCrudService<E, Long> {
 
+    @Transactional(propagation = Propagation.SUPPORTS)
     protected open fun checkValidNestedEntitiesIfNeed(entity: E) {}
 
+    @Transactional(propagation = Propagation.SUPPORTS)
     protected fun checkPersonalVisibility(userId: Long, entityId: Long) =
             findByIdAndUserId(entityId, userId).ifNullServiceNotFound(entityId)
 
@@ -25,18 +28,18 @@ abstract class AbstractCrudService<E : IdAndUserIdAssignable<Long>>(
     override fun create(entity: E): E? = wrapJPACall {
         checkPersonalVisibility(entity.userId!!, entity.id!!)
         checkValidNestedEntitiesIfNeed(entity)
-        wrapJPACall { crudRepository.save(entity) }
+        wrapJPAModifyingCall { crudRepository.save(entity) }
     }
 
     override fun update(entity: E): E? = wrapJPACall {
         checkPersonalVisibility(entity.userId!!, entity.id!!)
         checkValidNestedEntitiesIfNeed(entity)
-        wrapJPACall { crudRepository.save(entity) }
+        wrapJPAModifyingCall { crudRepository.save(entity) }
     }
 
-    override fun delete(id: Long, userId: Long) = wrapJPACall {
+    override fun delete(id: Long, userId: Long): Unit? = wrapJPACall {
         checkPersonalVisibility(userId, id)
-        wrapJPACall { crudRepository.delete(id) }
+        wrapJPAModifyingCall { crudRepository.delete(id) }
     }
 
 }

@@ -19,7 +19,7 @@ data class Remittance(
         @Column(columnDefinition = "INT")
         override var id: Long? = null,
         @field:NotNull(message = "Donor wallet is not specified")
-        @ManyToOne(targetEntity = Wallet::class)
+        @ManyToOne(targetEntity = Wallet::class, fetch = FetchType.EAGER)
         @Fetch(FetchMode.JOIN)
         @JoinColumn(name = "wallet_donor_id")
         var walletDonor: Wallet?,
@@ -27,7 +27,7 @@ data class Remittance(
         @Column(name = "user_id", columnDefinition = "INT")
         override var userId: Long? = null,
         @field:NotNull(message = "Acceptor wallet is not specified")
-        @ManyToOne(targetEntity = Wallet::class)
+        @ManyToOne(targetEntity = Wallet::class, fetch = FetchType.EAGER)
         @Fetch(FetchMode.JOIN)
         @JoinColumn(name = "wallet_acceptor_id")
         var walletAcceptor: Wallet?,

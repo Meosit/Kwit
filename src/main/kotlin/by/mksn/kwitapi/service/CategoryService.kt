@@ -10,7 +10,7 @@ interface CategoryService : PersonalCrudService<Category, Long> {
 
     fun findByUserIdAndType(id: Long, type: CategoryType, pageable: Pageable): List<Category>
 
-    fun softDelete(id: Long, newId: Long, userId: Long)
+    fun softDelete(id: Long, newId: Long, userId: Long): Unit?
 
     fun calculateCategoryStats(
             userId: Long,
