@@ -7,10 +7,12 @@ import by.mksn.kwitapi.repository.CategoryRepository
 import by.mksn.kwitapi.repository.CurrencyRepository
 import by.mksn.kwitapi.repository.TransactionRepository
 import by.mksn.kwitapi.service.CategoryService
+import by.mksn.kwitapi.service.exception.ServiceBadRequestException
 import by.mksn.kwitapi.service.exception.ServiceException
 import by.mksn.kwitapi.service.exception.ServiceNotFoundException
 import by.mksn.kwitapi.support.*
 import org.slf4j.LoggerFactory
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
@@ -46,6 +48,7 @@ class CategoryServiceImpl(
 
     override fun softDelete(id: Long, newId: Long, userId: Long): Unit? {
         checkPersonalVisibility(userId, id)
+        if (id == userId) throw ServiceBadRequestException("Error" to "Cannot shift transactions to delete category")
         val newCategory = wrapJPACall { categoryRepository.findByIdAndUserId(newId, userId) }
         newCategory ?: throw ServiceNotFoundException("New category" to "Category with id '$newId' not found.")
         val affected = wrapJPACall { transactionRepository.shiftToNewCategory(newId, id) }
@@ -55,10 +58,10 @@ class CategoryServiceImpl(
         return isSuccess
     }
 
-    override fun findAllByUserId(userId: Long, pageable: Pageable): List<Category> =
+    override fun findAllByUserId(userId: Long, pageable: Pageable): Page<Category> =
             wrapJPACall { categoryRepository.findByUserIdOrderByIdAsc(userId, pageable) }
 
-    override fun findByUserIdAndType(id: Long, type: CategoryType, pageable: Pageable): List<Category> =
+    override fun findByUserIdAndType(id: Long, type: CategoryType, pageable: Pageable): Page<Category> =
             wrapJPACall { categoryRepository.findByUserIdAndType(id, type, pageable) }
 
     override fun calculateCategoryStats(userId: Long, type: CategoryType, currencyCode: String, range: DateRange?): CategoriesStats {

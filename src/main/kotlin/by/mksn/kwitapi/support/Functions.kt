@@ -72,7 +72,7 @@ inline fun <T> T?.ifNull(block: T.() -> T): T {
 
 fun <ID, T : IdAssignable<ID>> T?.ifNullServiceNotFound(id: ID? = null): T {
     if (this == null) {
-        throw ServiceNotFoundException("Error" to "Entity ${if (id == null) "" else "with id $id "}not found")
+        throw ServiceNotFoundException("Error" to "Entity ${if (id == null) "" else "with id '$id' "}not found")
     }
     return this
 }

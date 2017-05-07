@@ -6,6 +6,7 @@ import by.mksn.kwitapi.entity.Category
 import by.mksn.kwitapi.entity.support.CategoriesStats
 import by.mksn.kwitapi.entity.support.CategoryType
 import by.mksn.kwitapi.entity.support.CurrencyCode
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.web.bind.annotation.*
@@ -20,7 +21,7 @@ interface CategoryController : CrudController<Category, Long> {
             @Auth auth: UserDetails,
             @PathVariable("type") type: CategoryType,
             pageable: Pageable
-    ): List<Category>
+    ): Page<Category>
 
     @GetMapping("stats/{type}/{currencyCode}", params = arrayOf("from", "to"))
     fun calculateCategoryStats(
@@ -39,6 +40,6 @@ interface CategoryController : CrudController<Category, Long> {
     ): CategoriesStats
 
     @DeleteMapping("{id}", params = arrayOf("newCategory"))
-    fun softDelete(@PathVariable("id") id: Long, @RequestParam("newCategory") newId: Long, @Auth auth: UserDetails)
+    fun softDelete(@PathVariable("id") id: Long?, @RequestParam("newCategory") newId: Long?, @Auth auth: UserDetails)
 
 }

@@ -22,7 +22,9 @@ class WhiteLabelErrorPageController : ErrorController {
     @GetMapping("")
     fun error(request: HttpServletRequest): Any {
         if (request.getHeader(HttpHeaders.ACCEPT) != null && request.getHeader(HttpHeaders.ACCEPT).contains(MediaType.APPLICATION_JSON_VALUE)) {
-            return ResponseEntity<Any>(RestError(HttpStatus.NOT_FOUND, RestErrorMessage("Invalid path", request.requestURI)),
+            return ResponseEntity<Any>(
+                    RestError(HttpStatus.NOT_FOUND,
+                            RestErrorMessage("Error", "Resource not found")),
                     HttpStatus.NOT_FOUND)
         } else {
             return ERROR_HTML_PATH

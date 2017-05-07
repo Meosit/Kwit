@@ -1,5 +1,6 @@
 package by.mksn.kwitapi.controller.exception
 
+import by.mksn.kwitapi.support.OauthError
 import by.mksn.kwitapi.support.RestError
 import by.mksn.kwitapi.support.RestErrorMessage
 import com.fasterxml.jackson.core.JsonParseException
@@ -24,6 +25,7 @@ class RestExceptionHandler : BaseRestExceptionHandler() {
             status: HttpStatus,
             request: WebRequest
     ): ResponseEntity<Any> {
+        logger.debug("Invalid arguments passed: ${ex.bindingResult.fieldErrors}")
         val apiError = RestError(status,
                 ex.bindingResult.fieldErrors.map { RestErrorMessage("Field '${it.field}'", it.defaultMessage) })
         return handleExceptionInternal(ex, apiError, headers, HttpStatus.BAD_REQUEST, request)
@@ -38,21 +40,26 @@ class RestExceptionHandler : BaseRestExceptionHandler() {
         val message: RestErrorMessage
         when (cause) {
             null -> {
+                logger.debug("Request body is missing", ex)
                 message = RestErrorMessage("Error", "Required request body is missing")
             }
             is InvalidFormatException -> {
+                logger.debug("Invalid value in JSON: ${cause.message}")
                 message = RestErrorMessage("Invalid entity", "Invalid value '${cause.value}' of type ${cause.targetType.simpleName}")
             }
             is JsonParseException -> {
-                message = RestErrorMessage("Invalid JSON", "Invalid JSON format")
+                logger.debug("Invalid JSON, cannot deserialize: ${cause.message}")
+                message = RestErrorMessage("Invalid request", "Cannot read request")
             }
             is JsonMappingException -> {
+                logger.debug("Invalid values in JSON: ${cause.message}")
                 val references = cause.path
                 val messageBuilder = StringBuilder("Invalid values in fields")
                 references.forEach { messageBuilder.append(" '").append(it.fieldName).append("'") }
-                message = RestErrorMessage("Invalid JSON", messageBuilder.toString())
+                message = RestErrorMessage("Invalid request", messageBuilder.toString())
             }
             else -> {
+                logger.debug("Message not readable: ${cause.message}")
                 message = RestErrorMessage("Message not readable", cause.message ?: "Unknown error")
             }
         }
@@ -65,6 +72,7 @@ class RestExceptionHandler : BaseRestExceptionHandler() {
             headers: HttpHeaders,
             status: HttpStatus,
             request: WebRequest): ResponseEntity<Any> {
+        logger.debug("Invalid path variable: Invalid value '${ex.value}' for type '${ex.requiredType?.simpleName}'")
         val apiError = RestError(status, RestErrorMessage(
                 title = "Invalid path variable",
                 message = "Invalid value '${ex.value}' for type '${ex.requiredType?.simpleName}'"
@@ -73,8 +81,34 @@ class RestExceptionHandler : BaseRestExceptionHandler() {
     }
 
     @ExceptionHandler(RequestException::class)
-    fun handleServiceBadRequest(ex: RequestException): ResponseEntity<Any> {
+    fun handleBadRequest(ex: RequestException): ResponseEntity<Any> {
+        logger.debug("Bad request from business logic: ${ex.status} ${ex.errors}")
         val apiError = RestError(ex.status, ex.errors)
         return ResponseEntity(apiError, ex.status)
+    }
+
+
+    @ExceptionHandler(AccessDeniedException::class)
+    fun handleAccessDeniedException(ex: AccessDeniedException): ResponseEntity<Any> {
+        logger.debug("Access denied from business logic")
+        return ResponseEntity(OauthError("access_denied", "Access is denied"), HttpStatus.FORBIDDEN)
+    }
+
+    @ExceptionHandler(ControllerException::class)
+    fun handleInternalError(ex: ControllerException): ResponseEntity<Any> {
+        logger.error("Internal server error", ex)
+        val apiError = RestError(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                RestErrorMessage("Error", "Internal Server Error"))
+        return ResponseEntity(apiError, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
+
+    @ExceptionHandler(Exception::class)
+    fun handleInternalErrorExplicit(ex: Exception): ResponseEntity<Any> {
+        logger.error("Internal server error", ex)
+        val apiError = RestError(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                RestErrorMessage("Error", "Internal Server Error"))
+        return ResponseEntity(apiError, HttpStatus.INTERNAL_SERVER_ERROR)
     }
 }

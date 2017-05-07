@@ -5,6 +5,7 @@ import by.mksn.kwitapi.repository.CurrencyRepository
 import by.mksn.kwitapi.service.CurrencyService
 import by.mksn.kwitapi.service.exception.ServiceException
 import by.mksn.kwitapi.support.wrapJPACall
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
@@ -24,8 +25,8 @@ class CurrencyServiceImpl(
     override fun findById(id: Long): Currency? =
             wrapJPACall { currencyRepository.findOne(id) }
 
-    override fun findAll(pageable: Pageable): List<Currency> =
-            wrapJPACall { currencyRepository.findAll(pageable).content }
+    override fun findAll(pageable: Pageable): Page<Currency> =
+            wrapJPACall { currencyRepository.findAll(pageable) }
 
     override fun findByCode(code: String): Currency? =
             wrapJPACall { currencyRepository.findByCode(code) }

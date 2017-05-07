@@ -33,3 +33,8 @@ data class RestErrorMessage(
         val title: String,
         val message: String
 )
+
+data class OauthError(
+        val error: String,
+        val errorDescription: String
+)

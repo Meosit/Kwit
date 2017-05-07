@@ -9,9 +9,11 @@ import by.mksn.kwitapi.entity.support.CategoryType
 import by.mksn.kwitapi.entity.support.CategoryTypeBinder
 import by.mksn.kwitapi.entity.support.CurrencyCode
 import by.mksn.kwitapi.service.CategoryService
+import by.mksn.kwitapi.support.badRequestException
 import by.mksn.kwitapi.support.till
 import by.mksn.kwitapi.support.wrapServiceCall
 import org.slf4j.LoggerFactory
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.web.bind.WebDataBinder
@@ -50,10 +52,10 @@ open class CategoryControllerImpl(
     ): CategoriesStats =
             wrapServiceCall(logger) { categoryService.calculateCategoryStats(auth.userId, type, currencyCode, null) }
 
-    override fun softDelete(@PathVariable("id") id: Long, @RequestParam("newCategory") newId: Long, @Auth auth: UserDetails) {
-        logger.info("Mapping worked id: $id, newId: $newId")
-    }
+    override fun softDelete(@PathVariable("id") id: Long?, @RequestParam("newCategory") newId: Long?, @Auth auth: UserDetails)
+            = wrapServiceCall(logger) { categoryService.softDelete(id!!, newId!!, auth.userId) }
+            ?: badRequestException("Error", "Cannot delete category")
 
-    override fun findAll(@Auth auth: UserDetails, @PathVariable("type") type: CategoryType, pageable: Pageable): List<Category>
+    override fun findAll(@Auth auth: UserDetails, @PathVariable("type") type: CategoryType, pageable: Pageable): Page<Category>
             = wrapServiceCall(logger) { categoryService.findByUserIdAndType(auth.userId, type, pageable) }
 }

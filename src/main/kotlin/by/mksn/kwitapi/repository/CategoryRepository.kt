@@ -3,6 +3,7 @@ package by.mksn.kwitapi.repository
 import by.mksn.kwitapi.entity.Category
 import by.mksn.kwitapi.entity.support.CategoryStats
 import by.mksn.kwitapi.entity.support.CategoryType
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.data.repository.query.Param
@@ -14,9 +15,9 @@ interface CategoryRepository :
         PagingAndSortingRepository<Category, Long>,
         PersonalCrudRepository<Category, Long> {
 
-    fun findByUserIdOrderByIdAsc(id: Long, pageable: Pageable): List<Category>
+    fun findByUserIdOrderByIdAsc(id: Long, pageable: Pageable): Page<Category>
 
-    fun findByUserIdAndType(id: Long, type: CategoryType, pageable: Pageable): List<Category>
+    fun findByUserIdAndType(id: Long, type: CategoryType, pageable: Pageable): Page<Category>
 
     fun findCategoryStats(
             @Param("userId") userId: Long,

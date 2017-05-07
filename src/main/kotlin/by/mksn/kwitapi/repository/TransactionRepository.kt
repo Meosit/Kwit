@@ -1,6 +1,7 @@
 package by.mksn.kwitapi.repository
 
 import by.mksn.kwitapi.entity.Transaction
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
@@ -25,16 +26,20 @@ interface TransactionRepository :
                 INNER JOIN FETCH t.wallet w
                 INNER JOIN FETCH w.currency
                 INNER JOIN FETCH t.category
-                WHERE t.userId = :id""")
-    fun findByUserIdOrderByDateDescIdDesc(@Param("id") id: Long, pageable: Pageable): List<Transaction>
+                WHERE t.userId = :id
+                ORDER BY t.date DESC""",
+            countQuery = "SELECT COUNT(t) FROM Transaction t WHERE t.userId = :id")
+    fun findByUserId(@Param("id") id: Long, pageable: Pageable): Page<Transaction>
 
-    @Modifying
     @Transactional
-    fun deleteByCategoryId(categoryId: Long): Int
+    @Modifying(clearAutomatically = true)
+    @Query("DELETE FROM Transaction t WHERE t.category.id = :id")
+    fun deleteByCategoryId(@Param("id") categoryId: Long): Int
 
-    @Modifying
     @Transactional
-    fun deleteByWalletId(id: Long): Int
+    @Modifying(clearAutomatically = true)
+    @Query("DELETE FROM Transaction t WHERE t.wallet.id = :id")
+    fun deleteByWalletId(@Param("id") id: Long): Int
 
     @Transactional
     @Modifying(clearAutomatically = true)

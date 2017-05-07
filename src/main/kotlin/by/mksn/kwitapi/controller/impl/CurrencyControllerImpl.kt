@@ -10,6 +10,7 @@ import by.mksn.kwitapi.support.ifNullNotFound
 import by.mksn.kwitapi.support.notFoundException
 import by.mksn.kwitapi.support.wrapServiceCall
 import org.slf4j.LoggerFactory
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
@@ -32,15 +33,15 @@ open class CurrencyControllerImpl(
                 notFoundException("Error", "Entity with code '$code' not found")
     }
 
-    override fun findById(@PathVariable("id") id: Long, @Auth auth: UserDetails): Currency
-            = wrapServiceCall(logger) { currencyService.findById(id).ifNullNotFound(id) }
+    override fun findById(@PathVariable("id") id: Long?, @Auth auth: UserDetails): Currency
+            = wrapServiceCall(logger) { currencyService.findById(id!!).ifNullNotFound(id) }
 
-    override fun update(@PathVariable("id") id: Long, @Valid @RequestBody entity: Currency, @Auth auth: UserDetails): Currency
-            = wrapServiceCall(logger) { currencyService.update(id, entity) }
+    override fun update(@PathVariable("id") id: Long?, @Valid @RequestBody entity: Currency, @Auth auth: UserDetails): Currency
+            = wrapServiceCall(logger) { currencyService.update(id!!, entity) }
 
-    override fun delete(@PathVariable("id") id: Long, @Auth auth: UserDetails)
-            = wrapServiceCall(logger) { currencyService.delete(id) }
+    override fun delete(@PathVariable("id") id: Long?, @Auth auth: UserDetails)
+            = wrapServiceCall(logger) { currencyService.delete(id!!) }
 
-    override fun findAll(@Auth auth: UserDetails, pageable: Pageable): List<Currency>
+    override fun findAll(@Auth auth: UserDetails, pageable: Pageable): Page<Currency>
             = wrapServiceCall(logger) { currencyService.findAll(pageable) }
 }

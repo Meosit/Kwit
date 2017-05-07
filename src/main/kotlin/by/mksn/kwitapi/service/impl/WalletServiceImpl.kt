@@ -9,6 +9,7 @@ import by.mksn.kwitapi.service.exception.ServiceException
 import by.mksn.kwitapi.service.exception.ServiceNotFoundException
 import by.mksn.kwitapi.support.*
 import org.slf4j.LoggerFactory
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
@@ -36,11 +37,12 @@ class WalletServiceImpl(
     override fun findByIdAndUserId(id: Long, userId: Long): Wallet?
             = wrapJPACall { walletRepository.findByIdAndUserId(id, userId) }
 
-    override fun findAllByUserId(userId: Long, pageable: Pageable): List<Wallet>
-            = wrapJPACall { walletRepository.findByUserIdOrderByTypeAsc(userId, pageable) }
+    override fun findAllByUserId(userId: Long, pageable: Pageable): Page<Wallet>
+            = wrapJPACall { walletRepository.findByUserId(userId, pageable) }
 
     override fun delete(id: Long, userId: Long): Unit? {
         checkPersonalVisibility(userId, id)
+        if (id == userId) throw ServiceBadRequestException("Error" to "Cannot shift transactions to delete wallet")
         val affected = wrapJPACall { transactionRepository.deleteByWalletId(id) }
         logger.info("$affected transactions deleted from wallet[$id]")
         val isSuccess: Unit? = wrapJPAModifyingCall { walletRepository.delete(id) }
