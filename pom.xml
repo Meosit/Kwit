@@ -5,14 +5,14 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>by.mksn</groupId>
-  <artifactId>kwit-api</artifactId>
+  <artifactId>kwit</artifactId>
   <version>0.1</version>
   <packaging>war</packaging>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <start-class>by.mksn.kwitapi.MainKt</start-class>
+    <start-class>by.mksn.kwit.MainKt</start-class>
     <java.version>1.8</java.version>
     <kotlin.version>1.1.1</kotlin.version>
     <spring-jdbc.version>4.3.7.RELEASE</spring-jdbc.version>
