@@ -1,6 +1,6 @@
 package by.mksn.kwitapi.entity
 
-import by.mksn.kwitapi.entity.support.IdAssignable
+import by.mksn.kwitapi.entity.support.BaseEntity
 import by.mksn.kwitapi.entity.support.UserRole
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
@@ -41,8 +41,4 @@ data class User(
         @get:JsonIgnore
         @Column(name = "is_deleted")
         var isDeleted: Boolean = false
-) : IdAssignable<Long>, Serializable {
-    override fun assignID(id: Long?) {
-        this.id = id
-    }
-}
+) : BaseEntity<Long>, Serializable

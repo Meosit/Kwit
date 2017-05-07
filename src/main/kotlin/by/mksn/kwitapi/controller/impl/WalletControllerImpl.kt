@@ -25,12 +25,14 @@ open class WalletControllerImpl(
     }
 
     companion object {
-
         val logger = LoggerFactory.getLogger(WalletControllerImpl::class.java)!!
     }
 
-    override fun softDelete(@PathVariable("id") id: Long?, @RequestParam("newWallet") newId: Long?, @Auth auth: UserDetails)
-            = wrapServiceCall(logger) { walletService.softDelete(id!!, newId!!, auth.userId) }
+    override fun findAll(@Auth auth: UserDetails): List<Wallet> =
+            wrapServiceCall(logger) { walletService.findAllByUserId(auth.userId) }
+
+    override fun softDelete(@PathVariable("id") id: Long?, @RequestParam("newWallet") newId: Long?, @Auth auth: UserDetails) =
+            wrapServiceCall(logger) { walletService.softDelete(id!!, newId!!, auth.userId) }
             ?: badRequestException("Error", "Cannot delete category")
 
 }

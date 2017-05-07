@@ -16,8 +16,11 @@ interface WalletRepository :
     @Query("SELECT w FROM Wallet w INNER JOIN FETCH w.currency WHERE (w.id = :id) AND (w.userId = :userId)")
     override fun findByIdAndUserId(@Param("id") id: Long, @Param("userId") userId: Long): Wallet?
 
-    @Query("SELECT w FROM Wallet w INNER JOIN FETCH w.currency WHERE w.userId = :id ORDER BY w.type ASC",
+    @Query("SELECT w FROM Wallet w INNER JOIN FETCH w.currency WHERE w.userId = :id ORDER BY w.type ASC, w.id ASC",
             countQuery = "SELECT COUNT(w) FROM Wallet w WHERE w.userId = :id")
     fun findByUserId(@Param("id") id: Long, pageable: Pageable): Page<Wallet>
+
+    @Query("SELECT w FROM Wallet w INNER JOIN FETCH w.currency WHERE w.userId = :id ORDER BY w.type ASC, w.id ASC")
+    fun findByUserId(@Param("id") id: Long): List<Wallet>
 
 }

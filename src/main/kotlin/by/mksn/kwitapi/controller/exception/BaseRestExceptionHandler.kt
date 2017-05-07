@@ -41,8 +41,8 @@ open class BaseRestExceptionHandler : ResponseEntityExceptionHandler() {
         return handleExceptionDefault(ex, headers, status, request)
     }
 
-    override fun handleHttpRequestMethodNotSupported(ex: HttpRequestMethodNotSupportedException, headers: HttpHeaders, status: HttpStatus, request: WebRequest)
-            = handleExceptionDefault(ex, headers, status, request)
+    override fun handleHttpRequestMethodNotSupported(ex: HttpRequestMethodNotSupportedException, headers: HttpHeaders, status: HttpStatus, request: WebRequest) =
+            handleExceptionDefault(ex, headers, status, request)
 
     override fun handleMissingServletRequestParameter(ex: MissingServletRequestParameterException, headers: HttpHeaders, status: HttpStatus, request: WebRequest): ResponseEntity<Any> {
         return handleExceptionDefault(ex, headers, status, request)

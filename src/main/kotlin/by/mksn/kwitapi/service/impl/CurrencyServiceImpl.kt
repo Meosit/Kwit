@@ -22,6 +22,9 @@ class CurrencyServiceImpl(
         currencyRepository.save(currency)
     }
 
+    override fun findAll(): Iterable<Currency> =
+            wrapJPACall { currencyRepository.findAll() }
+
     override fun findById(id: Long): Currency? =
             wrapJPACall { currencyRepository.findOne(id) }
 

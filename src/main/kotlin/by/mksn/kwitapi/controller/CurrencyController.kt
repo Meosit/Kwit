@@ -1,5 +1,7 @@
 package by.mksn.kwitapi.controller
 
+import by.mksn.kwitapi.configuration.security.Auth
+import by.mksn.kwitapi.configuration.security.UserDetails
 import by.mksn.kwitapi.entity.Currency
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -12,5 +14,8 @@ interface CurrencyController : CrudController<Currency, Long> {
 
     @GetMapping("code/{code}")
     fun findByCode(@PathVariable("code") code: String): Currency
+
+    @GetMapping("all")
+    fun findAll(@Auth auth: UserDetails): Iterable<Currency>
 
 }

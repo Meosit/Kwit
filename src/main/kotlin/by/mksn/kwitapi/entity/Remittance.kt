@@ -1,6 +1,6 @@
 package by.mksn.kwitapi.entity
 
-import by.mksn.kwitapi.entity.support.IdAndUserIdAssignable
+import by.mksn.kwitapi.entity.support.UserBaseEntity
 import com.fasterxml.jackson.annotation.JsonIgnore
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
@@ -43,12 +43,4 @@ data class Remittance(
         @field:NotNull(message = "Date is not specified")
         @Column(columnDefinition = "DATETIME")
         var date: Date? = null
-) : IdAndUserIdAssignable<Long> {
-    override fun assignID(id: Long?) {
-        this.id = id
-    }
-
-    override fun assignUserID(id: Long?) {
-        this.userId = id
-    }
-}
+) : UserBaseEntity<Long>

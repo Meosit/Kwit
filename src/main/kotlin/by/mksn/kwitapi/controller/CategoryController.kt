@@ -6,8 +6,6 @@ import by.mksn.kwitapi.entity.Category
 import by.mksn.kwitapi.entity.support.CategoriesStats
 import by.mksn.kwitapi.entity.support.CategoryType
 import by.mksn.kwitapi.entity.support.CurrencyCode
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -19,9 +17,11 @@ interface CategoryController : CrudController<Category, Long> {
     @GetMapping("type/{type}")
     fun findAll(
             @Auth auth: UserDetails,
-            @PathVariable("type") type: CategoryType,
-            pageable: Pageable
-    ): Page<Category>
+            @PathVariable("type") type: CategoryType
+    ): List<Category>
+
+    @GetMapping("all")
+    fun findAll(@Auth auth: UserDetails): List<Category>
 
     @GetMapping("stats/{type}/{currencyCode}", params = arrayOf("from", "to"))
     fun calculateCategoryStats(

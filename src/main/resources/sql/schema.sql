@@ -304,12 +304,11 @@ CREATE TRIGGER `kwit`.`transaction_BEFORE_INSERT`
 BEFORE INSERT ON `transaction`
 FOR EACH ROW
   BEGIN
-    DECLARE is_income BOOL;
-    SET is_income = (SELECT `is_income`
-                     FROM `category`
-                     WHERE `id` = NEW.`category_id`);
     UPDATE `wallet`
-    SET `balance` = `balance` + IF(is_income, NEW.`sum`, -NEW.`sum`)
+    SET `balance` =
+    `balance` + IF((SELECT category.type = 'INCOME'
+                    FROM category
+                    WHERE category.id = NEW.category_id), NEW.sum, -NEW.sum)
     WHERE `id` = NEW.`wallet_id`;
   END$$
 
@@ -320,21 +319,16 @@ CREATE TRIGGER `kwit`.`transaction_BEFORE_UPDATE`
 BEFORE UPDATE ON `transaction`
 FOR EACH ROW
   BEGIN
-    DECLARE old_type ENUM ('INCOME', 'OUTGO');
-    DECLARE new_type ENUM ('INCOME', 'OUTGO');
-
-    SET old_type = (SELECT `type`
-                    FROM `category`
-                    WHERE `id` = OLD.`category_id`);
     UPDATE `wallet`
-    SET `balance` = `balance` + IF(old_type = 'INCOME', -OLD.`sum`, OLD.`sum`)
+    SET `balance` = `balance` + IF((SELECT category.type = 'INCOME'
+                                    FROM category
+                                    WHERE category.id = OLD.category_id), -OLD.sum, OLD.sum)
     WHERE `id` = OLD.`wallet_id`;
 
-    SET new_type = (SELECT `type`
-                    FROM `category`
-                    WHERE `id` = NEW.`category_id`);
     UPDATE `wallet`
-    SET `balance` = `balance` + IF(new_type = 'INCOME', NEW.`sum`, -NEW.`sum`)
+    SET `balance` = `balance` + IF((SELECT category.type = 'INCOME'
+                                    FROM category
+                                    WHERE category.id = NEW.category_id), NEW.sum, -NEW.sum)
     WHERE `id` = NEW.`wallet_id`;
   END$$
 
@@ -344,12 +338,10 @@ CREATE TRIGGER `kwit`.`transaction_BEFORE_DELETE`
 BEFORE DELETE ON `transaction`
 FOR EACH ROW
   BEGIN
-    DECLARE type ENUM ('INCOME', 'OUTGO');
-    SET type = (SELECT `type`
-                FROM `category`
-                WHERE `id` = OLD.`category_id`);
     UPDATE `wallet`
-    SET `balance` = `balance` + IF(type = 'INCOME', -OLD.`sum`, OLD.`sum`)
+    SET `balance` = `balance` + IF((SELECT category.type = 'INCOME'
+                                    FROM category
+                                    WHERE category.id = OLD.category_id), -OLD.sum, OLD.sum)
     WHERE `id` = OLD.`wallet_id`;
   END $$
 

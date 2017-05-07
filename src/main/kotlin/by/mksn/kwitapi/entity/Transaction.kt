@@ -1,6 +1,6 @@
 package by.mksn.kwitapi.entity
 
-import by.mksn.kwitapi.entity.support.IdAndUserIdAssignable
+import by.mksn.kwitapi.entity.support.UserBaseEntity
 import com.fasterxml.jackson.annotation.JsonIgnore
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
@@ -41,12 +41,4 @@ data class Transaction(
         @field:Size(min = 1, max = 300, message = "Name must be in range 1-300 symbols")
         @Column(length = 300)
         var note: String?
-) : IdAndUserIdAssignable<Long> {
-    override fun assignID(id: Long?) {
-        this.id = id
-    }
-
-    override fun assignUserID(id: Long?) {
-        this.userId = id
-    }
-}
+) : UserBaseEntity<Long>

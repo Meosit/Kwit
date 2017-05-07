@@ -34,11 +34,14 @@ class WalletServiceImpl(
         errors.isAny { throw ServiceBadRequestException(this) }
     }
 
-    override fun findByIdAndUserId(id: Long, userId: Long): Wallet?
-            = wrapJPACall { walletRepository.findByIdAndUserId(id, userId) }
+    override fun findByIdAndUserId(id: Long, userId: Long): Wallet? =
+            wrapJPACall { walletRepository.findByIdAndUserId(id, userId) }
 
-    override fun findAllByUserId(userId: Long, pageable: Pageable): Page<Wallet>
-            = wrapJPACall { walletRepository.findByUserId(userId, pageable) }
+    override fun findAllByUserId(userId: Long): List<Wallet> =
+            wrapJPACall { walletRepository.findByUserId(userId) }
+
+    override fun findAllByUserId(userId: Long, pageable: Pageable): Page<Wallet> =
+            wrapJPACall { walletRepository.findByUserId(userId, pageable) }
 
     override fun delete(id: Long, userId: Long): Unit? {
         checkPersonalVisibility(userId, id)

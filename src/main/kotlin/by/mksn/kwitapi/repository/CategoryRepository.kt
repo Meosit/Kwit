@@ -17,7 +17,9 @@ interface CategoryRepository :
 
     fun findByUserIdOrderByIdAsc(id: Long, pageable: Pageable): Page<Category>
 
-    fun findByUserIdAndType(id: Long, type: CategoryType, pageable: Pageable): Page<Category>
+    fun findByUserIdOrderByIdAsc(id: Long): List<Category>
+
+    fun findByUserIdAndType(id: Long, type: CategoryType): List<Category>
 
     fun findCategoryStats(
             @Param("userId") userId: Long,

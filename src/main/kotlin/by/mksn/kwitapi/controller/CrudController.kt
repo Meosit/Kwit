@@ -2,7 +2,7 @@ package by.mksn.kwitapi.controller
 
 import by.mksn.kwitapi.configuration.security.Auth
 import by.mksn.kwitapi.configuration.security.UserDetails
-import by.mksn.kwitapi.entity.support.IdAssignable
+import by.mksn.kwitapi.entity.support.BaseEntity
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*
@@ -10,7 +10,7 @@ import java.io.Serializable
 import javax.validation.Valid
 
 @RestController
-interface CrudController<E : IdAssignable<ID>, ID : Serializable> {
+interface CrudController<E : BaseEntity<ID>, ID : Serializable> {
 
     @PostMapping("")
     fun create(@Valid @RequestBody entity: E, @Auth auth: UserDetails): E

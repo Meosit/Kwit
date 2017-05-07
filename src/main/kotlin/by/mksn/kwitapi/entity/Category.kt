@@ -2,7 +2,7 @@ package by.mksn.kwitapi.entity
 
 import by.mksn.kwitapi.entity.support.CategoryStats
 import by.mksn.kwitapi.entity.support.CategoryType
-import by.mksn.kwitapi.entity.support.IdAndUserIdAssignable
+import by.mksn.kwitapi.entity.support.UserBaseEntity
 import com.fasterxml.jackson.annotation.JsonIgnore
 import java.math.BigDecimal
 import javax.persistence.*
@@ -94,13 +94,4 @@ data class Category(
         @Enumerated(EnumType.STRING)
         @Column(columnDefinition = "ENUM('INCOME', 'OUTGO')")
         var type: CategoryType? = null
-) : IdAndUserIdAssignable<Long> {
-
-    override fun assignID(id: Long?) {
-        this.id = id
-    }
-
-    override fun assignUserID(id: Long?) {
-        this.userId = id
-    }
-}
+) : UserBaseEntity<Long>

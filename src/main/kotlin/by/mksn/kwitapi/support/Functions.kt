@@ -2,7 +2,7 @@ package by.mksn.kwitapi.support
 
 import by.mksn.kwitapi.controller.exception.ControllerException
 import by.mksn.kwitapi.controller.exception.RequestException
-import by.mksn.kwitapi.entity.support.IdAssignable
+import by.mksn.kwitapi.entity.support.BaseEntity
 import by.mksn.kwitapi.service.exception.ServiceConstraintFailException
 import by.mksn.kwitapi.service.exception.ServiceException
 import by.mksn.kwitapi.service.exception.ServiceNotFoundException
@@ -70,17 +70,17 @@ inline fun <T> T?.ifNull(block: T.() -> T): T {
     return if (this == null) block() else this
 }
 
-fun <ID, T : IdAssignable<ID>> T?.ifNullServiceNotFound(id: ID? = null): T {
+fun <ID, T : BaseEntity<ID>> T?.ifNullServiceNotFound(id: ID? = null): T {
     if (this == null) {
         throw ServiceNotFoundException("Error" to "Entity ${if (id == null) "" else "with id '$id' "}not found")
     }
     return this
 }
 
-fun <ID, T : IdAssignable<ID>> T?.ifNullNotFound(id: ID? = null): T {
+fun <ID, T : BaseEntity<ID>> T?.ifNullNotFound(id: ID? = null): T {
     if (this == null) {
         throw RequestException(HttpStatus.NOT_FOUND,
-                "Error" to "Entity ${if (id == null) "" else "with id $id "}not found")
+                "Error" to "Entity ${if (id == null) "" else "with id '$id' "}not found")
     }
     return this
 }

@@ -37,6 +37,26 @@ class CategoryServiceImpl(
         return wrapJPAModifyingCall { categoryRepository.save(entity) }
     }
 
+    override fun findAllByUserId(userId: Long): List<Category> =
+            wrapJPACall { categoryRepository.findByUserIdOrderByIdAsc(userId) }
+
+    override fun findAllByUserId(userId: Long, pageable: Pageable): Page<Category> =
+            wrapJPACall { categoryRepository.findByUserIdOrderByIdAsc(userId, pageable) }
+
+    override fun findByUserIdAndType(id: Long, type: CategoryType): List<Category> =
+            wrapJPACall { categoryRepository.findByUserIdAndType(id, type) }
+
+    override fun calculateCategoryStats(userId: Long, type: CategoryType, currencyCode: String, range: DateRange?): CategoriesStats {
+        val (from, to) = range ?: DateRange.NONE
+        val currency = wrapJPACall { currencyRepository.findByCode(currencyCode) }
+                ?: throw ServiceNotFoundException("Error" to "Currency with code '$currencyCode' not found")
+        val categories = wrapJPACall { categoryRepository.findCategoryStats(userId, currency.id!!, type, from.ts(), to.ts()) }
+        val categoriesStats = CategoriesStats(currency, range, categories)
+        logger.debug("Fetched ${categories.size} categories stats for currency '" +
+                "$currencyCode' ${if (range == null) "during all time" else "during ${range.start} to ${range.end}"}")
+        return categoriesStats
+    }
+
     override fun delete(id: Long, userId: Long): Unit? {
         checkPersonalVisibility(userId, id)
         val affected = wrapJPACall { transactionRepository.deleteByCategoryId(id) }
@@ -56,23 +76,6 @@ class CategoryServiceImpl(
         val isSuccess = wrapJPAModifyingCall { categoryRepository.delete(id) }
         if (isSuccess != null) logger.info("Category[$id] deleted.")
         return isSuccess
-    }
-
-    override fun findAllByUserId(userId: Long, pageable: Pageable): Page<Category> =
-            wrapJPACall { categoryRepository.findByUserIdOrderByIdAsc(userId, pageable) }
-
-    override fun findByUserIdAndType(id: Long, type: CategoryType, pageable: Pageable): Page<Category> =
-            wrapJPACall { categoryRepository.findByUserIdAndType(id, type, pageable) }
-
-    override fun calculateCategoryStats(userId: Long, type: CategoryType, currencyCode: String, range: DateRange?): CategoriesStats {
-        val (from, to) = range ?: DateRange.NONE
-        val currency = wrapJPACall { currencyRepository.findByCode(currencyCode) }
-                ?: throw ServiceNotFoundException("Error" to "Currency with code '$currencyCode' not found")
-        val categories = wrapJPACall { categoryRepository.findCategoryStats(userId, currency.id!!, type, from.ts(), to.ts()) }
-        val categoriesStats = CategoriesStats(currency, range, categories)
-        logger.debug("Fetched ${categories.size} categories stats for currency '" +
-                "$currencyCode' ${if (range == null) "during all time" else "during ${range.start} to ${range.end}"}")
-        return categoriesStats
     }
 
 }

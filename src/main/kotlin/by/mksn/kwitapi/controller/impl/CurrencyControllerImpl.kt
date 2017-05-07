@@ -24,24 +24,27 @@ open class CurrencyControllerImpl(
         private val logger = LoggerFactory.getLogger(CurrencyControllerImpl::class.java)!!
     }
 
-    override fun create(@Valid @RequestBody entity: Currency, @Auth auth: UserDetails): Currency
-            = wrapServiceCall(logger) { currencyService.create(entity) }
+    override fun findAll(@Auth auth: UserDetails): Iterable<Currency> =
+            wrapServiceCall(logger) { currencyService.findAll() }
 
-    override fun findByCode(@PathVariable("code") @CurrencyCode code: String): Currency
-            = wrapServiceCall(logger) {
-        currencyService.findByCode(code) ?:
-                notFoundException("Error", "Entity with code '$code' not found")
-    }
+    override fun findAll(@Auth auth: UserDetails, pageable: Pageable): Page<Currency> =
+            wrapServiceCall(logger) { currencyService.findAll(pageable) }
 
-    override fun findById(@PathVariable("id") id: Long?, @Auth auth: UserDetails): Currency
-            = wrapServiceCall(logger) { currencyService.findById(id!!).ifNullNotFound(id) }
+    override fun findById(@PathVariable("id") id: Long?, @Auth auth: UserDetails): Currency =
+            wrapServiceCall(logger) { currencyService.findById(id!!).ifNullNotFound(id) }
 
-    override fun update(@PathVariable("id") id: Long?, @Valid @RequestBody entity: Currency, @Auth auth: UserDetails): Currency
-            = wrapServiceCall(logger) { currencyService.update(id!!, entity) }
+    override fun findByCode(@PathVariable("code") @CurrencyCode code: String): Currency =
+            wrapServiceCall(logger) {
+                currencyService.findByCode(code)
+                        ?: notFoundException("Error", "Entity with code '$code' not found")
+            }
 
-    override fun delete(@PathVariable("id") id: Long?, @Auth auth: UserDetails)
-            = wrapServiceCall(logger) { currencyService.delete(id!!) }
+    override fun create(@Valid @RequestBody entity: Currency, @Auth auth: UserDetails): Currency =
+            wrapServiceCall(logger) { currencyService.create(entity) }
 
-    override fun findAll(@Auth auth: UserDetails, pageable: Pageable): Page<Currency>
-            = wrapServiceCall(logger) { currencyService.findAll(pageable) }
+    override fun update(@PathVariable("id") id: Long?, @Valid @RequestBody entity: Currency, @Auth auth: UserDetails): Currency =
+            wrapServiceCall(logger) { currencyService.update(id!!, entity) }
+
+    override fun delete(@PathVariable("id") id: Long?, @Auth auth: UserDetails) =
+            wrapServiceCall(logger) { currencyService.delete(id!!) }
 }

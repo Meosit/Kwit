@@ -1,6 +1,6 @@
 package by.mksn.kwitapi.service.impl
 
-import by.mksn.kwitapi.entity.support.IdAndUserIdAssignable
+import by.mksn.kwitapi.entity.support.UserBaseEntity
 import by.mksn.kwitapi.repository.PersonalCrudRepository
 import by.mksn.kwitapi.service.PersonalCrudService
 import by.mksn.kwitapi.service.exception.ServiceException
@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 
 @Transactional(propagation = Propagation.REQUIRED, rollbackFor = arrayOf(ServiceException::class))
-abstract class AbstractCrudService<E : IdAndUserIdAssignable<Long>>(
+abstract class AbstractCrudService<E : UserBaseEntity<Long>>(
         private val crudRepository: PersonalCrudRepository<E, Long>
 ) : PersonalCrudService<E, Long> {
 

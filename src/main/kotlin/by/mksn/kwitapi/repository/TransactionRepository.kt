@@ -27,7 +27,7 @@ interface TransactionRepository :
                 INNER JOIN FETCH w.currency
                 INNER JOIN FETCH t.category
                 WHERE t.userId = :id
-                ORDER BY t.date DESC""",
+                ORDER BY t.date DESC, t.id ASC""",
             countQuery = "SELECT COUNT(t) FROM Transaction t WHERE t.userId = :id")
     fun findByUserId(@Param("id") id: Long, pageable: Pageable): Page<Transaction>
 

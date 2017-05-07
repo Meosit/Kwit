@@ -1,6 +1,6 @@
 package by.mksn.kwitapi.entity
 
-import by.mksn.kwitapi.entity.support.IdAndUserIdAssignable
+import by.mksn.kwitapi.entity.support.UserBaseEntity
 import by.mksn.kwitapi.entity.support.WalletType
 import com.fasterxml.jackson.annotation.JsonIgnore
 import org.hibernate.annotations.Fetch
@@ -38,13 +38,4 @@ data class Wallet(
         @Enumerated(EnumType.STRING)
         @Column(columnDefinition = "ENUM('NORMAL', 'SAVING')")
         var type: WalletType?
-) : IdAndUserIdAssignable<Long> {
-
-    override fun assignID(id: Long?) {
-        this.id = id
-    }
-
-    override fun assignUserID(id: Long?) {
-        this.userId = id
-    }
-}
+) : UserBaseEntity<Long>

@@ -21,8 +21,8 @@ class AuthControllerImpl(
         val logger = LoggerFactory.getLogger(AuthControllerImpl::class.java)!!
     }
 
-    override fun register(@Valid @RequestBody registrationDetails: RegistrationDetails)
-            = wrapServiceCall(logger) { authService.register(registrationDetails) }
+    override fun register(@Valid @RequestBody registrationDetails: RegistrationDetails) =
+            wrapServiceCall(logger) { authService.register(registrationDetails) }
 
     override fun logout(principal: OAuth2Authentication) {
         val accessToken = defaultTokenServices.getAccessToken(principal)

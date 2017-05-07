@@ -12,6 +12,8 @@ interface CurrencyService {
 
     fun findAll(pageable: Pageable): Page<Currency>
 
+    fun findAll(): Iterable<Currency>
+
     fun findByCode(code: String): Currency?
 
     fun update(id: Long, currency: Currency): Currency

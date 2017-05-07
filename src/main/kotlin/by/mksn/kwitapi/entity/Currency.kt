@@ -1,6 +1,6 @@
 package by.mksn.kwitapi.entity
 
-import by.mksn.kwitapi.entity.support.IdAssignable
+import by.mksn.kwitapi.entity.support.BaseEntity
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
@@ -23,8 +23,4 @@ data class Currency(
         @field:NotNull(message = "Prefix flag is not specified")
         @Column(name = "is_prefix")
         val isPrefix: Boolean
-) : IdAssignable<Long> {
-    override fun assignID(id: Long?) {
-        this.id = id
-    }
-}
+) : BaseEntity<Long>
