@@ -1,0 +1,28 @@
+<md-content layout="row" layout-align="center start" layout-padding flex>
+  <md-card style="width: 500px;">
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-display-1">Sign up please</span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-content layout="column" style="margin-top: 20px;">
+      <md-input-container style="margin: 0;">
+        <label>Email</label>
+        <input ng-model="self.email" type="email">
+      </md-input-container>
+      <div layout="row">
+        <md-input-container flex style="margin: 0;">
+          <label>Password</label>
+          <input ng-model="self.password" type="password">
+        </md-input-container>
+        <md-input-container flex style="margin: 0;">
+          <label>Password Confirmation</label>
+          <input ng-model="self.passwordConfirmation" type="password">
+        </md-input-container>
+      </div>
+    </md-card-content>
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button ng-click="self.signUp()">Sign Up</md-button>
+    </md-card-actions>
+  </md-card>
+</md-content>

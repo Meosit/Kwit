@@ -1,0 +1,59 @@
+<md-content layout-gt-xs="row" layout-align="center start" layout-padding flex>
+  <md-card class="profile-card">
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Salary Info</span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+      <div layout="column">
+        <div layout="row">
+          <md-input-container flex>
+            <label>Salary day</label>
+            <input type="number" ng-model="self.salaryInfo.salaryDay">
+          </md-input-container>
+        </div>
+        <div layout="row" layout-align="space-between">
+          <md-input-container flex>
+            <label>Salary Currency</label>
+            <md-select ng-model="self.salaryInfo.salaryCurrencyCode">
+              <md-option ng-repeat="code in self.currencyCodes" value="{{code}}">{{code}}</md-option>
+            </md-select>
+          </md-input-container>
+        </div>
+      </div>
+    </md-card-content>
+    <md-card-actions layout="row">
+      <md-button ng-click="self.setSalaryInfo()">Update</md-button>
+    </md-card-actions>
+  </md-card>
+
+  <md-card class="profile-card">
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">Change password</span>
+      </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+      <div layout="column">
+        <div layout-gt-xs="row">
+          <md-input-container flex class="md-block">
+            <label>Old Password</label>
+            <input ng-model="self.oldPassword" type="password">
+          </md-input-container>
+          <md-input-container flex class="md-block">
+            <label>Password</label>
+            <input ng-model="self.password" type="password">
+          </md-input-container>
+          <md-input-container flex class="md-block">
+            <label>Confirm passowrd</label>
+            <input ng-model="self.passwordConfirmation" type="password">
+          </md-input-container>
+        </div>
+      </div>
+    </md-card-content>
+    <md-card-actions layout="row">
+      <md-button ng-click="self.updatePassword()">Update</md-button>
+    </md-card-actions>
+  </md-card>
+</md-content>

@@ -1,0 +1,70 @@
+.md-fab {
+    position: fixed;
+    bottom: 45px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.md-fab i {
+    position: absolute;
+    top: 17px;
+    left: 16.5px;
+}
+
+md-nav-bar div {
+    display: flex;
+}
+
+md-nav-bar .md-nav-bar {
+    border-color: transparent;
+}
+
+.md-button.sign-out-button {
+    color: rgb(197, 202, 233);
+}
+
+.md-button.sign-out-button:hover {
+    background-color: transparent;
+}
+
+.profile-navbar-item {
+    text-transform: none;
+}
+
+md-table-pagination.md-table-pagination {
+    justify-content: flex-start;
+}
+
+md-dialog.md-dialog-modal {
+    max-height: 95%;
+}
+
+footer h4 {
+    font-size: 12pt;
+}
+
+footer {
+    background-color: rgb(63, 81, 181);
+    color: rgba(255, 255, 255, 0.87);
+}
+
+div.md-select-box {
+    margin-bottom: 20px;
+}
+
+div.md-select-box label {
+    color: rgba(0, 0, 0, 0.38);
+    margin-bottom: 20px;
+}
+
+@media only screen and (min-width: 600px) {
+    md-dialog {
+        min-width: 350px;
+    }
+}
+
+@media only screen and (min-width: 960px) {
+    md-dialog {
+        min-width: 500px;
+    }
+}
