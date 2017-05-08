@@ -50,10 +50,10 @@ class CategoryServiceImpl(
         val (from, to) = range ?: DateRange.NONE
         val currency = wrapJPACall { currencyRepository.findByCode(currencyCode) }
                 ?: throw ServiceNotFoundException("Error" to "Currency with code '$currencyCode' not found")
-        val categories = wrapJPACall { categoryRepository.findCategoryStats(userId, currency.id!!, type, from.ts(), to.ts()) }
+        val categories = wrapJPACall { categoryRepository.fetchCategoryStats(userId, currency.id!!, type, from.toStamp(), to.toStamp()) }
         val categoriesStats = CategoriesStats(currency, range, categories)
         logger.debug("Fetched ${categories.size} categories stats for currency '" +
-                "$currencyCode' ${if (range == null) "during all time" else "during ${range.start} to ${range.end}"}")
+                "$currencyCode' and period: ${if (range == null) "All time" else "${range.start} to ${range.end}"}")
         return categoriesStats
     }
 

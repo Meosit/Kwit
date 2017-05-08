@@ -15,6 +15,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.context.request.WebRequest
+import javax.validation.ConstraintViolationException
 
 @ControllerAdvice
 class RestExceptionHandler : BaseRestExceptionHandler() {
@@ -80,13 +81,21 @@ class RestExceptionHandler : BaseRestExceptionHandler() {
         return handleExceptionInternal(ex, apiError, headers, status, request)
     }
 
+    @ExceptionHandler(ConstraintViolationException::class)
+    fun handleConstraintViolationException(ex: ConstraintViolationException): ResponseEntity<Any> {
+        val apiError = RestError(HttpStatus.BAD_REQUEST, ex.constraintViolations.map {
+            RestErrorMessage(
+                    "Invalid path variable", "Invalid value '${it.invalidValue}'")
+        })
+        return ResponseEntity(apiError, HttpStatus.BAD_REQUEST)
+    }
+
     @ExceptionHandler(RequestException::class)
     fun handleBadRequest(ex: RequestException): ResponseEntity<Any> {
         logger.debug("Bad request from business logic: ${ex.status} ${ex.errors}")
         val apiError = RestError(ex.status, ex.errors)
         return ResponseEntity(apiError, ex.status)
     }
-
 
     @ExceptionHandler(AccessDeniedException::class)
     fun handleAccessDeniedException(ex: AccessDeniedException): ResponseEntity<Any> {

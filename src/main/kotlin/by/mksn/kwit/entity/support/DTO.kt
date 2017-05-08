@@ -14,9 +14,17 @@ data class RegistrationDetails(
         val email: String? = null,
         @field:NotNull(message = "Password is not specified")
         @field:Size(min = 5, max = 50, message = "Password must be in range 5-50 symbols")
-        val password: String? = null,
+        val password: String? = null
+)
+
+data class SalaryInfo(
+        @field:NotNull(message = "Salary day is not specified")
         @field:Range(min = 1, max = 31, message = "Salary day must be in range 1-31")
-        val salaryDay: Int? = null
+        val salaryDay: Int? = null,
+        @field:CurrencyCode(message = "Invalid currency format")
+        @field:NotNull(message = "Currency code is not specified")
+        @field:Size(min = 3, max = 3, message = "Code must have 3-symbol length")
+        val salaryCurrencyCode: String? = null
 )
 
 data class PasswordChangeDetails(
@@ -32,12 +40,18 @@ data class PasswordChangeDetails(
         val newPassword: String?
 )
 
+data class CostForecast(
+        val dailySumTillSalary: BigDecimal,
+        val actualCosts: BigDecimal,
+        val daysTillSalary: Int
+)
+
 data class CategoryStats(
-        val categoryId: Long,
-        val categoryName: String,
-        val sumForCategory: BigDecimal,
-        val percentOfAll: BigDecimal?,
-        val countForCategory: Int
+        var categoryId: Long?,
+        var categoryName: String?,
+        var sumForCategory: BigDecimal?,
+        var percentOfAll: BigDecimal?,
+        var countForCategory: Int?
 )
 
 data class CategoriesStats(

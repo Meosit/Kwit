@@ -7,21 +7,23 @@ import by.mksn.kwit.entity.support.CategoriesStats
 import by.mksn.kwit.entity.support.CategoryType
 import by.mksn.kwit.entity.support.CurrencyCode
 import org.springframework.format.annotation.DateTimeFormat
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
+@Validated
 @RequestMapping("/api/categories")
 interface CategoryController : CrudController<Category, Long> {
 
     @GetMapping("type/{type}")
-    fun findAll(
+    fun getAll(
             @Auth auth: UserDetails,
             @PathVariable("type") type: CategoryType
     ): List<Category>
 
     @GetMapping("all")
-    fun findAll(@Auth auth: UserDetails): List<Category>
+    fun getAll(@Auth auth: UserDetails): List<Category>
 
     @GetMapping("stats/{type}/{currencyCode}", params = arrayOf("from", "to"))
     fun calculateCategoryStats(

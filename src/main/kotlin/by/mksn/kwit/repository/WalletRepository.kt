@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
+import java.math.BigDecimal
 
 @Repository
 interface WalletRepository :
@@ -23,4 +24,9 @@ interface WalletRepository :
     @Query("SELECT w FROM Wallet w INNER JOIN FETCH w.currency WHERE w.userId = :id ORDER BY w.type ASC, w.id ASC")
     fun findByUserId(@Param("id") id: Long): List<Wallet>
 
+    @Query("""SELECT SUM(w.balance) FROM Wallet w
+                INNER JOIN w.currency c
+                WHERE w.type = 'NORMAL'
+                AND c.code = :currencyCode""")
+    fun calculateSumForNormal(@Param("currencyCode") currencyCode: String): BigDecimal?
 }

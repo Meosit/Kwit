@@ -39,9 +39,7 @@ class ControllerConfiguration {
             = RemittanceControllerImpl(remittanceService)
 
     @Bean
-    fun authController(
-            defaultTokenServices: DefaultTokenServices,
-            authService: AuthService
-    ): AuthController
-            = AuthControllerImpl(authService, defaultTokenServices)
+    fun userController(defaultTokenServices: DefaultTokenServices,
+                       userService: UserService): UserController
+            = UserControllerImpl(userService, defaultTokenServices)
 }

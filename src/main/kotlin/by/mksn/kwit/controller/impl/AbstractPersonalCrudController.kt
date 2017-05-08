@@ -22,10 +22,10 @@ abstract class AbstractPersonalCrudController<E : UserBaseEntity<Long>>(
 ) : CrudController<E, Long> {
 
 
-    override fun findAll(@Auth auth: UserDetails, pageable: Pageable): Page<E> =
+    override fun getAll(@Auth auth: UserDetails, pageable: Pageable): Page<E> =
             wrapServiceCall(logger) { crudService.findAllByUserId(auth.userId, pageable) }
 
-    override fun findById(@PathVariable("id") id: Long?, @Auth auth: UserDetails): E = wrapServiceCall(logger) {
+    override fun getById(@PathVariable("id") id: Long?, @Auth auth: UserDetails): E = wrapServiceCall(logger) {
         crudService.findByIdAndUserId(id!!, auth.userId).ifNullNotFound(id)
     }
 

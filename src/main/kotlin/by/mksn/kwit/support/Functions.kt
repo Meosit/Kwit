@@ -3,10 +3,7 @@ package by.mksn.kwit.support
 import by.mksn.kwit.controller.exception.ControllerException
 import by.mksn.kwit.controller.exception.RequestException
 import by.mksn.kwit.entity.support.BaseEntity
-import by.mksn.kwit.service.exception.ServiceConstraintFailException
-import by.mksn.kwit.service.exception.ServiceException
-import by.mksn.kwit.service.exception.ServiceNotFoundException
-import by.mksn.kwit.service.exception.ServiceRequestException
+import by.mksn.kwit.service.exception.*
 import org.slf4j.Logger
 import org.springframework.dao.DataAccessException
 import org.springframework.dao.DataIntegrityViolationException
@@ -32,7 +29,6 @@ inline fun <T> wrapJPAModifyingCall(block: () -> T): T? = try {
 } catch (e: DataAccessException) {
     throw ServiceException(cause = e)
 }
-
 
 
 inline fun <T> wrapServiceCall(logger: Logger, block: () -> T): T = try {
@@ -66,6 +62,12 @@ fun badRequestException(title: String, message: String): Nothing =
 fun accessDeniedException(title: String, message: String): Nothing =
         throw RequestException(HttpStatus.FORBIDDEN, title to message)
 
+fun MutableList<RestErrorMessage>.throwAll(): Nothing? =
+        if (this.isNotEmpty())
+            throw ServiceBadRequestException(this)
+        else
+            null
+
 inline fun <T> T?.ifNull(block: T.() -> T): T {
     return if (this == null) block() else this
 }
@@ -85,8 +87,5 @@ fun <ID, T : BaseEntity<ID>> T?.ifNullNotFound(id: ID? = null): T {
     return this
 }
 
-inline fun <T> Boolean.then(block: () -> T?): T?
-        = if (this) block() else null
-
-fun Date.ts(): Timestamp = Timestamp.from(this.toInstant())
+fun Date.toStamp(): Timestamp = Timestamp.from(this.toInstant())
 

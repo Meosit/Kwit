@@ -4,6 +4,8 @@ import by.mksn.kwit.entity.support.BaseEntity
 import by.mksn.kwit.entity.support.UserRole
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.hibernate.annotations.Fetch
+import org.hibernate.annotations.FetchMode
 import org.hibernate.validator.constraints.Range
 import java.io.Serializable
 import java.util.*
@@ -31,6 +33,10 @@ data class User(
         @field:Range(min = 1, max = 31, message = "Salary day must be in range 1-31")
         @Column(name = "salary_day", columnDefinition = "TINYINT")
         var salaryDay: Int? = null,
+        @ManyToOne(fetch = FetchType.EAGER)
+        @Fetch(FetchMode.JOIN)
+        @JoinColumn(name = "salary_currency_id")
+        var salaryCurrency: Currency? = null,
         @field:NotNull(message = "User role is not specified")
         @Enumerated(EnumType.STRING)
         @Column(columnDefinition = "ENUM('USER', 'ADMIN')")

@@ -24,16 +24,16 @@ open class CurrencyControllerImpl(
         private val logger = LoggerFactory.getLogger(CurrencyControllerImpl::class.java)!!
     }
 
-    override fun findAll(@Auth auth: UserDetails): Iterable<Currency> =
+    override fun getAll(@Auth auth: UserDetails): Iterable<Currency> =
             wrapServiceCall(logger) { currencyService.findAll() }
 
-    override fun findAll(@Auth auth: UserDetails, pageable: Pageable): Page<Currency> =
+    override fun getAll(@Auth auth: UserDetails, pageable: Pageable): Page<Currency> =
             wrapServiceCall(logger) { currencyService.findAll(pageable) }
 
-    override fun findById(@PathVariable("id") id: Long?, @Auth auth: UserDetails): Currency =
+    override fun getById(@PathVariable("id") id: Long?, @Auth auth: UserDetails): Currency =
             wrapServiceCall(logger) { currencyService.findById(id!!).ifNullNotFound(id) }
 
-    override fun findByCode(@PathVariable("code") @CurrencyCode code: String): Currency =
+    override fun getByCode(@PathVariable("code") @CurrencyCode code: String): Currency =
             wrapServiceCall(logger) {
                 currencyService.findByCode(code)
                         ?: notFoundException("Error", "Entity with code '$code' not found")

@@ -1,8 +1,10 @@
 package by.mksn.kwit.service.impl
 
 import by.mksn.kwit.entity.Wallet
+import by.mksn.kwit.entity.support.CostForecast
 import by.mksn.kwit.repository.TransactionRepository
 import by.mksn.kwit.repository.WalletRepository
+import by.mksn.kwit.service.UserService
 import by.mksn.kwit.service.WalletService
 import by.mksn.kwit.service.exception.ServiceBadRequestException
 import by.mksn.kwit.service.exception.ServiceException
@@ -14,12 +16,16 @@ import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
+import java.math.BigDecimal
+import java.math.RoundingMode
+import java.util.*
 
 @Service
 @Transactional(propagation = Propagation.REQUIRED, rollbackFor = arrayOf(ServiceException::class))
 class WalletServiceImpl(
         private val walletRepository: WalletRepository,
-        private val transactionRepository: TransactionRepository
+        private val transactionRepository: TransactionRepository,
+        private val userService: UserService
 ) : AbstractCrudService<Wallet>(walletRepository), WalletService {
 
     companion object {
@@ -62,6 +68,30 @@ class WalletServiceImpl(
         val isSuccess: Unit? = wrapJPAModifyingCall { walletRepository.delete(id) }
         if (isSuccess != null) logger.info("Wallet[$id] deleted")
         return isSuccess
+    }
+
+    override fun calculateCostForecast(userId: Long): CostForecast {
+        val errors = mutableListOf<RestErrorMessage>()
+        val salaryInfo = userService.findSalaryInfo(userId)
+        salaryInfo ?: throw ServiceBadRequestException("Error" to "Salary info is not specified")
+        val average = walletRepository.calculateSumForNormal(salaryInfo.salaryCurrencyCode!!)
+        average ?: errors.add("Error" to "Cannot calculate daily sum")
+        val prediction = transactionRepository.calculateMovingAveragePrediction(userId,
+                salaryInfo.salaryCurrencyCode, PREDICTION_LOOKUP_DAYS)
+        prediction ?: errors.add("Error" to "Cannot calculate average prediction")
+        errors.throwAll()
+
+        val calendar = Calendar.getInstance()
+        val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+        val maxDayOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+        val salaryDay = if (salaryInfo.salaryDay!! > maxDayOfMonth) maxDayOfMonth else salaryInfo.salaryDay
+        val daysTillSalary = if (dayOfMonth >= salaryDay)
+            maxDayOfMonth - dayOfMonth + salaryDay else salaryDay - dayOfMonth
+        return CostForecast(
+                dailySumTillSalary = average!!.divide(BigDecimal(daysTillSalary).setScale(4), RoundingMode.FLOOR),
+                actualCosts = prediction!!,
+                daysTillSalary = daysTillSalary
+        )
     }
 
 }

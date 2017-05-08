@@ -16,7 +16,7 @@ interface CrudController<E : BaseEntity<ID>, ID : Serializable> {
     fun create(@Valid @RequestBody entity: E, @Auth auth: UserDetails): E
 
     @GetMapping("{id}")
-    fun findById(@PathVariable("id") id: ID?, @Auth auth: UserDetails): E
+    fun getById(@PathVariable("id") id: ID?, @Auth auth: UserDetails): E
 
     @PutMapping("{id}")
     fun update(@PathVariable("id") id: ID?, @Valid @RequestBody entity: E, @Auth auth: UserDetails): E
@@ -25,6 +25,6 @@ interface CrudController<E : BaseEntity<ID>, ID : Serializable> {
     fun delete(@PathVariable("id") id: ID?, @Auth auth: UserDetails)
 
     @GetMapping("")
-    fun findAll(@Auth auth: UserDetails, pageable: Pageable): Page<E>
+    fun getAll(@Auth auth: UserDetails, pageable: Pageable): Page<E>
 
 }

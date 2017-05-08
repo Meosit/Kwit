@@ -12,26 +12,6 @@ CREATE SCHEMA IF NOT EXISTS `kwit`
   COLLATE utf8_general_ci;
 
 USE `kwit`;
--- -----------------------------------------------------
--- Table `kwit`.`user`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `user`;
-
-CREATE TABLE `user`
-(
-  `id`            INT UNSIGNED           NOT NULL  AUTO_INCREMENT,
-  `email`         VARCHAR(255)           NOT NULL,
-  `password_hash` CHAR(60)               NOT NULL,
-  `salary_day`    TINYINT UNSIGNED       NULL      DEFAULT NULL,
-  `role`          ENUM ('USER', 'ADMIN') NOT NULL  DEFAULT 'USER',
-  `created_at`    DATETIME               NULL      DEFAULT NULL,
-  `is_deleted`    BOOL                   NOT NULL  DEFAULT FALSE,
-  PRIMARY KEY (`id` ASC)
-)
-  ENGINE = InnoDB;
-
-CREATE UNIQUE INDEX `IXUQ_user_email`
-  ON `user` (`email` ASC);
 
 -- -----------------------------------------------------
 -- Table `kwit`.`currency`
@@ -50,6 +30,32 @@ CREATE TABLE `currency`
 
 CREATE UNIQUE INDEX `IXUQ_currency_code`
   ON `currency` (`code` ASC);
+
+-- -----------------------------------------------------
+-- Table `kwit`.`user`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `user`;
+
+CREATE TABLE `user`
+(
+  `id`                 INT UNSIGNED           NOT NULL  AUTO_INCREMENT,
+  `email`              VARCHAR(255)           NOT NULL,
+  `password_hash`      CHAR(60)               NOT NULL,
+  `salary_day`         TINYINT UNSIGNED       NULL      DEFAULT NULL,
+  `salary_currency_id` INTEGER UNSIGNED       NULL      DEFAULT NULL,
+  `role`               ENUM ('USER', 'ADMIN') NOT NULL  DEFAULT 'USER',
+  `created_at`         DATETIME               NULL      DEFAULT NULL,
+  `is_deleted`         BOOL                   NOT NULL  DEFAULT FALSE,
+  PRIMARY KEY (`id` ASC),
+  FOREIGN KEY (`salary_currency_id`)
+  REFERENCES `currency` (`id`)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT
+)
+  ENGINE = InnoDB;
+
+CREATE UNIQUE INDEX `IXUQ_user_email`
+  ON `user` (`email` ASC);
 
 -- -----------------------------------------------------
 -- Table `kwit`.`wallet`

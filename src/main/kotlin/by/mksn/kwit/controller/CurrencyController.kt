@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController
 interface CurrencyController : CrudController<Currency, Long> {
 
     @GetMapping("code/{code}")
-    fun findByCode(@PathVariable("code") code: String): Currency
+    fun getByCode(@PathVariable("code") code: String): Currency
 
     @GetMapping("all")
-    fun findAll(@Auth auth: UserDetails): Iterable<Currency>
+    fun getAll(@Auth auth: UserDetails): Iterable<Currency>
 
 }

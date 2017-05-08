@@ -19,7 +19,7 @@ import javax.validation.constraints.Size
                 ColumnResult(name = "countForCategory", type = Int::class)
         ))
 ))
-@NamedNativeQuery(name = "Category.findCategoryStats", query = """
+@NamedNativeQuery(name = "Category.fetchCategoryStats", query = """
 SELECT
   categoryId,
   categoryName,
@@ -29,11 +29,7 @@ SELECT
 FROM
   (SELECT
      category.id        AS categoryId,
-     category.name      AS categoryName,
-     currency.id        AS currencyId,
-     currency.code      AS currencyCode,
-     currency.symbol    AS currencySymbol,
-     currency.is_prefix AS currencyIsPrefix
+     category.name      AS categoryName
    FROM category
      CROSS JOIN wallet
      JOIN currency

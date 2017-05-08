@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
+import java.math.BigDecimal
 import javax.transaction.Transactional
 
 @Repository
@@ -53,6 +54,21 @@ interface TransactionRepository :
     @Modifying(clearAutomatically = true)
     @Query("UPDATE transaction SET wallet_id = :newWalletId WHERE wallet_id = :oldWalletId",
             nativeQuery = true)
-    fun shiftToNewWallet(@Param("newWalletId") newWalletId: Long,
-                         @Param("oldWalletId") oldWalletId: Long): Int
+    fun shiftToNewWallet(
+            @Param("newWalletId") newWalletId: Long,
+            @Param("oldWalletId") oldWalletId: Long): Int
+
+    @Query("""SELECT IF(SUM(act.sum) IS NULL, 0, SUM(act.sum)) / (:daysLookup + 1)
+            FROM transaction AS act
+              JOIN wallet ON act.wallet_id = wallet.id
+              JOIN currency ON wallet.currency_id = currency.id
+            WHERE (act.user_id = :userId) AND
+                  (currency.code = :currencyCode) AND
+                  (act.date BETWEEN DATE_SUB(NOW(), INTERVAL :daysLookup DAY) AND NOW())""",
+            nativeQuery = true)
+    fun calculateMovingAveragePrediction(
+            @Param("userId") userId: Long,
+            @Param("currencyCode") currencyCode: String,
+            @Param("daysLookup") daysLookup: Int): BigDecimal?
+
 }

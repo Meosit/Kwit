@@ -21,7 +21,7 @@ interface CategoryRepository :
 
     fun findByUserIdAndType(id: Long, type: CategoryType): List<Category>
 
-    fun findCategoryStats(
+    fun fetchCategoryStats(
             @Param("userId") userId: Long,
             @Param("currencyId") currencyId: Long,
             @Param("categoryType") categoryType: CategoryType,
