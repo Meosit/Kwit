@@ -43,15 +43,16 @@ data class CostForecast(
 )
 
 data class CategoryStats(
-        var categoryId: Long?,
-        var categoryName: String?,
-        var sumForCategory: BigDecimal?,
-        var percentOfAll: BigDecimal?,
-        var countForCategory: Int?
+        var categoryId: Long? = null,
+        var categoryName: String? = null,
+        var sumForCategory: BigDecimal? = null,
+        var percentOfAll: BigDecimal? = null,
+        var countForCategory: Int? = null
 )
 
 data class CategoriesStats(
         val currency: Currency,
+        val categoryType: CategoryType,
         val period: DateRange?,
         val categories: List<CategoryStats>
 )

@@ -10,15 +10,6 @@ import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
 @Entity
-@SqlResultSetMapping(name = "CategoryStatsMapping", classes = arrayOf(
-        ConstructorResult(targetClass = CategoryStats::class, columns = arrayOf(
-                ColumnResult(name = "categoryId", type = Long::class),
-                ColumnResult(name = "categoryName", type = String::class),
-                ColumnResult(name = "sumForCategory", type = BigDecimal::class),
-                ColumnResult(name = "percentOfAll", type = BigDecimal::class),
-                ColumnResult(name = "countForCategory", type = Int::class)
-        ))
-))
 @NamedNativeQuery(name = "Category.fetchCategoryStats", query = """
 SELECT
   categoryId,
@@ -73,6 +64,15 @@ FROM
   ) AS third
 ORDER BY categoryId
 """, resultSetMapping = "CategoryStatsMapping")
+@SqlResultSetMapping(name = "CategoryStatsMapping", classes = arrayOf(
+        ConstructorResult(targetClass = CategoryStats::class, columns = arrayOf(
+                ColumnResult(name = "categoryId", type = Long::class),
+                ColumnResult(name = "categoryName", type = String::class),
+                ColumnResult(name = "sumForCategory", type = BigDecimal::class),
+                ColumnResult(name = "percentOfAll", type = BigDecimal::class),
+                ColumnResult(name = "countForCategory", type = Int::class)
+        ))
+))
 @Table(name = "category")
 data class Category(
         @Id

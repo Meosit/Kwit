@@ -24,7 +24,7 @@ interface CategoryRepository :
     fun fetchCategoryStats(
             @Param("userId") userId: Long,
             @Param("currencyId") currencyId: Long,
-            @Param("categoryType") categoryType: CategoryType,
+            @Param("categoryType") categoryType: String,
             @Param("startDate") startDate: Timestamp,
             @Param("endDate") endDate: Timestamp
     ): List<CategoryStats>
