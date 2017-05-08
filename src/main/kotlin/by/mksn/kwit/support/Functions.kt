@@ -41,32 +41,18 @@ inline fun <T> wrapServiceCall(logger: Logger, block: () -> T): T = try {
     throw ControllerException(cause = e)
 }
 
-inline fun MutableList<RestErrorMessage>.isAny(block: MutableList<RestErrorMessage>.() -> Nothing) {
-    if (this.size != 0) {
-        block()
-    }
-}
-
-fun MutableList<RestErrorMessage>.add(errorMessage: Pair<String, String>) {
-    this.add(RestErrorMessage(errorMessage.first, errorMessage.second))
-}
-
-infix fun Date.till(end: Date) = DateRange(this, end)
-
 fun notFoundException(title: String, message: String): Nothing =
         throw RequestException(HttpStatus.NOT_FOUND, title to message)
 
 fun badRequestException(title: String, message: String): Nothing =
         throw RequestException(HttpStatus.BAD_REQUEST, title to message)
 
-fun accessDeniedException(title: String, message: String): Nothing =
-        throw RequestException(HttpStatus.FORBIDDEN, title to message)
+fun MutableList<RestErrorMessage>.throwIfNeed(): Nothing? =
+        if (this.isNotEmpty()) throw ServiceBadRequestException(this) else null
 
-fun MutableList<RestErrorMessage>.throwAll(): Nothing? =
-        if (this.isNotEmpty())
-            throw ServiceBadRequestException(this)
-        else
-            null
+fun MutableList<RestErrorMessage>.add(title: String, message: String) {
+    this.add(RestErrorMessage(title, message))
+}
 
 inline fun <T> T?.ifNull(block: T.() -> T): T {
     return if (this == null) block() else this
@@ -86,6 +72,8 @@ fun <ID, T : BaseEntity<ID>> T?.ifNullNotFound(id: ID? = null): T {
     }
     return this
 }
+
+infix fun Date.till(end: Date) = DateRange(this, end)
 
 fun Date.toStamp(): Timestamp = Timestamp.from(this.toInstant())
 

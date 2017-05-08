@@ -33,9 +33,9 @@ class ControllerConfiguration {
     fun transactionController(transactionService: TransactionService): TransactionController
             = TransactionControllerImpl(transactionService)
 
-    @Bean
-    fun remittanceController(remittanceService: RemittanceService): RemittanceController
-            = RemittanceControllerImpl(remittanceService)
+//    @Bean
+//    fun remittanceController(remittanceService: RemittanceService): RemittanceController
+//            = RemittanceControllerImpl(remittanceService)
 
     @Bean
     fun userController(userService: UserService): UserController

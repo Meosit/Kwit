@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import javax.servlet.http.HttpServletRequest
 
 private const val ERROR_PATH = "/error"
-private const val ERROR_HTML_PATH = "/error/404.html"
+private const val ERROR_HTML_PATH = "/404.html"
 
 @Controller
 @RequestMapping(ERROR_PATH)

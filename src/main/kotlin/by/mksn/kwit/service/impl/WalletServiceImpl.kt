@@ -35,9 +35,9 @@ class WalletServiceImpl(
     override fun checkValidNestedEntitiesIfNeed(entity: Wallet) {
         val errors = mutableListOf<RestErrorMessage>()
         if (entity.currency?.id == null) {
-            errors.add("Field 'currency'" to "Nested field 'id' is not specified")
+            errors.add("Field 'currency'", "Nested field 'id' is not specified")
         }
-        errors.isAny { throw ServiceBadRequestException(this) }
+        errors.throwIfNeed()
     }
 
     override fun findByIdAndUserId(id: Long, userId: Long): Wallet? =
@@ -75,11 +75,11 @@ class WalletServiceImpl(
         val salaryInfo = userService.findSalaryInfo(userId)
         salaryInfo ?: throw ServiceBadRequestException("Error" to "Salary info is not specified")
         val average = walletRepository.calculateSumForNormal(salaryInfo.salaryCurrencyCode!!)
-        average ?: errors.add("Error" to "Cannot calculate daily sum")
+        average ?: errors.add("Error", "Cannot calculate daily sum")
         val prediction = transactionRepository.calculateMovingAveragePrediction(userId,
                 salaryInfo.salaryCurrencyCode, PREDICTION_LOOKUP_DAYS)
-        prediction ?: errors.add("Error" to "Cannot calculate average prediction")
-        errors.throwAll()
+        prediction ?: errors.add("Error", "Cannot calculate average prediction")
+        errors.throwIfNeed()
 
         val calendar = Calendar.getInstance()
         val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)

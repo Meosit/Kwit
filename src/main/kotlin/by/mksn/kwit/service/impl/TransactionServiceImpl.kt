@@ -3,11 +3,10 @@ package by.mksn.kwit.service.impl
 import by.mksn.kwit.entity.Transaction
 import by.mksn.kwit.repository.TransactionRepository
 import by.mksn.kwit.service.TransactionService
-import by.mksn.kwit.service.exception.ServiceBadRequestException
 import by.mksn.kwit.service.exception.ServiceException
 import by.mksn.kwit.support.RestErrorMessage
 import by.mksn.kwit.support.add
-import by.mksn.kwit.support.isAny
+import by.mksn.kwit.support.throwIfNeed
 import by.mksn.kwit.support.wrapJPACall
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -25,12 +24,12 @@ open class TransactionServiceImpl(
     override fun checkValidNestedEntitiesIfNeed(entity: Transaction) {
         val errors = mutableListOf<RestErrorMessage>()
         if (entity.wallet?.id == null) {
-            errors.add("Field 'wallet'" to "Nested field 'id' is not specified")
+            errors.add("Field 'wallet'", "Nested field 'id' is not specified")
         }
         if (entity.category?.id == null) {
-            errors.add("Field 'category'" to "Nested field 'id' is not specified")
+            errors.add("Field 'category'", "Nested field 'id' is not specified")
         }
-        errors.isAny { throw ServiceBadRequestException(this) }
+        errors.throwIfNeed()
     }
 
     override fun findByIdAndUserId(id: Long, userId: Long): Transaction?

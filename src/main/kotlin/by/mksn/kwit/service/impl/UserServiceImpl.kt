@@ -9,8 +9,7 @@ import by.mksn.kwit.repository.UserRepository
 import by.mksn.kwit.service.UserService
 import by.mksn.kwit.service.exception.ServiceBadRequestException
 import by.mksn.kwit.service.exception.ServiceException
-import by.mksn.kwit.support.wrapJPACall
-import by.mksn.kwit.support.wrapJPAModifyingCall
+import by.mksn.kwit.support.*
 import org.slf4j.LoggerFactory
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.provider.OAuth2Authentication
@@ -34,16 +33,19 @@ class UserServiceImpl(
     }
 
     override fun changePassword(changeDetails: PasswordChangeDetails, userId: Long, principal: OAuth2Authentication) {
+        if (changeDetails.password != changeDetails.passwordConfirmation) {
+            throw ServiceBadRequestException("Error" to "Passwords don't match")
+        }
         val user = wrapJPACall { userRepository.findOne(userId) }
         if (user != null) {
-            if (passwordEncoder.matches(changeDetails.password, user.passwordHash)) {
-                user.passwordHash = passwordEncoder.encode(changeDetails.newPassword)
+            if (passwordEncoder.matches(changeDetails.oldPassword, user.passwordHash)) {
+                user.passwordHash = passwordEncoder.encode(changeDetails.password)
                 wrapJPAModifyingCall { userRepository.save(user) }
                         ?: throw ServiceBadRequestException("Error" to "Cannot update password")
                 logout(principal)
                 logger.debug("Password changed for user[${user.id}][${user.email}]")
             } else {
-                throw ServiceBadRequestException("Error" to "Wrong password")
+                throw ServiceBadRequestException("Error" to "Wrong old password")
             }
         } else {
             logger.warn("Invalid user id '$userId' passed!")
@@ -58,7 +60,15 @@ class UserServiceImpl(
 
     override fun register(registrationDetails: RegistrationDetails) {
         val existingUser = wrapJPACall { userRepository.findByEmail(registrationDetails.email ?: "") }
-        if (existingUser == null) {
+        val errors = mutableListOf<RestErrorMessage>()
+        if (registrationDetails.password != registrationDetails.passwordConfrimation) {
+            errors.add("Error", "Passwords don't match")
+        }
+        if (existingUser != null) {
+            logger.debug("User with email '${registrationDetails.email} already exists, registration failed.")
+            errors.add("Error", "User with such email is already exists.")
+        }
+        if (errors.isEmpty()) {
             val user = User(
                     email = registrationDetails.email,
                     passwordHash = passwordEncoder.encode(registrationDetails.password)
@@ -66,10 +76,8 @@ class UserServiceImpl(
             wrapJPAModifyingCall { userRepository.save(user) }
                     ?: throw ServiceBadRequestException("Error" to "Cannot register user")
             logger.info("User with email '${registrationDetails.email} successfully registered.")
-        } else {
-            logger.debug("User with email '${registrationDetails.email} already exists, registration failed.")
-            throw ServiceBadRequestException("Error" to "User with such email is already exists.")
         }
+        errors.throwIfNeed()
     }
 
     override fun findSalaryInfo(userId: Long): SalaryInfo? {

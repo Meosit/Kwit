@@ -4,11 +4,10 @@ import by.mksn.kwit.entity.Remittance
 import by.mksn.kwit.repository.RemittanceRepository
 import by.mksn.kwit.repository.WalletRepository
 import by.mksn.kwit.service.RemittanceService
-import by.mksn.kwit.service.exception.ServiceBadRequestException
 import by.mksn.kwit.service.exception.ServiceException
 import by.mksn.kwit.support.RestErrorMessage
 import by.mksn.kwit.support.add
-import by.mksn.kwit.support.isAny
+import by.mksn.kwit.support.throwIfNeed
 import by.mksn.kwit.support.wrapJPACall
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -26,12 +25,12 @@ import org.springframework.transaction.annotation.Transactional
     override fun checkValidNestedEntitiesIfNeed(entity: Remittance) {
         val errors = mutableListOf<RestErrorMessage>()
         if (entity.walletAcceptor?.id == null) {
-            errors.add("Field 'walletAcceptor'" to "Nested field 'id' is not specified")
+            errors.add("Field 'walletAcceptor'", "Nested field 'id' is not specified")
         }
         if (entity.walletDonor?.id == null) {
-            errors.add("Field 'walletDonor'" to "Nested field 'id' is not specified")
+            errors.add("Field 'walletDonor'", "Nested field 'id' is not specified")
         }
-        errors.isAny { throw ServiceBadRequestException(this) }
+        errors.throwIfNeed()
     }
 
     override fun findByIdAndUserId(id: Long, userId: Long): Remittance?

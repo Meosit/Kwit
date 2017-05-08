@@ -14,7 +14,10 @@ data class RegistrationDetails(
         val email: String? = null,
         @field:NotNull(message = "Password is not specified")
         @field:Size(min = 5, max = 50, message = "Password must be in range 5-50 symbols")
-        val password: String? = null
+        val password: String? = null,
+        @field:NotNull(message = "Password is not specified")
+        @field:Size(min = 5, max = 50, message = "Password must be in range 5-50 symbols")
+        val passwordConfrimation: String? = null
 )
 
 data class SalaryInfo(
@@ -30,10 +33,13 @@ data class SalaryInfo(
 data class PasswordChangeDetails(
         @field:NotNull(message = "Password is not specified")
         @field:Size(min = 5, max = 50, message = "Password must be in range 5-50 symbols")
-        val password: String? = null,
+        val oldPassword: String? = null,
         @field:NotNull(message = "New Password is not specified")
         @field:Size(min = 5, max = 50, message = "New Password must be in range 5-50 symbols")
-        val newPassword: String? = null
+        val password: String? = null,
+        @field:NotNull(message = "New Password confirmation is not specified")
+        @field:Size(min = 5, max = 50, message = "New Password confirmation must be in range 5-50 symbols")
+        val passwordConfirmation: String? = null
 )
 
 data class CostForecast(
