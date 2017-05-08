@@ -15,3 +15,6 @@ log/
 
 #MacOS Files #
 .DS_Store
+
+# NPM module
+node_modules

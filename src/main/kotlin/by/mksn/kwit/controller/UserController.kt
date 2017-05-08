@@ -20,7 +20,7 @@ interface UserController {
         fun logout(principal: OAuth2Authentication)
 
         @PostMapping("/change-password")
-        fun changePassword(@Valid @RequestBody passwordChangeDetails: PasswordChangeDetails)
+        fun changePassword(@Valid @RequestBody passwordChangeDetails: PasswordChangeDetails, @Auth auth: UserDetails, principal: OAuth2Authentication)
 
         @GetMapping("/salary-info")
         fun getSalaryInfo(@Auth auth: UserDetails): SalaryInfo

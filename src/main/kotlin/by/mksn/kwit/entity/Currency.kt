@@ -1,6 +1,7 @@
 package by.mksn.kwit.entity
 
 import by.mksn.kwit.entity.support.BaseEntity
+import java.io.Serializable
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
@@ -23,4 +24,4 @@ data class Currency(
         @field:NotNull(message = "Prefix flag is not specified")
         @Column(name = "is_prefix")
         val isPrefix: Boolean
-) : BaseEntity<Long>
+) : BaseEntity<Long>, Serializable

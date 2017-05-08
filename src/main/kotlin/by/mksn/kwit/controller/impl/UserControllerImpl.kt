@@ -11,17 +11,15 @@ import by.mksn.kwit.support.notFoundException
 import by.mksn.kwit.support.wrapServiceCall
 import org.slf4j.LoggerFactory
 import org.springframework.security.oauth2.provider.OAuth2Authentication
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices
 import org.springframework.web.bind.annotation.RequestBody
 import javax.validation.Valid
 
 
 class UserControllerImpl(
-        private val userService: UserService,
-        private val defaultTokenServices: DefaultTokenServices
+        private val userService: UserService
 ) : UserController {
-    companion object {
 
+    companion object {
         val logger = LoggerFactory.getLogger(UserControllerImpl::class.java)!!
     }
 
@@ -36,11 +34,9 @@ class UserControllerImpl(
             wrapServiceCall(logger) { userService.setSalaryInfo(salaryInfo, auth.userId) }
 
     override fun logout(principal: OAuth2Authentication) {
-        val accessToken = defaultTokenServices.getAccessToken(principal)
-        defaultTokenServices.revokeToken(accessToken.value)
+        wrapServiceCall(logger) { userService.logout(principal) }
     }
 
-    override fun changePassword(passwordChangeDetails: PasswordChangeDetails) {
-        TODO("not implemented")
-    }
+    override fun changePassword(@Valid @RequestBody passwordChangeDetails: PasswordChangeDetails, @Auth auth: UserDetails, principal: OAuth2Authentication) =
+            wrapServiceCall(logger) { userService.changePassword(passwordChangeDetails, auth.userId, principal) }
 }

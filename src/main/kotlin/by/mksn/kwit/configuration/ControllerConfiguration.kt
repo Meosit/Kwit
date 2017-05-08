@@ -9,7 +9,6 @@ import by.mksn.kwit.service.*
 import org.springframework.boot.autoconfigure.web.ErrorController
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices
 
 @Configuration
 class ControllerConfiguration {
@@ -39,7 +38,6 @@ class ControllerConfiguration {
             = RemittanceControllerImpl(remittanceService)
 
     @Bean
-    fun userController(defaultTokenServices: DefaultTokenServices,
-                       userService: UserService): UserController
-            = UserControllerImpl(userService, defaultTokenServices)
+    fun userController(userService: UserService): UserController
+            = UserControllerImpl(userService)
 }
