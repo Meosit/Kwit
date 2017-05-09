@@ -62,7 +62,12 @@ class WalletServiceImpl(
     override fun softDelete(id: Long, newId: Long, userId: Long): Unit? {
         checkPersonalVisibility(userId, id)
         val newWallet = wrapJPACall { walletRepository.findByIdAndUserId(newId, userId) }
-        newWallet ?: throw ServiceNotFoundException("New wallet" to "Wallet with id '$newId' not found.")
+        val oldWallet = wrapJPACall { walletRepository.findByIdAndUserId(id, userId) }
+        newWallet ?: throw ServiceNotFoundException("New wallet" to "Wallet not found.")
+        oldWallet ?: throw ServiceNotFoundException("Old wallet" to "Wallet not found.")
+        if (oldWallet.currency?.id != newWallet.currency?.id) {
+            throw ServiceBadRequestException("Invalid currency" to "Wallets must have same currencies")
+        }
         val affected = wrapJPACall { transactionRepository.shiftToNewWallet(newId, id) }
         logger.info("$affected transactions shifted from wallet[$id] to wallet[$newId, ${newWallet.name}]")
         val isSuccess: Unit? = wrapJPAModifyingCall { walletRepository.delete(id) }
@@ -70,10 +75,10 @@ class WalletServiceImpl(
         return isSuccess
     }
 
-    override fun calculateCostForecast(userId: Long): CostForecast {
+    override fun calculateCostForecast(userId: Long): CostForecast? {
         val errors = mutableListOf<RestErrorMessage>()
         val salaryInfo = userService.findSalaryInfo(userId)
-        salaryInfo ?: throw ServiceBadRequestException("Error" to "Salary info is not specified")
+        salaryInfo ?: return null
         val average = walletRepository.calculateSumForNormal(salaryInfo.salaryCurrencyCode!!)
         average ?: errors.add("Error", "Cannot calculate daily sum")
         val prediction = transactionRepository.calculateMovingAveragePrediction(userId,
@@ -88,7 +93,7 @@ class WalletServiceImpl(
         val daysTillSalary = if (dayOfMonth >= salaryDay)
             maxDayOfMonth - dayOfMonth + salaryDay else salaryDay - dayOfMonth
         return CostForecast(
-                dailySumTillSalary = average!!.divide(BigDecimal(daysTillSalary).setScale(4), RoundingMode.FLOOR),
+                dailySumTillSalary = average!!.divide(BigDecimal(daysTillSalary), RoundingMode.FLOOR).setScale(4),
                 actualCosts = prediction!!,
                 daysTillSalary = daysTillSalary
         )

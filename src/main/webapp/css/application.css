@@ -1,6 +1,6 @@
 .md-fab {
     position: fixed;
-    bottom: 45px;
+    bottom: 20px;
     right: 20px;
     z-index: 1000;
 }
@@ -134,3 +134,21 @@ div.md-select-box label {
     max-width: 380px;
     margin: 0 auto;
 }
+
+.header {
+    font-weight: 500;
+    font-size: 1.17em;
+    margin: 0;
+    padding: 0;
+}
+
+.forecast {
+    margin: 0;
+    font-weight: 100;
+    font-size: 0.85em;
+}
+
+.md-card-width {
+    min-width: 280px
+}
+

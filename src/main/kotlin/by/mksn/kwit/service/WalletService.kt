@@ -10,6 +10,6 @@ interface WalletService : PersonalCrudService<Wallet, Long> {
 
     fun softDelete(id: Long, newId: Long, userId: Long): Unit?
 
-    fun calculateCostForecast(userId: Long): CostForecast
+    fun calculateCostForecast(userId: Long): CostForecast?
 
 }

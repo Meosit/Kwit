@@ -23,9 +23,24 @@
                   md-no-ink-bar="true">
         <div ng-if="self.isAuthorized()">
           <div>
-            <md-nav-item md-nav-sref="transactions" name="transactions">Transactions</md-nav-item>
-            <md-nav-item md-nav-sref="wallets" name="wallets">Wallets</md-nav-item>
-            <md-nav-item md-nav-sref="categories" name="categories">Categories</md-nav-item>
+            <md-nav-item md-nav-sref="transactions" name="transactions">
+              <md-icon md-menu-origin>
+                <i class="material-icons">compare_arrows</i>
+              </md-icon>
+              <span class="profile-navbar-item">Transactions</span>
+            </md-nav-item>
+            <md-nav-item md-nav-sref="wallets" name="wallets">
+              <md-icon md-menu-origin>
+                <i class="material-icons">account_balance_wallet</i>
+              </md-icon>
+              <span class="profile-navbar-item">Wallets</span>
+            </md-nav-item>
+            <md-nav-item md-nav-sref="categories" name="categories">
+              <md-icon md-menu-origin>
+                <i class="material-icons">sort</i>
+              </md-icon>
+              <span class="profile-navbar-item">Categories</span>
+            </md-nav-item>
           </div>
           <md-nav-item md-nav-sref="profile" name="profile">
             <md-icon md-menu-origin>
@@ -133,6 +148,8 @@
 
     <script type="text/javascript" src="app/controllers/profile.controller.js"></script>
 
+    <script type="text/javascript" src="app/controllers/wallets/walletDeleteModal.controller.js"></script>
+    <script type="text/javascript" src="app/controllers/wallets/walletSaveModal.controller.js"></script>
     <script type="text/javascript" src="app/controllers/wallets/wallets.controller.js"></script>
     <script type="text/javascript" src="app/controllers/categories/categories.income.controller.js"></script>
     <script type="text/javascript" src="app/controllers/categories/categories.outgo.controller.js"></script>

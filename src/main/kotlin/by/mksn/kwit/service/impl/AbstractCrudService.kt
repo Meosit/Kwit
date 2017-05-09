@@ -26,7 +26,6 @@ abstract class AbstractCrudService<E : UserBaseEntity<Long>>(
             wrapJPACall { crudRepository.findByIdAndUserId(id, userId) }
 
     override fun create(entity: E): E? = wrapJPACall {
-        checkPersonalVisibility(entity.userId!!, entity.id!!)
         checkValidNestedEntitiesIfNeed(entity)
         wrapJPAModifyingCall { crudRepository.save(entity) }
     }

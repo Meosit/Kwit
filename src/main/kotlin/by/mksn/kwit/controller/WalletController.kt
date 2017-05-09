@@ -17,6 +17,6 @@ interface WalletController : CrudController<Wallet, Long> {
     fun getAll(@Auth auth: UserDetails): List<Wallet>
 
     @GetMapping("forecast")
-    fun getCostForecast(@Auth auth: UserDetails): CostForecast
+    fun getCostForecast(@Auth auth: UserDetails): CostForecast?
 
 }

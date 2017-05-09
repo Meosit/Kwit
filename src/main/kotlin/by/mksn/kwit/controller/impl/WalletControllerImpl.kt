@@ -25,7 +25,7 @@ open class WalletControllerImpl(
         binder.registerCustomEditor(WalletType::class.java, WalletTypeBinder())
     }
 
-    override fun getCostForecast(@Auth auth: UserDetails): CostForecast =
+    override fun getCostForecast(@Auth auth: UserDetails): CostForecast? =
             wrapServiceCall(logger) { walletService.calculateCostForecast(auth.userId) }
 
     companion object {
