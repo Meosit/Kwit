@@ -10,7 +10,7 @@
         <div layout="row">
           <md-input-container flex>
             <label>Salary day</label>
-            <input type="number" ng-model="self.salaryInfo.salaryDay">
+            <input type="number" autocomplete="off" no-complete ng-model="self.salaryInfo.salaryDay">
           </md-input-container>
         </div>
         <div layout="row" layout-align="space-between">
@@ -39,15 +39,15 @@
         <div layout-gt-xs="row">
           <md-input-container flex class="md-block">
             <label>Old Password</label>
-            <input ng-model="self.oldPassword" type="password">
+            <input ng-model="self.oldPassword" no-complete type="password">
           </md-input-container>
           <md-input-container flex class="md-block">
             <label>Password</label>
-            <input ng-model="self.password" type="password">
+            <input ng-model="self.password" no-complete type="password">
           </md-input-container>
           <md-input-container flex class="md-block">
             <label>Confirm passowrd</label>
-            <input ng-model="self.passwordConfirmation" type="password">
+            <input ng-model="self.passwordConfirmation" no-complete type="password">
           </md-input-container>
         </div>
       </div>

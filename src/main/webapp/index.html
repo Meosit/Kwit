@@ -85,7 +85,13 @@
       </md-menu>
     </md-toolbar>
 
-    <md-content ui-view layout="column" flex style="overflow-y: auto;">Loading...</md-content>
+    <md-content ui-view layout="column" flex style="overflow-y: auto;">
+      <div class="flex-container">
+        <div class="flex-row">
+          <h2>Please wait. Loading...</h2>
+        </div>
+      </div>
+    </md-content>
 
     <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
     <script type="text/javascript" src="node_modules/angular-animate/angular-animate.min.js"></script>
@@ -109,6 +115,8 @@
     <script type="text/javascript" src="app/configs/initializers/navigation.initializer.js"></script>
     <script type="text/javascript" src="app/configs/initializers/errorDispatcher.initializer.js"></script>
 
+    <script type="text/javascript" src="app/directives/no-complete.directive.js"></script>
+
     <script type="text/javascript" src="app/services/auth.service.js"></script>
     <script type="text/javascript" src="app/services/errors.service.js"></script>
 
@@ -123,56 +131,14 @@
     <script type="text/javascript" src="app/controllers/signIn.controller.js"></script>
     <script type="text/javascript" src="app/controllers/signUp.controller.js"></script>
 
-    <script type="text/javascript" src="app/controllers/users/lists/userList.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/users/lists/adminUserList.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/users/lists/courseUserList.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/users/userModal.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/users/courseRegistrationModal.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/users/profile.controller.js"></script>
+    <script type="text/javascript" src="app/controllers/profile.controller.js"></script>
 
-    <script type="text/javascript" src="app/controllers/courses/lists/courseList.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/courses/lists/adminCourseList.controller.js"></script>
-    <script type="text/javascript"
-            src="app/controllers/courses/lists/studentAvailableCourseList.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/courses/lists/studentMyCoursesList.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/courses/modal/courseModal.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/courses/modal/adminCourseModal.controller.js"></script>
-    <script type="text/javascript"
-            src="app/controllers/courses/modal/studentCourseRegistrationModal.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/courses/modal/studentOngoingCourseModal.controller.js"></script>
-    <script type="text/javascript"
-            src="app/controllers/courses/modal/studentFinishedCourseModal.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/courses/feedbacks/courseFeedbackList.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/courses/feedbacks/courseFeedbackModal.controller.js"></script>
-    <script type="text/javascript"
-            src="app/controllers/courses/feedbacks/studentCourseFeedbackModal.controller.js"></script>
-    <script type="text/javascript"
-            src="app/controllers/courses/feedbacks/adminCourseFeedbackModal.controller.js"></script>
-
-    <script type="text/javascript" src="app/controllers/lessons/lists/lesson.list.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/lessons/lists/admin.lesson.list.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/lessons/lists/studentCourseLessonList.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/lessons/lists/teacher.lesson.list.controller.js"></script>
-    <script type="text/javascript"
-            src="app/controllers/lessons/lists/teacher.future.lesson.list.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/lessons/lists/teacher.past.lesson.list.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/lessons/lists/student.lesson.list.controller.js"></script>
-    <script type="text/javascript"
-            src="app/controllers/lessons/lists/student.future.lesson.list.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/lessons/lists/student.past.lesson.list.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/lessons/modals/lessonModal.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/lessons/modals/adminLessonModal.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/lessons/modals/studentLessonModal.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/lessons/modals/teacherLessonModal.controller.js"></script>
-
+    <script type="text/javascript" src="app/controllers/wallets/wallets.controller.js"></script>
+    <script type="text/javascript" src="app/controllers/categories/categories.income.controller.js"></script>
+    <script type="text/javascript" src="app/controllers/categories/categories.outgo.controller.js"></script>
+    <script type="text/javascript" src="app/controllers/transactions/transactions.controller.js"></script>
 
     <script type="text/javascript" src="app/controllers/navigation.controller.js"></script>
-
-    <script type="text/javascript" src="app/controllers/solutions/lists/admin.solution.list.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/solutions/lists/teacher.solution.list.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/solutions/lists/solution.list.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/solutions/lessonSolutionModal.controller.js"></script>
-    <script type="text/javascript" src="app/controllers/solutions/teacherSolutionModal.controller.js"></script>
 
     <script type="text/javascript" src="app/filters/propertyFilter.js"></script>
     <script type="text/javascript" src="app/filters/strLengthLimit.js"></script>

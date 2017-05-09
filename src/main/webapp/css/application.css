@@ -39,15 +39,6 @@ md-dialog.md-dialog-modal {
     max-height: 95%;
 }
 
-footer h4 {
-    font-size: 12pt;
-}
-
-footer {
-    background-color: rgb(63, 81, 181);
-    color: rgba(255, 255, 255, 0.87);
-}
-
 div.md-select-box {
     margin-bottom: 20px;
 }
@@ -67,4 +58,79 @@ div.md-select-box label {
     md-dialog {
         min-width: 500px;
     }
+}
+
+.flex-container {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-row {
+    width: auto;
+}
+
+::-moz-selection {
+    background: #b3d4fc;
+    text-shadow: none;
+}
+
+::selection {
+    background: #b3d4fc;
+    text-shadow: none;
+}
+
+.html-404 {
+    padding: 30px 10px;
+    font-size: 20px;
+    line-height: 1.4;
+    color: #737373;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.body-404 {
+    max-width: 500px;
+    padding: 30px 20px 50px;
+    border: 1px solid #b3b3b3;
+    border-radius: 4px;
+    margin: 0 auto;
+    box-shadow: 0 1px 10px #a7a7a7, inset 0 1px 0 #fff;
+    background: #fcfcfc;
+}
+
+.h1-404 {
+    margin: 0 10px;
+    font-size: 50px;
+    text-align: center;
+}
+
+.h1-span-404 {
+    color: #bbb;
+}
+
+.h3-404 {
+    margin: 1.5em 0 0.5em;
+}
+
+.p-404 {
+    margin: 1em 0;
+}
+
+.ul-404 {
+    padding: 0 0 0 40px;
+    margin: 1em 0;
+}
+
+.container-404 {
+    max-width: 380px;
+    margin: 0 auto;
 }

@@ -1,152 +1,154 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0"/>
     <title>Page Not Found :(</title>
-    <style>
-      ::-moz-selection {
-        background: #b3d4fc;
-        text-shadow: none;
-      }
+    <link type="text/css" rel="stylesheet" href="node_modules/angular-material/angular-material.min.css">
+    <link type="text/css" rel="stylesheet" href="node_modules/angular-loading-bar/build/loading-bar.min.css">
+    <link type="text/css" rel="stylesheet" href="node_modules/angular-material-data-table/dist/md-data-table.min.css">
+    <link type="text/css" rel="stylesheet" href="node_modules/angular-toast/dist/angular-toast.css">
 
-      ::selection {
-        background: #b3d4fc;
-        text-shadow: none;
-      }
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-      html {
-        padding: 30px 10px;
-        font-size: 20px;
-        line-height: 1.4;
-        color: #737373;
-        background: #f0f0f0;
-        -webkit-text-size-adjust: 100%;
-        -ms-text-size-adjust: 100%;
-      }
-
-      html,
-      input {
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      }
-
-      body {
-        max-width: 500px;
-        padding: 30px 20px 50px;
-        border: 1px solid #b3b3b3;
-        border-radius: 4px;
-        margin: 0 auto;
-        box-shadow: 0 1px 10px #a7a7a7, inset 0 1px 0 #fff;
-        background: #fcfcfc;
-      }
-
-      h1 {
-        margin: 0 10px;
-        font-size: 50px;
-        text-align: center;
-      }
-
-      h1 span {
-        color: #bbb;
-      }
-
-      h3 {
-        margin: 1.5em 0 0.5em;
-      }
-
-      p {
-        margin: 1em 0;
-      }
-
-      ul {
-        padding: 0 0 0 40px;
-        margin: 1em 0;
-      }
-
-      .container {
-        max-width: 380px;
-        margin: 0 auto;
-      }
-
-      /* google search */
-
-      #goog-fixurl ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-      }
-
-      #goog-fixurl form {
-        margin: 0;
-      }
-
-      #goog-wm-qt,
-      #goog-wm-sb {
-        border: 1px solid #bbb;
-        font-size: 16px;
-        line-height: normal;
-        vertical-align: top;
-        color: #444;
-        border-radius: 2px;
-      }
-
-      #goog-wm-qt {
-        width: 220px;
-        height: 20px;
-        padding: 5px;
-        margin: 5px 10px 0 0;
-        box-shadow: inset 0 1px 1px #ccc;
-      }
-
-      #goog-wm-sb {
-        display: inline-block;
-        height: 32px;
-        padding: 0 10px;
-        margin: 5px 0 0;
-        white-space: nowrap;
-        cursor: pointer;
-        background-color: #f5f5f5;
-        background-image: -webkit-linear-gradient(rgba(255, 255, 255, 0), #f1f1f1);
-        background-image: -moz-linear-gradient(rgba(255, 255, 255, 0), #f1f1f1);
-        background-image: -ms-linear-gradient(rgba(255, 255, 255, 0), #f1f1f1);
-        background-image: -o-linear-gradient(rgba(255, 255, 255, 0), #f1f1f1);
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-      }
-
-      #goog-wm-sb:hover,
-      #goog-wm-sb:focus {
-        border-color: #aaa;
-        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-        background-color: #f8f8f8;
-      }
-
-      #goog-wm-qt:hover,
-      #goog-wm-qt:focus {
-        border-color: #105cb6;
-        outline: 0;
-        color: #222;
-      }
-
-      input::-moz-focus-inner {
-        padding: 0;
-        border: 0;
-      }
-    </style>
+    <link type="text/css" rel="stylesheet" href="css/application.css">
   </head>
-  <body>
-    <div class="container">
-      <h1>Not found <span>:(</span></h1>
-      <p>Sorry, but the page you were trying to view does not exist.</p>
-      <p>It looks like this was the result of either:</p>
-      <ul>
-        <li>a mistyped address</li>
-        <li>an out-of-date link</li>
-      </ul>
-      <script>
-          var GOOG_FIXURL_LANG = (navigator.language || '').slice(0, 2), GOOG_FIXURL_SITE = location.host;
-      </script>
-      <script src="//linkhelp.clients.google.com/tbproxy/lh/wm/fixurl.js"></script>
-    </div>
+
+  <body ng-app="app" ng-cloak layout="column">
+    <md-toolbar layout="row" md-whiteframe="2" layout-align="space-around center"
+                ng-controller="NavigationController as self">
+      <p>Kwit</p>
+      <md-nav-bar hide show-gt-sm md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links"
+                  md-no-ink-bar="true">
+        <div ng-if="self.isAuthorized()">
+          <div>
+            <md-nav-item md-nav-sref="transactions" name="transactions">Transactions</md-nav-item>
+            <md-nav-item md-nav-sref="wallets" name="wallets">Wallets</md-nav-item>
+            <md-nav-item md-nav-sref="categories" name="categories">Categories</md-nav-item>
+          </div>
+          <md-nav-item md-nav-sref="profile" name="profile">
+            <md-icon md-menu-origin>
+              <i class="material-icons">settings</i>
+            </md-icon>
+            <span class="profile-navbar-item">Settings</span>
+          </md-nav-item>
+          <md-button class="sign-out-button" ng-click="self.signOut()">
+            <md-icon md-menu-origin>
+              <i class="material-icons">exit_to_app</i>
+            </md-icon>
+          </md-button>
+        </div>
+        <div ng-if="!self.isAuthorized()">
+          <md-nav-item md-nav-sref="signIn" name="signIn">Sign In</md-nav-item>
+          <md-nav-item md-nav-sref="signUp" name="signUp">Sign Up</md-nav-item>
+        </div>
+      </md-nav-bar>
+      <md-menu hide-gt-sm style="margin: 0px;">
+        <md-button class="md-icon-button" ng-click="$mdMenu.open($event)">
+          <md-icon md-menu-origin><i class="material-icons">menu</i></md-icon>
+        </md-button>
+        <md-menu-content width="4">
+          <div ng-if="self.isAuthorized()">
+            <div>
+              <md-menu-item>
+                <md-button ui-sref="transactions">Transactions</md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ui-sref="wallets">Wallets</md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ui-sref="categories">Categories</md-button>
+              </md-menu-item>
+            </div>
+            <md-menu-divider></md-menu-divider>
+            <md-menu-item>
+              <md-button ui-sref="profile">
+                Settings
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button ng-click="self.signOut()">
+                Sign Out
+              </md-button>
+            </md-menu-item>
+          </div>
+          <div ng-if="!self.isAuthorized()">
+            <md-menu-item>
+              <md-button ui-sref="signIn">Sign In</md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button ui-sref="signUp">Sign Up</md-button>
+            </md-menu-item>
+          </div>
+        </md-menu-content>
+      </md-menu>
+    </md-toolbar>
+
+    <md-content layout="column" flex style="overflow-y: auto;">
+      <div class="html-404">
+        <div class="body-404">
+          <div class="container-404">
+            <h1 class="h1-404">Not found <span class="h1-span-404">:(</span></h1>
+            <p class="p-404">Sorry, but the page you were trying to view does not exist.</p>
+            <p class="p-404">It looks like this was the result of either:</p>
+            <ul class="ul-404">
+              <li>a mistyped address</li>
+              <li>an out-of-date link</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </md-content>
+
+    <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
+    <script type="text/javascript" src="node_modules/angular-animate/angular-animate.min.js"></script>
+    <script type="text/javascript" src="node_modules/angular-aria/angular-aria.min.js"></script>
+    <script type="text/javascript" src="node_modules/angular-cookies/angular-cookies.min.js"></script>
+    <script type="text/javascript" src="node_modules/angular-loading-bar/build/loading-bar.min.js"></script>
+    <script type="text/javascript" src="node_modules/angular-material/angular-material.min.js"></script>
+    <script type="text/javascript" src="node_modules/angular-material-data-table/dist/md-data-table.min.js"></script>
+    <script type="text/javascript" src="node_modules/angular-resource/angular-resource.min.js"></script>
+    <script type="text/javascript" src="node_modules/angular-sanitize/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="node_modules/angular-ui-date/dist/date.js"></script>
+    <script type="text/javascript" src="node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script type="text/javascript" src="node_modules/angular-ui-router-redirect/dist/ui.router.redirect.js"></script>
+    <script type="text/javascript" src="node_modules/angular-toast/dist/angular-toast.min.js"></script>
+
+    <script type="text/javascript" src="app/application.js"></script>
+    <script type="text/javascript" src="app/configs/states.config.js"></script>
+    <script type="text/javascript" src="app/configs/unauthorizedErrorHandler.config.js"></script>
+    <script type="text/javascript" src="app/configs/httpRequestErrorsHandler.config.js"></script>
+    <script type="text/javascript" src="app/configs/initializers/authentification.initializer.js"></script>
+    <script type="text/javascript" src="app/configs/initializers/navigation.initializer.js"></script>
+    <script type="text/javascript" src="app/configs/initializers/errorDispatcher.initializer.js"></script>
+
+    <script type="text/javascript" src="app/directives/no-complete.directive.js"></script>
+
+    <script type="text/javascript" src="app/services/auth.service.js"></script>
+    <script type="text/javascript" src="app/services/errors.service.js"></script>
+
+    <script type="text/javascript" src="app/factories/user.factory.js"></script>
+    <script type="text/javascript" src="app/factories/currency.factory.js"></script>
+    <script type="text/javascript" src="app/factories/wallet.factory.js"></script>
+    <script type="text/javascript" src="app/factories/category.factory.js"></script>
+    <script type="text/javascript" src="app/factories/transaction.factory.js"></script>
+
+    <script type="text/javascript" src="app/controllers/root.controller.js"></script>
+
+    <script type="text/javascript" src="app/controllers/signIn.controller.js"></script>
+    <script type="text/javascript" src="app/controllers/signUp.controller.js"></script>
+
+    <script type="text/javascript" src="app/controllers/profile.controller.js"></script>
+
+    <script type="text/javascript" src="app/controllers/wallets/wallets.controller.js"></script>
+    <script type="text/javascript" src="app/controllers/categories/categories.income.controller.js"></script>
+    <script type="text/javascript" src="app/controllers/categories/categories.outgo.controller.js"></script>
+    <script type="text/javascript" src="app/controllers/transactions/transactions.controller.js"></script>
+
+    <script type="text/javascript" src="app/controllers/navigation.controller.js"></script>
+
+    <script type="text/javascript" src="app/filters/propertyFilter.js"></script>
+    <script type="text/javascript" src="app/filters/strLengthLimit.js"></script>
   </body>
 </html>

@@ -28,7 +28,9 @@ function ProfileController(UserFactory, CurrencyFactory, toast) {
     }
 
     function setSalaryInfo() {
-        UserFactory.setSalaryInfo(self.salaryInfo, function () {
+        UserFactory.setSalaryInfo(self.salaryInfo, function (response) {
+            if (typeof response.status === 'undefined' || response.status === null)
+                toast.show("<span style='color: lightgreen'>Salary info updated!</span>");
             refresh();
         });
     }
@@ -42,6 +44,8 @@ function ProfileController(UserFactory, CurrencyFactory, toast) {
             self.oldPassword = '';
             self.password = '';
             self.passwordConfirmation = '';
+            if (typeof response.status === 'undefined' || response.status === null)
+                toast.show("<span style='color: lightgreen'>Password changed.</span>");
         });
     }
 }
