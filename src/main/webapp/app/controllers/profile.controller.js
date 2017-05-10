@@ -8,9 +8,9 @@ function ProfileController(UserFactory, CurrencyFactory, toast) {
     self.setSalaryInfo = setSalaryInfo;
     self.updatePassword = updatePassword;
     self.salaryInfo = {};
-    self.oldPassword = '';
-    self.password = '';
-    self.passwordConfirmation = '';
+    self.oldPassword = null;
+    self.password = null;
+    self.passwordConfirmation = null;
     self.currencyCodes = [];
 
     refresh();
@@ -41,9 +41,9 @@ function ProfileController(UserFactory, CurrencyFactory, toast) {
             password: self.password,
             passwordConfirmation: self.passwordConfirmation
         }, function (response) {
-            self.oldPassword = '';
-            self.password = '';
-            self.passwordConfirmation = '';
+            self.oldPassword = null;
+            self.password = null;
+            self.passwordConfirmation = null;
             if (typeof response.status === 'undefined' || response.status === null)
                 toast.show("<span style='color: lightgreen'>Password changed.</span>");
         });

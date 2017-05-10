@@ -1,1 +1,65 @@
-<h1>Categories index</h1>
+<md-card flex>
+  <div class="md-padding">
+    <h3 class="header">{{self.title}}</h3>
+    <div layout="row">
+      <md-input-container flex>
+        <label>Currency</label>
+        <md-select ng-change="self.refresh()" ng-model="self.statsCurrencyCode">
+          <md-option ng-repeat="code in self.currencyCodes" value="{{code}}">{{code}}</md-option>
+        </md-select>
+      </md-input-container>
+      <md-input-container flex>
+        <md-checkbox ng-change="self.refresh()" ng-model="self.isAllTime" aria-label="All time stats">
+          All time stats
+        </md-checkbox>
+      </md-input-container>
+      <md-input-container flex ng-hide="self.isAllTime">
+        <label>Start date</label>
+        <md-datepicker ng-change="self.refresh()" md-min-date="self.MIN_DATE" md-max-date="self.MAX_DATE"
+                       md-hide-icons="calendar" md-date-filter="" ng-model="self.period.start"
+                       ng-disabled="self.isAllTime" md-open-on-focus></md-datepicker>
+      </md-input-container>
+      <md-input-container flex ng-hide="self.isAllTime">
+        <label>End date</label>
+        <md-datepicker ng-change="self.refresh()" md-min-date="self.MIN_DATE" md-max-date="self.MAX_DATE"
+                       md-hide-icons="calendar" md-date-filter="self.isAfterPeriodStart" ng-model="self.period.end"
+                       ng-disabled="self.isAllTime"></md-datepicker>
+      </md-input-container>
+    </div>
+  </div>
+  <md-table-container>
+    <table md-table>
+      <thead md-head>
+      <tr md-row>
+        <th hide show-gt-xs md-column>Name</th>
+        <th hide show-gt-xs md-column>Sum for category</th>
+        <th hide show-gt-xs md-column>Percent of all</th>
+      </tr>
+      </thead>
+      <tbody md-body>
+      <tr md-row ng-repeat="category in self.categories">
+        <td md-cell>{{category.name}}</td>
+        <td md-cell>{{category.sum + " (" + category.items + " Items)"}}</td>
+        <td hide show-gt-xs md-cell>{{category.percent + "%"}}</td>
+        <td md-cell layout="row">
+          <md-button ng-click="self.editCategory(category)">
+            <md-icon md-menu-origin>
+              <i class="material-icons">mode_edit</i>
+            </md-icon>
+          </md-button>
+          <md-button ng-click="self.deleteCategory(category)">
+            <md-icon md-menu-origin>
+              <i class="material-icons">delete</i>
+            </md-icon>
+          </md-button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </md-table-container>
+</md-card>
+<div>
+  <md-button class="md-fab" ng-click="self.addCaregory()">
+    <i class="material-icons">add</i>
+  </md-button>
+</div>

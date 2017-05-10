@@ -1,6 +1,6 @@
 <div class="md-padding">
   <h3 class="header">Wallets</h3>
-  <div ng-if="self.forecast !== null">
+  <div ng-if="!self.forecast">
     <h4 class="forecast">Sum per day before salary: {{self.forecast.dailySumTillSalary}}</h4>
     <h4 class="forecast">Actual costs per day: {{self.forecast.actualCosts}}</h4>
     <h4 class="forecast">Days till salary: {{self.forecast.daysTillSalary}}</h4>
@@ -13,7 +13,7 @@
         <span class="md-title">{{wallet.name}}</span>
       </md-card-header-text>
       <md-card-avatar ng-if="wallet.type == 'SAVING'">
-        <i style="color:#FF4081;" class="material-icons">lock</i>
+        <i class="material-icons" style="color: #FFAB40">lock</i>
       </md-card-avatar>
     </md-card-header>
     <md-card-title>

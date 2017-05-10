@@ -61,12 +61,17 @@ class UserServiceImpl(
     override fun register(registrationDetails: RegistrationDetails) {
         val existingUser = wrapJPACall { userRepository.findByEmail(registrationDetails.email ?: "") }
         val errors = mutableListOf<RestErrorMessage>()
-        if (registrationDetails.password != registrationDetails.passwordConfrimation) {
+        if (registrationDetails.password != registrationDetails.passwordConfirmation) {
             errors.add("Error", "Passwords don't match")
         }
         if (existingUser != null) {
             logger.debug("User with email '${registrationDetails.email} already exists, registration failed.")
             errors.add("Error", "User with such email is already exists.")
+        }
+        val currency = wrapJPACall { currencyRepository.findByCode(registrationDetails.salaryCurrencyCode ?: "") }
+        if (currency == null) {
+            logger.debug("Failed setting salary info: invalid currency code '${registrationDetails.salaryCurrencyCode}'")
+            errors.add("Error", "Currency with code '${registrationDetails.salaryCurrencyCode}' doesn't exist.")
         }
         if (errors.isEmpty()) {
             val user = User(

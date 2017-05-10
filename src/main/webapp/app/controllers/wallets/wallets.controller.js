@@ -16,6 +16,9 @@ function WalletListController($mdDialog, WalletFactory) {
 
     function refresh() {
         WalletFactory.getAll().$promise.then(function (result) {
+            result.forEach(function (it) {
+                it.balance = new Big(it.balance).toFixed(2);
+            });
             self.wallets = result;
         });
         WalletFactory.forecast().$promise.then(function (result) {

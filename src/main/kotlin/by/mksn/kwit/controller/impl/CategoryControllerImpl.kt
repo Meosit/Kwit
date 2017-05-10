@@ -38,8 +38,8 @@ open class CategoryControllerImpl(
     override fun calculateCategoryStats(
             @PathVariable("type") type: CategoryType,
             @PathVariable("currencyCode") @CurrencyCode currencyCode: String,
-            @RequestParam(name = "from") @DateTimeFormat(pattern = "dd.MM.yyyy") from: Date,
-            @RequestParam(name = "to") @DateTimeFormat(pattern = "dd.MM.yyyy") to: Date,
+            @RequestParam(name = "from") @DateTimeFormat(pattern = "yyyy-MM-dd") from: Date,
+            @RequestParam(name = "to") @DateTimeFormat(pattern = "yyyy-MM-dd") to: Date,
             @Auth auth: UserDetails
     ): CategoriesStats =
             wrapServiceCall(logger) { categoryService.calculateCategoryStats(auth.userId, type, currencyCode, from till to) }

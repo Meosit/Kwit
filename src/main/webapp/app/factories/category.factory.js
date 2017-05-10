@@ -24,8 +24,7 @@ function CategoryFactory($resource) {
             params: {
                 categoryType: '@categoryType',
                 currencyCode: '@currencyCode'
-            },
-            isArray: true
+            }
         },
         getByType: {
             method: 'GET',
@@ -43,8 +42,7 @@ function CategoryFactory($resource) {
                 currencyCode: '@currencyCode',
                 fromDate: '@fromDate',
                 toDate: '@toDate'
-            },
-            isArray: true
+            }
         }
     });
 }

@@ -14,13 +14,16 @@ import javax.validation.constraints.Size
 SELECT
   categoryId,
   categoryName,
-  IF(nullableSumForCategory IS NULL, 0, nullableSumForCategory)                  AS sumForCategory,
-  (IF(nullableSumForCategory IS NULL, 0, nullableSumForCategory) / allSum) * 100 AS percentOfAll,
-  IF(nullableCountForCategory IS NULL, 0, nullableCountForCategory)              AS countForCategory
+  IF(nullableSumForCategory IS NULL, 0, nullableSumForCategory)     AS sumForCategory,
+  IF(
+      IF(nullableSumForCategory IS NULL, 0, nullableSumForCategory) / allSum IS NULL, 0,
+      IF(nullableSumForCategory IS NULL, 0, nullableSumForCategory) / allSum) * 100
+                                                                    AS percentOfAll,
+  IF(nullableCountForCategory IS NULL, 0, nullableCountForCategory) AS countForCategory
 FROM
   (SELECT
-     category.id        AS categoryId,
-     category.name      AS categoryName
+     category.id   AS categoryId,
+     category.name AS categoryName
    FROM category
      CROSS JOIN wallet
      JOIN currency
@@ -43,7 +46,8 @@ FROM
    WHERE
      currency_id = :currencyId AND
      wallet.user_id = :userId AND
-     transaction.user_id = :userId
+     transaction.user_id = :userId AND
+     (transaction.date BETWEEN :startDate AND :endDate)
    GROUP BY secondCurrencyId, secondCategoryId
   ) AS second
     ON first.categoryId = secondCategoryId

@@ -20,6 +20,18 @@
           <input ng-model="self.passwordConfirmation" no-complete type="password">
         </md-input-container>
       </div>
+      <div layout="row">
+        <md-input-container flex>
+          <label>Salary day</label>
+          <input type="number" autocomplete="off" no-complete ng-model="self.salaryDay">
+        </md-input-container>
+        <md-input-container flex>
+          <label>Salary Currency</label>
+          <md-select ng-model="self.salaryCurrencyCode">
+            <md-option ng-repeat="code in self.currencyCodes" value="{{code}}">{{code}}</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
     </md-card-content>
     <md-card-actions layout="row" layout-align="end center">
       <md-button ng-click="self.signUp()">Sign Up</md-button>

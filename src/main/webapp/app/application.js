@@ -10,4 +10,9 @@ angular
         'angular-loading-bar',
         'md.data.table',
         'angular-toast'
-    ]);
+    ]).config(function ($mdThemingProvider) {
+
+    $mdThemingProvider.theme('default')
+        .primaryPalette('blue-grey')
+        .accentPalette('orange');
+});

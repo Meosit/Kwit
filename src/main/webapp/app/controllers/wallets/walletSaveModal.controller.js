@@ -20,21 +20,30 @@ function WalletSaveModalController($mdDialog, WalletFactory, CurrencyFactory, wa
         });
     }
 
+    function isNumeric(value) {
+        return /^\d+(\.\d+)?$/.test(value);
+    }
+
     function saveWallet() {
-        if (self.updateMode) {
-            WalletFactory.update(self.wallet, function (response) {
-                if (typeof response.status === 'undefined' || response.status === null) {
-                    $mdDialog.hide();
-                    toast.show("<span style='color: lightgreen'>Wallet updated!</span>");
-                }
-            });
+        if (self.wallet.balance !== null && isNumeric(self.wallet.balance)) {
+            self.wallet.balance = new Big(self.wallet.balance).toFixed(4);
+            if (self.updateMode) {
+                WalletFactory.update(self.wallet, function (response) {
+                    if (typeof response.status === 'undefined' || response.status === null) {
+                        $mdDialog.hide();
+                        toast.show("<span style='color: lightgreen'>Wallet updated!</span>");
+                    }
+                });
+            } else {
+                WalletFactory.save(self.wallet, function (response) {
+                    if (typeof response.status === 'undefined' || response.status === null) {
+                        $mdDialog.hide();
+                        toast.show("<span style='color: lightgreen'>Wallet added!</span>");
+                    }
+                });
+            }
         } else {
-            WalletFactory.save(self.wallet, function (response) {
-                if (typeof response.status === 'undefined' || response.status === null) {
-                    $mdDialog.hide();
-                    toast.show("<span style='color: lightgreen'>Wallet added!</span>");
-                }
-            });
+            toast.show("<span style='color: lightcoral'>Invalid balance value</span>")
         }
     }
 

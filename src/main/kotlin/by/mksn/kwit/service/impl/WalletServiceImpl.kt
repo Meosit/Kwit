@@ -93,7 +93,7 @@ class WalletServiceImpl(
         val daysTillSalary = if (dayOfMonth >= salaryDay)
             maxDayOfMonth - dayOfMonth + salaryDay else salaryDay - dayOfMonth
         return CostForecast(
-                dailySumTillSalary = average!!.divide(BigDecimal(daysTillSalary), RoundingMode.FLOOR).setScale(4),
+                dailySumTillSalary = (average!!.divide(BigDecimal(daysTillSalary), RoundingMode.FLOOR)).setScale(4, RoundingMode.DOWN),
                 actualCosts = prediction!!,
                 daysTillSalary = daysTillSalary
         )
