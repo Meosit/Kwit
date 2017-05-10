@@ -2,7 +2,7 @@ angular
     .module('app')
     .controller('WalletSaveModalController', WalletSaveModalController);
 
-function WalletSaveModalController($mdDialog, WalletFactory, CurrencyFactory, wallet) {
+function WalletSaveModalController($mdDialog, WalletFactory, CurrencyFactory, wallet, toast) {
     var self = this;
 
     self.wallet = wallet;

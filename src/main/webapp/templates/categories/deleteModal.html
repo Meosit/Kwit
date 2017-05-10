@@ -1,0 +1,26 @@
+<md-dialog class="md-dialog-modal" flex-xs="90">
+  <form ng-cloak>
+    <md-dialog-content class="md-dialog-content">
+      <h2 class="md-title">Delete Category</h2>
+      <div layout="column">
+        <h3 class="md-title">Would you like to delete this category?</h3>
+
+        <md-input-container flex>
+          <md-checkbox ng-model="self.isSafeDelete" aria-label="Shift all transactions to another category?">
+            Shift all transactions to another category?
+          </md-checkbox>
+        </md-input-container>
+        <md-input-container flex>
+          <label>Shift transactions to another category</label>
+          <md-select ng-disabled="!self.isSafeDelete" ng-hide="!self.isSafeDelete" ng-model="self.newCategoryId">
+            <md-option ng-repeat="category in self.newCategories" value="{{category.id}}">{{category.name}}</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+      <md-button ng-click="self.deleteCategory()">Delete</md-button>
+      <md-button ng-click="self.cancel()">Cancel</md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

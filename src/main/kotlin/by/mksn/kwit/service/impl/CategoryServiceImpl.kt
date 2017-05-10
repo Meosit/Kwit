@@ -71,7 +71,7 @@ class CategoryServiceImpl(
 
     override fun softDelete(id: Long, newId: Long, userId: Long): Unit? {
         checkPersonalVisibility(userId, id)
-        if (id == userId) throw ServiceBadRequestException("Error" to "Cannot shift transactions to delete category")
+        if (id == newId) throw ServiceBadRequestException("Error" to "Cannot shift transactions to delete category")
         val newCategory = wrapJPACall { categoryRepository.findByIdAndUserId(newId, userId) }
         newCategory ?: throw ServiceNotFoundException("New category" to "Category with id '$newId' not found.")
         val affected = wrapJPACall { transactionRepository.shiftToNewCategory(newId, id) }

@@ -10,7 +10,6 @@ function WalletDeleteModalController($mdDialog, toast, WalletFactory, wallet) {
     self.isSafeDelete = false;
     self.newWalletId = null;
     self.currencies = [];
-    self.types = ['NORMAL', 'SAVING'];
     self.cancel = cancel;
     self.deleteWallet = deleteWallet;
 

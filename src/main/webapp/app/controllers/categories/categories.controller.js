@@ -63,6 +63,7 @@ function CategoryController(CategoryFactory, UserFactory, CurrencyFactory, $mdDi
         return categories.map(function (it) {
             return {
                 id: it.categoryId,
+                type: self.type,
                 name: it.categoryName,
                 sum: new Big(it.sumForCategory).toFixed(2),
                 items: it.countForCategory,
@@ -72,7 +73,7 @@ function CategoryController(CategoryFactory, UserFactory, CurrencyFactory, $mdDi
     }
 
     function isAfterPeriodStart(date) {
-        return date > self.period.start
+        return date >= self.period.start
     }
 
     function isAllTimePeriod(period) {

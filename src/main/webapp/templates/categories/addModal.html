@@ -1,0 +1,23 @@
+<md-dialog class="md-dialog-modal" flex-xs="90">
+  <form ng-cloak>
+    <md-dialog-content class="md-dialog-content">
+      <h2 class="md-title">Edit Category</h2>
+      <div layout="column">
+        <md-input-container flex>
+          <label>Name</label>
+          <input ng-model="self.category.name" no-complete type="text">
+        </md-input-container>
+        <md-input-container flex>
+          <label>Type</label>
+          <md-select ng-model="self.category.type">
+            <md-option ng-repeat="type in self.types" value="{{type}}">{{type}}</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+      <md-button ng-click="self.addCategory()">Add</md-button>
+      <md-button ng-click="self.cancel()">Cancel</md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

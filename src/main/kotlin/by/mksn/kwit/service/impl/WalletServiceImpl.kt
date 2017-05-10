@@ -61,6 +61,7 @@ class WalletServiceImpl(
 
     override fun softDelete(id: Long, newId: Long, userId: Long): Unit? {
         checkPersonalVisibility(userId, id)
+        if (id == newId) throw ServiceBadRequestException("Error" to "Cannot shift transactions to delete wallet")
         val newWallet = wrapJPACall { walletRepository.findByIdAndUserId(newId, userId) }
         val oldWallet = wrapJPACall { walletRepository.findByIdAndUserId(id, userId) }
         newWallet ?: throw ServiceNotFoundException("New wallet" to "Wallet not found.")
