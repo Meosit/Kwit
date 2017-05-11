@@ -1,7 +1,5 @@
 package by.mksn.kwit.controller
 
-import by.mksn.kwit.configuration.security.Auth
-import by.mksn.kwit.configuration.security.UserDetails
 import by.mksn.kwit.entity.Currency
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -16,6 +14,6 @@ interface CurrencyController : CrudController<Currency, Long> {
     fun getByCode(@PathVariable("code") code: String): Currency
 
     @GetMapping("all")
-    fun getAll(@Auth auth: UserDetails): Iterable<Currency>
+    fun getAll(): Iterable<Currency>
 
 }

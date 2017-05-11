@@ -24,7 +24,7 @@ open class CurrencyControllerImpl(
         private val logger = LoggerFactory.getLogger(CurrencyControllerImpl::class.java)!!
     }
 
-    override fun getAll(@Auth auth: UserDetails): Iterable<Currency> =
+    override fun getAll(): Iterable<Currency> =
             wrapServiceCall(logger) { currencyService.findAll() }
 
     override fun getAll(@Auth auth: UserDetails, pageable: Pageable): Page<Currency> =
