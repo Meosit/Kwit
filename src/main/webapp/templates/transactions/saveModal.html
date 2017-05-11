@@ -1,0 +1,56 @@
+<md-dialog class="md-dialog-modal" flex-xs="90">
+  <form ng-cloak>
+    <md-dialog-content class="md-dialog-content">
+      <h2 class="md-title" ng-if="self.updateMode">Update Transaction</h2>
+      <h2 class="md-title" ng-if="!self.updateMode">Create Transaction</h2>
+      <div layout="column">
+        <div layout="row">
+          <md-input-container flex>
+            <label>Type</label>
+            <md-select ng-model="self.type">
+              <md-option ng-repeat="type in self.types" value="{{type}}">{{type}}</md-option>
+            </md-select>
+          </md-input-container>
+          <md-input-container flex ng-hide="self.isAllTime">
+            <label>Start date</label>
+            <md-datepicker md-min-date="self.MIN_DATE" md-max-date="self.MAX_DATE"
+                           md-hide-icons="calendar" md-date-filter="" ng-model="self.transaction.date"
+                           md-open-on-focus></md-datepicker>
+          </md-input-container>
+        </div>
+        <div layout="row">
+          <md-input-container flex ng-hide="self.type != 'INCOME'">
+            <label>Category</label>
+            <md-select ng-model="self.transaction.category.id">
+              <md-option ng-repeat="category in self.categories | filter: { type: 'INCOME' }" value="{{category.id}}">
+                {{category.name}}
+              </md-option>
+            </md-select>
+          </md-input-container>
+          <md-input-container flex ng-hide="self.type != 'OUTGO'">
+            <label>Category</label>
+            <md-select ng-model="self.transaction.category.id">
+              <md-option ng-repeat="category in self.categories | filter: { type: 'OUTGO' }" value="{{category.id}}">
+                {{category.name}}
+              </md-option>
+            </md-select>
+          </md-input-container>
+          <md-input-container flex>
+            <label>Wallet</label>
+            <md-select ng-model="self.transaction.wallet.id">
+              <md-option ng-repeat="wallet in self.wallets" value="{{wallet.id}}">{{wallet.name}}</md-option>
+            </md-select>
+          </md-input-container>
+        </div>
+        <md-input-container>
+          <label>Sum</label>
+          <input ng-model="self.transaction.sum" no-complete ng-pattern="/^\d+(\.\d+)?$/">
+        </md-input-container>
+      </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+      <md-button ng-click="self.saveTransaction()">Save</md-button>
+      <md-button ng-click="self.cancel()">Cancel</md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

@@ -15,6 +15,9 @@ function TransactionListController(TransactionFactory, $mdDialog, toast) {
     refresh(self.pagination.page);
 
     function refresh(page) {
+        if (!page) {
+            page = self.pagination.page;
+        }
         TransactionFactory.get({page: page}).$promise.then(function (result) {
             self.transactions = result.content;
             self.pagination.page = result.number + 1;
@@ -24,24 +27,11 @@ function TransactionListController(TransactionFactory, $mdDialog, toast) {
     }
 
     function addTransaction() {
-        $mdDialog.show({
-            controller: 'TransactionSaveModalController as self',
-            templateUrl: 'templates/transactions/saveModal.html',
-            parent: angular.element(document.body),
-            clickOutsideToClose: true
-        }).then(self.refresh, self.refresh);
+        openSaveModal();
     }
 
     function editTransaction(transaction) {
-        $mdDialog.show({
-            controller: 'TransactionSaveModalController as self',
-            templateUrl: 'templates/transactions/saveModal.html',
-            parent: angular.element(document.body),
-            clickOutsideToClose: true,
-            locals: {
-                transaction: angular.copy(transaction)
-            }
-        }).then(self.refresh, self.refresh);
+        openSaveModal(transaction)
     }
 
     function deleteTransaction(transaction) {
@@ -59,6 +49,18 @@ function TransactionListController(TransactionFactory, $mdDialog, toast) {
             });
         }, function () {
         });
+    }
+
+    function openSaveModal(transaction) {
+        $mdDialog.show({
+            controller: 'TransactionSaveModalController as self',
+            templateUrl: 'templates/transactions/saveModal.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose: true,
+            locals: {
+                transaction: angular.copy(transaction)
+            }
+        }).then(self.refresh, self.refresh);
     }
 
 }
