@@ -1,1 +1,56 @@
-<h1>Transactions index</h1>
+<md-card flex>
+  <div class="md-padding">
+    <h3 class="header">{{self.title}}</h3>
+  </div>
+  <md-table-container>
+    <table md-table>
+      <thead md-head>
+      <tr md-row>
+        <th md-column></th>
+        <th md-column>Sum</th>
+        <th md-column>Date</th>
+        <th md-column>Category</th>
+        <th md-column>Wallet</th>
+        <th md-column></th>
+      </tr>
+      </thead>
+      <tbody md-body>
+      <tr md-row ng-repeat="transaction in self.transactions">
+        <td md-cell>
+          <md-icon md-menu-origin ng-if="transaction.category.type == 'INCOME'">
+            <i class="material-icons" style="color: forestgreen">arrow_forward</i>
+          </md-icon>
+          <md-icon md-menu-origin ng-if="transaction.category.type == 'OUTGO'">
+            <i class="material-icons" style="color: firebrick">arrow_back</i>
+          </md-icon>
+        </td>
+        <td md-cell>{{(transaction.wallet.currency.prefix ? (transaction.wallet.currency.symbol + transaction.sum) :
+          (transaction.sum + " " + transaction.wallet.currency.symbol))}}
+        </td>
+        <td md-cell>{{transaction.date | date : "MM/dd/yyyy"}}</td>
+        <td md-cell>{{transaction.category.name}}</td>
+        <td md-cell>{{transaction.wallet.name}}</td>
+        <td md-cell layout="row">
+          <md-button ng-click="self.editTransaction(transaction)">
+            <md-icon md-menu-origin>
+              <i class="material-icons">mode_edit</i>
+            </md-icon>
+          </md-button>
+          <md-button ng-click="self.deleteTransaction(transaction)">
+            <md-icon md-menu-origin>
+              <i class="material-icons">delete</i>
+            </md-icon>
+          </md-button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </md-table-container>
+  <md-table-pagination md-limit="self.pagination.limit" md-on-paginate="self.refresh" md-page="self.pagination.page"
+                       md-total="{{self.pagination.total}}"></md-table-pagination>
+</md-card>
+<div>
+  <md-button class="md-fab" ng-click="self.addTransaction()">
+    <i class="material-icons">add</i>
+  </md-button>
+</div>
