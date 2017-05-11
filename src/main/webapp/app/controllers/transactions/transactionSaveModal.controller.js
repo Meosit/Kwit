@@ -5,21 +5,24 @@ angular
 function TransactionSaveModalController($mdDialog, WalletFactory, CategoryFactory, TransactionFactory, toast, transaction) {
     var self = this;
 
-    self.updateMode = !!self.transaction;
+    self.isAddMode = !!self.transaction;
     self.transaction = transaction;
-    if (!self.updateMode) {
+    if (self.isAddMode === true) {
         self.transaction = {date: new Date()};
+        self.type = 'OUTGO';
+    } else {
+        self.transaction.date = new Date(self.transaction.date);
+        self.type = self.transaction.category.type;
     }
-    self.saveTransaction = saveTransaction;
-    self.cancel = cancel;
     self.MIN_DATE_STRING = "1000-01-01";
     self.MAX_DATE_STRING = "9999-12-31";
     self.MIN_DATE = new Date(self.MIN_DATE_STRING);
     self.MAX_DATE = new Date(self.MAX_DATE_STRING);
     self.wallets = [];
     self.categories = [];
-    self.type = 'OUTGO';
     self.types = ['INCOME', 'OUTGO'];
+    self.saveTransaction = saveTransaction;
+    self.cancel = cancel;
 
     refresh();
 
@@ -48,47 +51,26 @@ function TransactionSaveModalController($mdDialog, WalletFactory, CategoryFactor
     function saveTransaction() {
         if (self.transaction.sum !== null && isNumeric(self.transaction.sum)) {
             self.transaction.sum = new Big(self.transaction.sum).toFixed(4);
+            var transactionToSave = angular.copy(self.transaction);
+            transactionToSave.date = formatDate(transactionToSave.date);
             self.transaction.date = formatDate(self.transaction.date);
-            if (self.updateMode) {
-                TransactionFactory.update(self.transaction, function (response) {
-                    if (typeof response.status === 'undefined' || response.status === null) {
-                        $mdDialog.hide();
-                        toast.show("<span style='color: lightgreen'>Transaction updated!</span>");
-                    }
-                });
-            } else {
-                TransactionFactory.save(self.transaction, function (response) {
+            if (self.isAddMode) {
+                TransactionFactory.save(transactionToSave, function (response) {
                     if (typeof response.status === 'undefined' || response.status === null) {
                         $mdDialog.hide();
                         toast.show("<span style='color: lightgreen'>Transaction added!</span>");
                     }
                 });
+            } else {
+                TransactionFactory.update(transactionToSave, function (response) {
+                    if (typeof response.status === 'undefined' || response.status === null) {
+                        $mdDialog.hide();
+                        toast.show("<span style='color: lightgreen'>Transaction updated!</span>");
+                    }
+                });
             }
         } else {
             toast.show("<span style='color: lightcoral'>Invalid sum value</span>")
-        }
-    }
-
-    function saveWallet() {
-        if (self.transaction.balance !== null && isNumeric(self.transaction.balance)) {
-            self.transaction.balance = new Big(self.transaction.balance).toFixed(4);
-            if (self.updateMode) {
-                WalletFactory.update(self.transaction, function (response) {
-                    if (typeof response.status === 'undefined' || response.status === null) {
-                        $mdDialog.hide();
-                        toast.show("<span style='color: lightgreen'>Wallet updated!</span>");
-                    }
-                });
-            } else {
-                WalletFactory.save(self.transaction, function (response) {
-                    if (typeof response.status === 'undefined' || response.status === null) {
-                        $mdDialog.hide();
-                        toast.show("<span style='color: lightgreen'>Wallet added!</span>");
-                    }
-                });
-            }
-        } else {
-            toast.show("<span style='color: lightcoral'>Invalid balance value</span>")
         }
     }
 
